@@ -1,0 +1,11 @@
+{
+    "name": "tosdr/parser",
+    "autoload": {
+        "psr-4": {
+            "tosdr\\": "src/tosdr/"
+        }
+    },
+    "require": {
+        "appwrite/appwrite": "^7.1"
+    }
+}
