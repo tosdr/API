@@ -1,4 +1,8 @@
 
+tasks:
+  - name: PHP FPM
+    init: docker pull php:8.2-fpm-buster
+    command: docker run --rm -p 9000:9000 -v /workspace:/workspace php:8.2-fpm-buster
 
 vscode:
   extensions:
