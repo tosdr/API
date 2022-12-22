@@ -1,0 +1,14 @@
+
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - eamodio.gitlens
+    - TeamHub.teamhub
+    - felixfbecker.php-debug
+    - neilbrayfield.php-docblocker
+    - bmewburn.vscode-intelephense-client
+    - GitLab.gitlab-workflow
+    - DEVSENSE.composer-php-vscode
+    - caponetto.vscode-diff-viewer
+    - 42Crunch.vscode-openapi
