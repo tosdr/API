@@ -46,9 +46,6 @@ COPY nginx/default.conf /etc/nginx/sites-enabled/default.conf
 
 RUN ["chmod", "+x", "/opt/entrypoint.d/entrypoint.sh"]
 
-
-RUN ["/bin/bash", "-c", "/opt/entrypoint.d/bootstrap.sh"]
-
 RUN rm /tmp/symfony-cache/ -R -f
 RUN composer install --ignore-platform-reqs
 
