@@ -50,6 +50,7 @@ RUN ["chmod", "+x", "/opt/entrypoint.d/entrypoint.sh"]
 RUN ["/bin/bash", "-c", "/opt/entrypoint.d/bootstrap.sh"]
 
 RUN rm /tmp/symfony-cache/ -R -f
+RUN composer install --ignore-platform-reqs
 
 
 ENTRYPOINT ["/bin/bash", "-c", "/opt/entrypoint.d/entrypoint.sh"]
