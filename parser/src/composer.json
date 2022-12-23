@@ -2,7 +2,7 @@
     "name": "tosdr/parser",
     "autoload": {
         "psr-4": {
-            "tosdr\\": "src/tosdr/"
+            "tosdr\\": "tosdr/"
         }
     },
     "require": {

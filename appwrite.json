@@ -1,0 +1,22 @@
+{
+    "projectId": "63a43bd7d5cb200f754a",
+    "projectName": "API",
+    "functions": [
+        {
+            "$id": "63a4fddf25de17a1d58b",
+            "name": "GET /case/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Case/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
+}

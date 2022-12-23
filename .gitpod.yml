@@ -1,8 +1,22 @@
 
+ports:
+  - name: Parser Endpoint
+    description: Translates HTTP to Functions
+    port: 80
+    onOpen: notify
+
 tasks:
+  - name: Install Parser
+    init: cd parser/src && composer install
+
+
   - name: PHP FPM
-    init: docker pull php:8.2-fpm-buster
-    command: docker run --rm -p 9000:9000 -v /workspace:/workspace php:8.2-fpm-buster
+    init: sudo mkdir /run/php
+    command: sudo /usr/sbin/php-fpm8.1 -F -R
+
+
+  - name: Nginx
+    command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/default.conf
 
 vscode:
   extensions:
