@@ -42,7 +42,7 @@ COPY src /app
 COPY docker /opt/entrypoint.d
 
 RUN rm /etc/nginx/sites-enabled/default
-COPY config/nginx.conf /etc/nginx/sites-enabled/default.conf
+COPY nginx/default.conf /etc/nginx/sites-enabled/default.conf
 
 RUN ["chmod", "+x", "/opt/entrypoint.d/entrypoint.sh"]
 
