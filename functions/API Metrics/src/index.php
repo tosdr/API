@@ -61,9 +61,13 @@ return function ($req, $res) {
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
   $ts = time();
+
+
+  $milliseconds = floor(($end - $start) * 1000);
+
   $postparams = array(
     "data[timestamp]" => $ts,
-    "data[value]" => $end - $start
+    "data[value]" => $milliseconds
   );
   curl_setopt($ch, CURLOPT_POSTFIELDS, $postparams);
   $resultStringified = curl_exec($ch);
@@ -75,6 +79,6 @@ return function ($req, $res) {
     return $res->send("Error encountered. Please ensure that your page code and authorization key are correct.", 500);
   }
 
-  $res->send("OK");
+  $res->send("Time: " . $milliseconds);
 
 };
