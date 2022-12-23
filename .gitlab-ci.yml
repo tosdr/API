@@ -16,7 +16,7 @@ build_parser:
     entrypoint:
     - ''
   script:
-  - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
+  - /kaniko/executor --context "${CI_PROJECT_DIR}/parser" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
     --destination "${CI_REGISTRY_IMAGE}/parser:latest"
   rules:
   - if: $CI_COMMIT_REF_NAME == "master"
