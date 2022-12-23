@@ -41,9 +41,9 @@ return function ($req, $res) {
   $context = stream_context_create($opts);
 
 
-  $start = microtime(true);
+  $start = microtime();
   file_get_contents("https://api.tosdr.org", false, $context);
-  $end = microtime(true);
+  $end = microtime();
   
 
   $API_KEY = $_ENV["STATUSPAGE_API_KEY"];
