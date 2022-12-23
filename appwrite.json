@@ -17,6 +17,20 @@
             "events": [],
             "schedule": "",
             "timeout": 15
+        },
+        {
+            "$id": "63a586a196b24923e0bd",
+            "name": "API Metrics",
+            "runtime": "php-8.0",
+            "path": "functions/API Metrics",
+            "entrypoint": "src/index.php",
+            "ignore": [
+                "vendor"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
         }
     ]
 }
