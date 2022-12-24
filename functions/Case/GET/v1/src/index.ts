@@ -51,7 +51,8 @@ module.exports = async function (req: any, res: any) {
     await client.end();
 
 
-    return res.json({
+
+    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
       "id": Number(caseObj.id),
       "weight": Number(caseObj.score),
       "title": caseObj.title,
@@ -81,7 +82,9 @@ module.exports = async function (req: any, res: any) {
           "api": flags.getFeatureValue("crisp_api_url") + "/case/v1/?case=" + caseObj.id,
         }
       }
-    });
+    }));
+
+    return res.json();
 
   }
 
