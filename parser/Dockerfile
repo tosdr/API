@@ -41,8 +41,8 @@ COPY config/php.ini /usr/local/etc/php/conf.d/php_custom.ini
 COPY src /app
 COPY docker /opt/entrypoint.d
 
-RUN rm /etc/nginx/sites-enabled/default && rm /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
+COPY nginx/default.conf /etc/nginx/sites-enabled/parser.conf
 
 RUN ["chmod", "+x", "/opt/entrypoint.d/entrypoint.sh"]
 

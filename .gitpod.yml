@@ -14,7 +14,7 @@ tasks:
 
 
   - name: Nginx
-    command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/default.conf
+    command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/local.conf
 
 
 
