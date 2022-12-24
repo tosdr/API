@@ -91,7 +91,7 @@ module.exports = async function (req: any, res: any) {
   	
     let totalCases = await Phoenix.countAllCases(client);
     let casesPerPage = 100;
-    let currentPage = Number.parseInt(request.page) ?? 1;
+    let currentPage = Number.parseInt(request.page ?? 1);
 
     if(!Number.isInteger(currentPage)){
       await client.end();

@@ -29,7 +29,7 @@
             ],
             "execute": [],
             "events": [],
-            "schedule": "",
+            "schedule": "* * * * *",
             "timeout": 15
         }
     ]
