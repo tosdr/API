@@ -4,13 +4,6 @@ use tosdr\parser\AppwriteRequests;
 
 include __DIR__ . "/vendor/autoload.php";
 
-if($_SERVER["REQUEST_METHOD"] !== $_ENV["REQUEST_METHOD"]){
-    http_response_code(405);
-    exit;
-}
-
-
-
 $parameters = match($_SERVER["REQUEST_METHOD"]){
     "GET" => $_GET,
     "POST" => $_POST,
