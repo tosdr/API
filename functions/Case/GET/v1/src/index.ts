@@ -40,17 +40,20 @@ module.exports = async function (req: any, res: any) {
 
 
     if(!await Phoenix.caseExists(request.case, client)){
+      await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
     }
     
 
 
     let caseObj = await Phoenix.getCase(request.case, client);
+  
+    await client.end();
 
 
     return res.json({
-      "id": caseObj.id as Number,
-      "weight": caseObj.score as Number,
+      "id": Number(caseObj.id),
+      "weight": Number(caseObj.score),
       "title": caseObj.title,
       "description": caseObj.description,
       "updated_at": {
@@ -63,7 +66,7 @@ module.exports = async function (req: any, res: any) {
         'pgsql': caseObj.created_at,
         'unix': Math.floor(new Date(caseObj.created_at).getTime() / 1000)
       },
-      "topic": caseObj.topic_id as Number,
+      "topic": Number(caseObj.topic_id),
       "classification": {
           "hex": caseObj.classification,
           "human": caseObj.classification
@@ -85,8 +88,100 @@ module.exports = async function (req: any, res: any) {
 
 
 
+  	
+    let totalCases = await Phoenix.countAllCases(client);
+    let casesPerPage = 100;
+    let currentPage = Number.parseInt(request.page) ?? 1;
+
+    if(!Number.isInteger(currentPage)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is not a number!", {
+        page: currentPage
+      }), 400);
+    }
+
+    /* Check if page is zero or below */
+    if(currentPage < 1){
+      currentPage = 1;
+    }
+    
+    let _calculatedPages = Math.ceil(totalCases / casesPerPage);
+    /* If page is one then offset is zero */
+    let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * casesPerPage));
+
+    
+    console.log("totalCases", totalCases);
+    console.log("casesPerPage", casesPerPage);
+    console.log("currentPage", currentPage);
+    console.log("_calculatedPages", _calculatedPages);
+    console.log("_calculatedOffset", _calculatedOffset);
+
+
+    if(currentPage > _calculatedPages){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is out of range!", {
+        page: currentPage
+      }), 400);
+    }
+
+    let phoenixCases = await Phoenix.getAllCasesOffset(casesPerPage, _calculatedOffset, client);
+
+
+    let CasesSkel: any = [];    
+
+
+    let _phoenixUrlCached = flags.getFeatureValue("phoenix_url");
+    let _apiUrlCached = flags.getFeatureValue("crisp_api_url");
+
+    phoenixCases.forEach((caseObj) => {
+      CasesSkel.push({
+        "id": Number(caseObj.id),
+        "weight": Number(caseObj.score),
+        "title": caseObj.title,
+        "description": caseObj.description,
+        "updated_at": {
+          'timezone': 'Europe/Berlin',
+          'pgsql': caseObj.updated_at,
+          'unix': Math.floor(new Date(caseObj.updated_at).getTime() / 1000)
+        },
+        "created_at": {
+          'timezone': 'Europe/Berlin',
+          'pgsql': caseObj.created_at,
+          'unix': Math.floor(new Date(caseObj.created_at).getTime() / 1000)
+        },
+        "topic": Number(caseObj.topic_id),
+        "classification": {
+            "hex": caseObj.classification,
+            "human": caseObj.classification
+        },
+        "links": {
+          "phoenix": {
+            "case": _phoenixUrlCached + "/case/" + caseObj.id,
+            "new_comment": _phoenixUrlCached + "/case/" + caseObj.id + "/case_comments/new",
+            "edit": _phoenixUrlCached + "/case/" + caseObj.id + "/edit"
+          },
+          "crisp": {
+            "api": _apiUrlCached + "/case/v1/?case=" + caseObj.id,
+          }
+        }
+      });
+    });
+
+
+
   
   await client.end();
+
+
+  return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All cases below", {
+    _page: {
+      total: totalCases,
+      current: currentPage,
+      start: 1,
+      end: _calculatedPages
+    },
+    cases: CasesSkel
+  }));
 
 
 };

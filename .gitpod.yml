@@ -6,17 +6,20 @@ ports:
     onOpen: notify
 
 tasks:
-  - name: Install Parser
-    init: cd parser/src && composer install
-
+  - name: Install Parser and Appwrite
+    init: cd parser/src && composer install && npm i -g appwrite-cli && exit
 
   - name: PHP FPM
-    init: sudo mkdir /run/php
-    command: sudo /usr/sbin/php-fpm8.1 -F -R
+    command: sudo mkdir /run/php; sudo /usr/sbin/php-fpm8.1 -F -R
 
 
   - name: Nginx
     command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/default.conf
+
+
+
+  - name: Install Function GET case/v1
+    command: cd functions/Case/GET/v1 && npm install && exit
 
 vscode:
   extensions:

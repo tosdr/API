@@ -4,13 +4,23 @@ Welcome to the documentation of this function 👋 We strongly recommend keeping
 
 ## 🤖 Documentation
 
-Simple function similar to typical "hello world" example, but instead, we return a simple JSON that tells everyone how awesome developers are.
+Retrieves a list of all Cases or specific cases by supplying the "case" parameter.
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
 *Example input:*
 
-This function expects no input
+This function expects the following JSON Input:
+
+```json
+{"case": CASE_ID_AS_INTEGER}
+```
+
+Providing no case ID will list all cases in a pagination style, supported parameters for the pagination are:
+
+```json
+{"page": PAGE_NUMBER_AS_INTEGER}
+```
 
 <!-- If input is expected, add example -->
 
@@ -20,7 +30,35 @@ This function expects no input
 
 ```json
 {
- "areDevelopersAwesome": true
+    "id": 157,
+    "weight": 30,
+    "title": "Your use is throttled",
+    "description": "The service may impose limits or restrictions to the use of the service, thus negatively impacting users experience. They may do so without reason or prior notice.",
+    "updated_at": {
+        "timezone": "Europe/Berlin",
+        "pgsql": "2021-05-06T08:15:47.671Z",
+        "unix": 1620288947
+    },
+    "created_at": {
+        "timezone": "Europe/Berlin",
+        "pgsql": "2018-01-16T15:26:09.092Z",
+        "unix": 1516116369
+    },
+    "topic": 32,
+    "classification": {
+        "hex": "bad",
+        "human": "bad"
+    },
+    "links": {
+        "phoenix": {
+            "case": "https://edit.tosdr.org/case/157",
+            "new_comment": "https://edit.tosdr.org/case/157/case_comments/new",
+            "edit": "https://edit.tosdr.org/case/157/edit"
+        },
+        "crisp": {
+            "api": "https://api.tosdr.org/case/v1/?case=157"
+        }
+    }
 }
 ```
 
@@ -33,6 +71,8 @@ List of environment variables used by this cloud function:
 - **PGPASSWORD** - Password of the Phoenix Database
 - **PGDATABASE** - Database Name of Phoenix
 - **PGPORT** - Port of the Phoenix Database
+- **FLAGSMITH_KEY** - Environment Key of your Flagsmith Installation
+- **FLAGMSMITH_HOSTNAME** - Hostname of your Flagsmith Installation
 
 <!-- Add your custom environment variables -->
 

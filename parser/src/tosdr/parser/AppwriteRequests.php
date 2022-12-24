@@ -3,7 +3,6 @@
 
 namespace tosdr\parser;
 
-
 use Appwrite\Client;
 use Appwrite\Services\Functions;
 
