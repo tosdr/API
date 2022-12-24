@@ -32,5 +32,14 @@ export class Phoenix {
     return (await postgresClient.query('SELECT * FROM services LIMIT $1::integer OFFSET $2::integer', [limit, offset])).rows;
   }
 
+  static async getDocumentsOfService(serviceId: number, postgresClient: Client): Promise<any> {
+    return (await postgresClient.query('SELECT * FROM documents WHERE service_id = $1::integer', [serviceId])).rows;
+  }
+
+  static async getPointsOfService(serviceId: number, postgresClient: Client): Promise<any> {
+    return (await postgresClient.query('SELECT * FROM points WHERE service_id = $1::integer', [serviceId])).rows;
+  }
+
+
 
 }

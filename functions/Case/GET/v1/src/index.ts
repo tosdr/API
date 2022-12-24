@@ -96,7 +96,7 @@ module.exports = async function (req: any, res: any) {
     let casesPerPage = 100;
     let currentPage = Number.parseInt(request.page ?? 1);
 
-    if(!Number.isInteger(currentPage)){
+    if(!/^\d+$/.test(currentPage.toString())){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is not a number!", {
         page: currentPage
