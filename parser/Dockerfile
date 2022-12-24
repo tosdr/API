@@ -14,7 +14,6 @@ RUN apt-get update && \
             libzip-dev \
             libicu-dev \
             nginx && \
-            dpkg-reconfigure --frontend=noninteractive locales && \
             docker-php-ext-configure curl && \
             docker-php-ext-install bcmath curl zip intl && \
             docker-php-ext-enable bcmath curl zip intl && \
