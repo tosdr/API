@@ -22,7 +22,8 @@ RUN apt-get update && \
             apt-get clean && \
             rm -rf /tmp/pear && \
             rm -rf /var/cache/apt/archives && \
-            rm -rf /var/lib/apt/lists/*
+            rm -rf /var/lib/apt/lists/* && \
+            rm /tmp/symfony-cache/ -R -f
 
 COPY config/php.ini /usr/local/etc/php/conf.d/php_custom.ini
 
@@ -30,11 +31,10 @@ COPY src /app
 COPY docker /opt/entrypoint.d
 
 RUN rm /etc/nginx/sites-enabled/default
-COPY nginx/docker.conf /etc/nginx/sites-enabled/parser.conf
+COPY nginx/docker.conf /etc/nginx/conf.d/default.conf
 
 RUN ["chmod", "+x", "/opt/entrypoint.d/entrypoint.sh"]
 
-RUN rm /tmp/symfony-cache/ -R -f
 RUN composer install --ignore-platform-reqs
 
 
