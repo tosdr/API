@@ -10,13 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "api-models": "file:../../../../models",
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "node-appwrite": "^8.0.0",
     "pg": "^8.8.0"
   },
   "devDependencies": {
+    "api-models": "file:../../../../models",
     "@types/node": "^18.11.17",
     "@types/pg": "^8.6.6",
     "grunt": "^1.5.3",
