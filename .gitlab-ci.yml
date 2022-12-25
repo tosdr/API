@@ -20,3 +20,12 @@ build_parser:
     --destination "${CI_REGISTRY_IMAGE}/parser:latest"
   rules:
   - if: $CI_COMMIT_REF_NAME == "master"
+
+
+
+npm_models:
+  stage: publish
+  script:
+    - cd models
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
+    - npm publish

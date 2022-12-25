@@ -15,6 +15,7 @@ import { Client } from 'pg';
 import { Bitmask } from './helpers/Bitmask';
 import { Phoenix } from './helpers/Phoenix';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
+import { Case, Classification, CrispLinks, Links, PhoenixLinks, Timezone } from 'api-models';
 import Flagsmith from 'flagsmith-nodejs';
 
  
@@ -50,39 +51,41 @@ module.exports = async function (req: any, res: any) {
   
     await client.end();
 
+    
+    let caseModel = new Case.v1(
+      caseObj.id,
+      caseObj.weight,
+      caseObj.title,
+      caseObj.description,
+      new Timezone.v1(
+        'Europe/Berlin',
+        caseObj.updated_at,
+        Math.floor(new Date(caseObj.updated_at).getTime() / 1000)
+      ),
+      new Timezone.v1(
+        'Europe/Berlin',
+        caseObj.created_at,
+        Math.floor(new Date(caseObj.created_at).getTime() / 1000)
+      ),
+      caseObj.topic,
+      new Classification.v1(
+        0,
+        caseObj.classification
+      ),
+      new Links.v1(
+        new PhoenixLinks.v1(
+          flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id,
+          flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id + "/case_comments/new",
+          flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id + "/edit"
+        ),
+        new CrispLinks.v1(
+          flags.getFeatureValue("crisp_api_url") + "/case/v1/?case=" + caseObj.id,
+        )
+      ),
+      );
 
 
-    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
-      "id": Number(caseObj.id),
-      "weight": Number(caseObj.score),
-      "title": caseObj.title,
-      "description": caseObj.description,
-      "updated_at": {
-        'timezone': 'Europe/Berlin',
-        'pgsql': caseObj.updated_at,
-        'unix': Math.floor(new Date(caseObj.updated_at).getTime() / 1000)
-      },
-      "created_at": {
-        'timezone': 'Europe/Berlin',
-        'pgsql': caseObj.created_at,
-        'unix': Math.floor(new Date(caseObj.created_at).getTime() / 1000)
-      },
-      "topic": Number(caseObj.topic_id),
-      "classification": {
-          "hex": caseObj.classification,
-          "human": caseObj.classification
-      },
-      "links": {
-        "phoenix": {
-          "case": flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id,
-          "new_comment": flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id + "/case_comments/new",
-          "edit": flags.getFeatureValue("phoenix_url") + "/case/" + caseObj.id + "/edit"
-        },
-        "crisp": {
-          "api": flags.getFeatureValue("crisp_api_url") + "/case/v1/?case=" + caseObj.id,
-        }
-      }
-    }));
+    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", caseModel.toObject()));
 
     return res.json();
 
@@ -136,38 +139,41 @@ module.exports = async function (req: any, res: any) {
     let _phoenixUrlCached = flags.getFeatureValue("phoenix_url");
     let _apiUrlCached = flags.getFeatureValue("crisp_api_url");
 
+
+
+
     phoenixCases.forEach((caseObj) => {
-      CasesSkel.push({
-        "id": Number(caseObj.id),
-        "weight": Number(caseObj.score),
-        "title": caseObj.title,
-        "description": caseObj.description,
-        "updated_at": {
-          'timezone': 'Europe/Berlin',
-          'pgsql': caseObj.updated_at,
-          'unix': Math.floor(new Date(caseObj.updated_at).getTime() / 1000)
-        },
-        "created_at": {
-          'timezone': 'Europe/Berlin',
-          'pgsql': caseObj.created_at,
-          'unix': Math.floor(new Date(caseObj.created_at).getTime() / 1000)
-        },
-        "topic": Number(caseObj.topic_id),
-        "classification": {
-            "hex": caseObj.classification,
-            "human": caseObj.classification
-        },
-        "links": {
-          "phoenix": {
-            "case": _phoenixUrlCached + "/case/" + caseObj.id,
-            "new_comment": _phoenixUrlCached + "/case/" + caseObj.id + "/case_comments/new",
-            "edit": _phoenixUrlCached + "/case/" + caseObj.id + "/edit"
-          },
-          "crisp": {
-            "api": _apiUrlCached + "/case/v1/?case=" + caseObj.id,
-          }
-        }
-      });
+      CasesSkel.push(new Case.v1(
+        caseObj.id,
+        caseObj.weight,
+        caseObj.title,
+        caseObj.description,
+        new Timezone.v1(
+          'Europe/Berlin',
+          caseObj.updated_at,
+          Math.floor(new Date(caseObj.updated_at).getTime() / 1000)
+        ),
+        new Timezone.v1(
+          'Europe/Berlin',
+          caseObj.created_at,
+          Math.floor(new Date(caseObj.created_at).getTime() / 1000)
+        ),
+        caseObj.topic,
+        new Classification.v1(
+          0,
+          caseObj.classification
+        ),
+        new Links.v1(
+          new PhoenixLinks.v1(
+            _phoenixUrlCached + "/case/" + caseObj.id,
+            _phoenixUrlCached + "/case/" + caseObj.id + "/case_comments/new",
+            _phoenixUrlCached + "/case/" + caseObj.id + "/edit"
+          ),
+          new CrispLinks.v1(
+            _apiUrlCached + "/case/v1/?case=" + caseObj.id,
+          )
+        ),
+        ).toObject());
     });
 
 
