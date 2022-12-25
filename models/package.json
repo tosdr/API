@@ -1,10 +1,13 @@
 {
-  "name": "api-models",
+  "name": "@tosdr/api-microservices",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig":{
+    "@tosdr:registry": "https://gitlab.jrbit.de/api/v4/projects/120/packages/npm/"
   },
   "repository": {
     "type": "git",
