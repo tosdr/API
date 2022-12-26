@@ -19,7 +19,7 @@ build_parser:
   - /kaniko/executor --context "${CI_PROJECT_DIR}/parser" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
     --destination "${CI_REGISTRY_IMAGE}/parser:latest"
   rules:
-  - if: $CI_COMMIT_REF_NAME == "master"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
       - parser/*
  
@@ -36,6 +36,6 @@ npm_models:
     - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
     - npm publish
   rules:
-  - if: $CI_COMMIT_REF_NAME == "master"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
-      - parser/*
+      - models/*
