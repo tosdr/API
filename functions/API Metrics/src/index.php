@@ -65,6 +65,11 @@ return function ($req, $res) {
 
   $milliseconds = floor(($end - $start) * 1000);
 
+
+  if($milliseconds < 1){
+    return exit(1);
+  }
+
   $postparams = array(
     "data[timestamp]" => $ts,
     "data[value]" => $milliseconds
