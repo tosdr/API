@@ -28,5 +28,7 @@ npm_models:
   image: node:16
   script:
     - cd models
+    - npm install
+    - npm run build
     - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
     - npm publish

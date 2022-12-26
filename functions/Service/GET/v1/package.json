@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tosdr/api-microservices": "^1.0.0",
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "node-appwrite": "^8.0.0",

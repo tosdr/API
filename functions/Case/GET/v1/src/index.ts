@@ -15,7 +15,7 @@ import { Client } from 'pg';
 import { Bitmask } from './helpers/Bitmask';
 import { Phoenix } from './helpers/Phoenix';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
-import { Case, Classification, CrispLinks, Links, PhoenixLinks, Timezone } from 'api-models';
+import { Case, Classification, CrispLinks, Links, PhoenixLinks, Timezone } from '@tosdr/api-microservices';
 import Flagsmith from 'flagsmith-nodejs';
 
  
