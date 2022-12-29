@@ -7,8 +7,10 @@ ports:
 
 tasks:
   - name: Install Parser and Appwrite
-    init: cd parser/src && composer install && npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY && exit
+    init: cd parser/src && composer install
+    command: npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
 
+    
   - name: PHP FPM
     command: sudo mkdir /run/php; sudo /usr/sbin/php-fpm8.1 -F -R
 
