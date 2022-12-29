@@ -34,10 +34,7 @@ module.exports = async function (req: any, res: any) {
     environmentKey: process.env.FLAGSMITH_KEY,
     apiUrl: process.env.FLAGSMITH_HOSTNAME,
   });
-  const flags = await flagsmith.getEnvironmentFlags();
-
-
-
+  
   let request = JSON.parse(req.payload);
 
 

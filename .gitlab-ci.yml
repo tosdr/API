@@ -40,7 +40,7 @@ npm_models:
         - models/*
 
 
-API Metrics:
+API_Metrics:
   stage: build_functions
   image: node:16
   script:
@@ -52,7 +52,7 @@ API Metrics:
         - functions/API Metrics/*
 
 
-GET /case/v1/:
+GET_case_v1:
   stage: build_functions
   image: node:16
   script:
@@ -68,7 +68,7 @@ GET /case/v1/:
         - functions/Case/GET/v1/*
 
 
-GET /service/v1/:
+GET_service_v1:
   stage: build_functions
   image: node:16
   script:
@@ -84,7 +84,7 @@ GET /service/v1/:
         - functions/Service/GET/v1/*
 
 
-DELETE /spam/v1/:
+DELETE_spam_v1:
   stage: build_functions
   image: node:16
   script:
