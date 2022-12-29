@@ -31,7 +31,6 @@ module.exports = async function (req: any, res: any) {
   await client.connect();
   let request = JSON.parse(req.payload);
 
-
   if (!request.user) {
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user'"));
@@ -42,10 +41,12 @@ module.exports = async function (req: any, res: any) {
 
   let User = (await client.query("SELECT * FROM users WHERE id = $1::integer", [request.user])).rows[0];
 
+  console.log("User:", User);
+
   if(!User){
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User does not exist!"));
-  }else if(User.admin && User.bot && User.curator){
+  }else if(User.admin || User.bot || User.curator){
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User is protected!"));
   }
@@ -57,6 +58,7 @@ module.exports = async function (req: any, res: any) {
   let ServiceComments = (await client.query("SELECT * FROM service_comments WHERE user_id = $1::integer", [request.user])).rows;
   let TopicComments = (await client.query("SELECT * FROM topic_comments WHERE user_id = $1::integer", [request.user])).rows;
 
+  console.log("Retrieved all comments");
 
   /* Start Transaction */
   await client.query('BEGIN');
@@ -81,60 +83,71 @@ module.exports = async function (req: any, res: any) {
   for (const row of CaseComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.case, row.id, client);
 
+    console.log("CaseCommentsQuery:", query.command);
     if(query.rowCount > 0){
-      return InsertedCaseComments.push(query.command);
+      InsertedCaseComments.push(query.command);
+    }else {
+      FailedCaseComments.push(query.command);
     }
-    FailedCaseComments.push(query.command);
   }
 
 
     for (const row of DocumentComments) {
-    let query = await Phoenix.createSpamEntry(SpammableType.document, row.id, client);
+      let query = await Phoenix.createSpamEntry(SpammableType.document, row.id, client);
 
 
-    if(query.rowCount > 0){
-      return InsertedDocumentComments.push(row);
+      console.log("DocumentCommentsQuery:", query.command);
+      if(query.rowCount > 0){
+        InsertedDocumentComments.push(row);
+      }else {
+        FailedDocumentComments.push(row);
+      }
     }
-    FailedDocumentComments.push(row);
-  }
 
 
     for (const row of PointComments) {
-    let query = await Phoenix.createSpamEntry(SpammableType.point, row.id, client);
+      let query = await Phoenix.createSpamEntry(SpammableType.point, row.id, client);
 
 
-    if(query.rowCount > 0){
-      return InsertedPointComments.push(row);
+      console.log("PointCommentsQuery:", query.command);
+      if(query.rowCount > 0){
+        InsertedPointComments.push(row);
+      }else {
+        FailedPointComments.push(row);
+      }
     }
-    FailedPointComments.push(row);
-  }
 
 
     for (const row of ServiceComments) {
-    let query = await Phoenix.createSpamEntry(SpammableType.service, row.id, client);
+      let query = await Phoenix.createSpamEntry(SpammableType.service, row.id, client);
 
+      console.log("ServiceCommentsQuery:", query.command);
 
-    if(query.rowCount > 0){
-      return InsertedServiceComments.push(row);
+      if(query.rowCount > 0){
+        InsertedServiceComments.push(row);
+      }else {
+        FailedServiceComments.push(row);
+      }
     }
-    FailedServiceComments.push(row);
-  }
 
 
     for (const row of TopicComments) {
-    let query = await Phoenix.createSpamEntry(SpammableType.topic, row.id, client);
+      let query = await Phoenix.createSpamEntry(SpammableType.topic, row.id, client);
 
 
-    if(query.rowCount > 0){
-      return InsertedTopicComments.push(row);
+      console.log("TopicCommentsQuery:", query.command);
+      if(query.rowCount > 0){
+        InsertedTopicComments.push(row);
+      }else {
+        FailedTopicComments.push(row);
+      }
     }
-    FailedTopicComments.push(row);
-  }
 
 
     UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [request.user])).rowCount > 0;
 
 
+    console.log("UserHasBeenBlocked:", UserHasBeenBlocked);
     await client.query("COMMIT");
 
   } catch(ex) {
@@ -151,31 +164,34 @@ module.exports = async function (req: any, res: any) {
     "user": {
       "deactivated": UserHasBeenBlocked
     },
-    "case": {
-      "total": CaseComments.length,
-      "success": InsertedCaseComments.length,
-      "failed": FailedCaseComments.length
-    },
-    "document": {
-      "total": DocumentComments.length,
-      "success": InsertedDocumentComments.length,
-      "failed": FailedDocumentComments.length
-    },
-    "point": {
-      "total": PointComments.length,
-      "success": InsertedPointComments.length,
-      "failed": FailedPointComments.length
-    },
-    "service": {
-      "total": ServiceComments.length,
-      "success": InsertedServiceComments.length,
-      "failed": FailedServiceComments.length
-    },
-    "topic": {
-      "total": TopicComments.length,
-      "success": InsertedTopicComments.length,
-      "failed": FailedTopicComments.length
-    },
+    "comments": {
+      "total": CaseComments.length + DocumentComments.length + PointComments.length + ServiceComments.length + TopicComments.length,
+      "case": {
+        "total": CaseComments.length,
+        "success": InsertedCaseComments.length,
+        "failed": FailedCaseComments.length
+      },
+      "document": {
+        "total": DocumentComments.length,
+        "success": InsertedDocumentComments.length,
+        "failed": FailedDocumentComments.length
+      },
+      "point": {
+        "total": PointComments.length,
+        "success": InsertedPointComments.length,
+        "failed": FailedPointComments.length
+      },
+      "service": {
+        "total": ServiceComments.length,
+        "success": InsertedServiceComments.length,
+        "failed": FailedServiceComments.length
+      },
+      "topic": {
+        "total": TopicComments.length,
+        "success": InsertedTopicComments.length,
+        "failed": FailedTopicComments.length
+      },
+    }
   }));
 
 

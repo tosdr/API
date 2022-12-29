@@ -5,9 +5,8 @@ use tosdr\parser\AppwriteRequests;
 include __DIR__ . "/vendor/autoload.php";
 
 $parameters = match($_SERVER["REQUEST_METHOD"]){
-    "GET" => $_GET,
+    "GET", "DELETE" => $_GET,
     "POST" => $_POST,
-    "DELETE" => $_GET,
     "PUT" => file_get_contents("php://input")
 };
 
