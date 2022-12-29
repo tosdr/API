@@ -33,10 +33,10 @@ module.exports = async function (req: any, res: any) {
 
   if (!request.user) {
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user'"));
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user'"), 400);
   } else if (!/^\d+$/.test(request.user)) {
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Parameter 'user' is NaN"));
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Parameter 'user' is NaN"), 400);
   }
 
   let User = (await client.query("SELECT * FROM users WHERE id = $1::integer", [request.user])).rows[0];
@@ -45,10 +45,10 @@ module.exports = async function (req: any, res: any) {
 
   if(!User){
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User does not exist!"));
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User does not exist!"), 404);
   }else if(User.admin || User.bot || User.curator){
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User is protected!"));
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User is protected!"), 400);
   }
 
 
