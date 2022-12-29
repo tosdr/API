@@ -30,11 +30,6 @@ module.exports = async function (req: any, res: any) {
   const client = new Client();
   await client.connect();
 
-  const flagsmith = new Flagsmith({
-    environmentKey: process.env.FLAGSMITH_KEY,
-    apiUrl: process.env.FLAGSMITH_HOSTNAME,
-  });
-  
   let request = JSON.parse(req.payload);
 
 

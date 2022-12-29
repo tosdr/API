@@ -22,7 +22,7 @@ build_parser:
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
-      - parser/*
+      - parser/**/*
  
 
 npm_models:
@@ -37,7 +37,7 @@ npm_models:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - models/*
+        - models/**/*
 
 
 API_Metrics:
@@ -49,7 +49,7 @@ API_Metrics:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - functions/API Metrics/*
+        - functions/API Metrics/**/*
 
 
 GET_case_v1:
@@ -65,7 +65,7 @@ GET_case_v1:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - functions/Case/GET/v1/*
+        - functions/Case/GET/v1/**/*
 
 
 GET_service_v1:
@@ -81,7 +81,7 @@ GET_service_v1:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - functions/Service/GET/v1/*
+        - functions/Service/GET/v1/**/*
 
 
 DELETE_spam_v1:
@@ -97,4 +97,4 @@ DELETE_spam_v1:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - functions/Spam/DELETE/v1/*
+        - functions/Spam/DELETE/v1/**/*
