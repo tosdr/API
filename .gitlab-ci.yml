@@ -47,10 +47,9 @@ API Metrics:
     - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63a586a196b24923e0bd
   rules:
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - if: $CI_DEPLOY_FREEZE == null
-    changes:
-      - functions/API Metrics/*
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_DEPLOY_FREEZE == null
+      changes:
+        - functions/API Metrics/*
 
 
 GET /case/v1/:
@@ -64,8 +63,7 @@ GET /case/v1/:
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63a4fddf25de17a1d58b
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_DEPLOY_FREEZE == null
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_DEPLOY_FREEZE == null
       changes:
         - functions/Case/GET/v1/*
 
@@ -81,8 +79,7 @@ GET /service/v1/:
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63a6cdddef3bbd180247
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_DEPLOY_FREEZE == null
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_DEPLOY_FREEZE == null
       changes:
         - functions/Service/GET/v1/*
 
@@ -98,7 +95,6 @@ DELETE /spam/v1/:
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_DEPLOY_FREEZE == null
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_DEPLOY_FREEZE == null
       changes:
         - functions/Spam/DELETE/v1/*
