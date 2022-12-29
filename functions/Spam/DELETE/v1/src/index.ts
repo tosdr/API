@@ -49,6 +49,15 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Parameter 'user' is NaN"));
   }
 
+  let User = (await client.query("SELECT * FROM users WHERE id = $1::integer", [request.user])).rows[0];
+
+  if(!User){
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User does not exist!"));
+  }else if(User.admin && User.bot && User.curator){
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User is protected!"));
+  }
 
 
   let CaseComments = (await client.query("SELECT * FROM case_comments WHERE user_id = $1::integer", [request.user])).rows;
@@ -73,20 +82,22 @@ module.exports = async function (req: any, res: any) {
   let FailedServiceComments = [];
   let FailedTopicComments = [];
 
+  let UserHasBeenBlocked = false;
+
 
   try {
 
-  CaseComments.forEach(async (row: any) => {
+  for (const row of CaseComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.case, row.id, client);
 
     if(query.rowCount > 0){
       return InsertedCaseComments.push(query.command);
     }
     FailedCaseComments.push(query.command);
-  });
+  }
 
-  
-  DocumentComments.forEach(async (row: any) => {
+
+    for (const row of DocumentComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.document, row.id, client);
 
 
@@ -94,10 +105,10 @@ module.exports = async function (req: any, res: any) {
       return InsertedDocumentComments.push(row);
     }
     FailedDocumentComments.push(row);
-  });
+  }
 
 
-  PointComments.forEach(async (row: any) => {
+    for (const row of PointComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.point, row.id, client);
 
 
@@ -105,10 +116,10 @@ module.exports = async function (req: any, res: any) {
       return InsertedPointComments.push(row);
     }
     FailedPointComments.push(row);
-  });
+  }
 
 
-  ServiceComments.forEach(async (row: any) => {
+    for (const row of ServiceComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.service, row.id, client);
 
 
@@ -116,10 +127,10 @@ module.exports = async function (req: any, res: any) {
       return InsertedServiceComments.push(row);
     }
     FailedServiceComments.push(row);
-  });
+  }
 
 
-  TopicComments.forEach(async (row: any) => {
+    for (const row of TopicComments) {
     let query = await Phoenix.createSpamEntry(SpammableType.topic, row.id, client);
 
 
@@ -127,10 +138,13 @@ module.exports = async function (req: any, res: any) {
       return InsertedTopicComments.push(row);
     }
     FailedTopicComments.push(row);
-  });
+  }
 
-  
-  await client.query("COMMIT");
+
+    UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [request.user])).rowCount > 0;
+
+
+    await client.query("COMMIT");
 
   } catch(ex) {
     	await client.query("ROLLBACK");
@@ -143,6 +157,9 @@ module.exports = async function (req: any, res: any) {
 
   await client.end();
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
+    "user": {
+      "deactivated": UserHasBeenBlocked
+    },
     "case": {
       "total": CaseComments.length,
       "success": InsertedCaseComments.length,
