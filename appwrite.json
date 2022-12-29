@@ -45,6 +45,21 @@
             "events": [],
             "schedule": "",
             "timeout": 15
+        },
+        {
+            "$id": "63ada74449c5b6abe2d6",
+            "name": "DELETE /spam/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Spam/DELETE/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
         }
     ]
 }
