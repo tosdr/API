@@ -197,6 +197,8 @@ module.exports = async function (req: any, res: any) {
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
     "dryrun": DryRun,
     "user": {
+      "username": User.username,
+      "id": User.id,
       "deactivated": UserHasBeenBlocked
     },
     "comments": {
