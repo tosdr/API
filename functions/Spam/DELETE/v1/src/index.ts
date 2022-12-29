@@ -29,7 +29,6 @@ module.exports = async function (req: any, res: any) {
 
   const client = new Client();
   await client.connect();
-
   let request = JSON.parse(req.payload);
 
 
