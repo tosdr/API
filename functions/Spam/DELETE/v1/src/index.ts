@@ -30,6 +30,7 @@ module.exports = async function (req: any, res: any) {
   const client = new Client();
   await client.connect();
   let request = JSON.parse(req.payload);
+  let DryRun = typeof request.dryrun !== 'undefined';
 
   if (!request.user) {
     await client.end();
@@ -61,7 +62,9 @@ module.exports = async function (req: any, res: any) {
   console.log("Retrieved all comments");
 
   /* Start Transaction */
-  await client.query('BEGIN');
+  if(!DryRun) {
+    await client.query('BEGIN');
+  }
 
   let InsertedCaseComments = [];
   let InsertedDocumentComments = [];
@@ -81,23 +84,32 @@ module.exports = async function (req: any, res: any) {
   try {
 
   for (const row of CaseComments) {
-    let query = await Phoenix.createSpamEntry(SpammableType.case, row.id, client);
+    let query;
+    if(!DryRun) {
+      query = (await Phoenix.createSpamEntry(SpammableType.case, row.id, client)).rowCount;
+    }else{
+      query = 1;
+    }
 
-    console.log("CaseCommentsQuery:", query.command);
-    if(query.rowCount > 0){
-      InsertedCaseComments.push(query.command);
+    console.log("CaseCommentsQuery:", query);
+    if(query > 0){
+      InsertedCaseComments.push(query);
     }else {
-      FailedCaseComments.push(query.command);
+      FailedCaseComments.push(query);
     }
   }
 
 
     for (const row of DocumentComments) {
-      let query = await Phoenix.createSpamEntry(SpammableType.document, row.id, client);
-
+      let query;
+      if(!DryRun) {
+        query = (await Phoenix.createSpamEntry(SpammableType.document, row.id, client)).rowCount;
+      }else{
+        query = 1;
+      }
 
       console.log("DocumentCommentsQuery:", query.command);
-      if(query.rowCount > 0){
+      if(query > 0){
         InsertedDocumentComments.push(row);
       }else {
         FailedDocumentComments.push(row);
@@ -106,11 +118,16 @@ module.exports = async function (req: any, res: any) {
 
 
     for (const row of PointComments) {
-      let query = await Phoenix.createSpamEntry(SpammableType.point, row.id, client);
+      let query;
+      if(!DryRun) {
+        query = (await Phoenix.createSpamEntry(SpammableType.point, row.id, client)).rowCount;
+      }else{
+        query = 1;
+      }
 
 
       console.log("PointCommentsQuery:", query.command);
-      if(query.rowCount > 0){
+      if(query > 0){
         InsertedPointComments.push(row);
       }else {
         FailedPointComments.push(row);
@@ -119,11 +136,16 @@ module.exports = async function (req: any, res: any) {
 
 
     for (const row of ServiceComments) {
-      let query = await Phoenix.createSpamEntry(SpammableType.service, row.id, client);
+      let query;
+      if(!DryRun) {
+        query = (await Phoenix.createSpamEntry(SpammableType.service, row.id, client)).rowCount;
+      }else{
+        query = 1;
+      }
 
       console.log("ServiceCommentsQuery:", query.command);
 
-      if(query.rowCount > 0){
+      if(query > 0){
         InsertedServiceComments.push(row);
       }else {
         FailedServiceComments.push(row);
@@ -131,12 +153,16 @@ module.exports = async function (req: any, res: any) {
     }
 
 
-    for (const row of TopicComments) {
-      let query = await Phoenix.createSpamEntry(SpammableType.topic, row.id, client);
+    for (const row of TopicComments) {    let query;
+      if(!DryRun) {
+        query = (await Phoenix.createSpamEntry(SpammableType.topic, row.id, client)).rowCount;
+      }else{
+        query = 1;
+      }
 
 
       console.log("TopicCommentsQuery:", query.command);
-      if(query.rowCount > 0){
+      if(query > 0){
         InsertedTopicComments.push(row);
       }else {
         FailedTopicComments.push(row);
@@ -144,14 +170,22 @@ module.exports = async function (req: any, res: any) {
     }
 
 
-    UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [request.user])).rowCount > 0;
 
+   if(!DryRun) {
+     UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [request.user])).rowCount > 0;
+   }else{
+     UserHasBeenBlocked = true;
+   }
 
     console.log("UserHasBeenBlocked:", UserHasBeenBlocked);
-    await client.query("COMMIT");
+    if(!DryRun) {
+      await client.query("COMMIT");
+    }
 
   } catch(ex) {
-    	await client.query("ROLLBACK");
+    if(!DryRun) {
+      await client.query("ROLLBACK");
+    }
   }
 
 
@@ -161,6 +195,7 @@ module.exports = async function (req: any, res: any) {
 
   await client.end();
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
+    "dryrun": DryRun,
     "user": {
       "deactivated": UserHasBeenBlocked
     },
