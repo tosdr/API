@@ -11,11 +11,10 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
-import { Client, Query } from 'pg';
-import { Bitmask } from './helpers/Bitmask';
+import { Client } from 'pg';
+import { Bitmask } from '@tosdr/api-microservices';
 import { Phoenix } from './helpers/Phoenix';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
-import Flagsmith from 'flagsmith-nodejs';
 
 const SpammableType = {
   topic: "TopicComment",
