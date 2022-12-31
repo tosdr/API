@@ -1,4 +1,4 @@
-import { Bitmask } from "./Bitmask";
+import { Bitmask } from "@tosdr/api-microservices";
 
 export class RESTfulAPI {
 

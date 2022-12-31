@@ -12,7 +12,7 @@
 */
 
 import { Client } from 'pg';
-import { Bitmask } from './helpers/Bitmask';
+import { Bitmask } from "@tosdr/api-microservices";
 import { Phoenix } from './helpers/Phoenix';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 import Flagsmith from 'flagsmith-nodejs';
