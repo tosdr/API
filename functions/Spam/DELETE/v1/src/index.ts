@@ -65,6 +65,8 @@ module.exports = async function (req: any, res: any) {
     await client.query('BEGIN');
   }
 
+  console.log("DryRun", DryRun);
+
   let InsertedCaseComments = [];
   let InsertedDocumentComments = [];
   let InsertedPointComments = [];
@@ -107,7 +109,7 @@ module.exports = async function (req: any, res: any) {
         query = 1;
       }
 
-      console.log("DocumentCommentsQuery:", query.command);
+      console.log("DocumentCommentsQuery:", query);
       if(query > 0){
         InsertedDocumentComments.push(row);
       }else {
@@ -125,7 +127,7 @@ module.exports = async function (req: any, res: any) {
       }
 
 
-      console.log("PointCommentsQuery:", query.command);
+      console.log("PointCommentsQuery:", query);
       if(query > 0){
         InsertedPointComments.push(row);
       }else {
@@ -142,7 +144,7 @@ module.exports = async function (req: any, res: any) {
         query = 1;
       }
 
-      console.log("ServiceCommentsQuery:", query.command);
+      console.log("ServiceCommentsQuery:", query);
 
       if(query > 0){
         InsertedServiceComments.push(row);
@@ -152,7 +154,8 @@ module.exports = async function (req: any, res: any) {
     }
 
 
-    for (const row of TopicComments) {    let query;
+    for (const row of TopicComments) {
+      let query;
       if(!DryRun) {
         query = (await Phoenix.createSpamEntry(SpammableType.topic, row.id, client)).rowCount;
       }else{
@@ -160,7 +163,7 @@ module.exports = async function (req: any, res: any) {
       }
 
 
-      console.log("TopicCommentsQuery:", query.command);
+      console.log("TopicCommentsQuery:", query);
       if(query > 0){
         InsertedTopicComments.push(row);
       }else {
