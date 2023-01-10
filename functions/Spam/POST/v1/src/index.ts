@@ -29,12 +29,16 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'text'"), 400);
   }
 
+  if (!request.type) {
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'type'"), 400);
+  }
+
   if (request.type !== "ham" || request.type !== "spam") {
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
 
-  
+
   classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
 
   classifier.train();
