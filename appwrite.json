@@ -75,6 +75,21 @@
             "events": [],
             "schedule": "",
             "timeout": 60
+        },
+        {
+            "$id": "63bd3c891af577cfa915",
+            "name": "POST /spam/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Spam/POST/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
         }
     ]
 }
