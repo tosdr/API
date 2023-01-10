@@ -1,5 +1,5 @@
 {
-    "projectId": "--key",
+    "projectId": "63a43bd7d5cb200f754a",
     "projectName": "",
     "functions": [
         {
@@ -51,6 +51,21 @@
             "name": "DELETE /spam/v1",
             "runtime": "node-16.0",
             "path": "functions/Spam/DELETE/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
+        },
+        {
+            "$id": "63bd31d263522d513abf",
+            "name": "GET /spam/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Spam/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules",
