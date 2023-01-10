@@ -34,6 +34,7 @@ module.exports = async function (req: any, res: any) {
   }
 
 
+  
   classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
 
   classifier.train();
