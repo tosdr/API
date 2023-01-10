@@ -11,17 +11,17 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
-const bayes = require('bayes');
 import { Bitmask } from '@tosdr/api-microservices';
 import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 
+import * as natural from 'natural';
 
 
 
 module.exports = async function (req: any, res: any) {
 
-  let classifier = bayes.fromJSON(await Spam.loadClassifier());
+  let classifier = natural.BayesClassifier.restore(await Spam.loadClassifier());
 
   let request = JSON.parse(req.payload);
 
@@ -29,7 +29,7 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'text'"), 400);
   }
 
-  let isSpam = classifier.categorize(request.text) === "spam";
+  let isSpam = classifier.classify(request.text) === "spam";
 
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
