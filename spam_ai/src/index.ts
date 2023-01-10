@@ -21,13 +21,18 @@ async function init() {
       queue.activateConsumer(async (message) => {
         console.log("Received Spam Entry");
         let msgparsed = JSON.parse(message.getContent());
+        console.log("msgparsed", msgparsed);
         classifier.addDocument(msgparsed.text, msgparsed.type);
         
+
+
         clearTimeout(trainTimer);
 
         trainTimer = setTimeout(async function(){
           console.log("Training Model...");
           classifier.train();
+
+          console.log(JSON.stringify(classifier).length);
           await Spam.saveClassifier(JSON.stringify(classifier));
 
           console.log("Model has been trained and saved.");
