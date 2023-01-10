@@ -200,7 +200,9 @@ module.exports = async function (req: any, res: any) {
     console.log("Exception", ex);
     if(!DryRun) {
       await client.query("ROLLBACK");
-    }
+
+  await client.end();
+  return res.json(RESTfulAPI.response(Bitmask.GENERIC_ERROR, "SERVER ERROR"));
   }
 
 
@@ -246,7 +248,5 @@ module.exports = async function (req: any, res: any) {
     }
   }));
 
-
-
-
-};
+  }
+}
