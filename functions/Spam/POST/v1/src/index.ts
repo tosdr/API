@@ -41,14 +41,14 @@ module.exports = async function (req: any, res: any) {
 
   let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 
-  classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
+  await classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
 
-  classifier.train();
+  await classifier.train();
 
 
   let data = JSON.stringify(classifier);
 
-  let saved = Spam.saveClassifier(data);
+  let saved = await Spam.saveClassifier(data);
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
     "trained": saved, 
