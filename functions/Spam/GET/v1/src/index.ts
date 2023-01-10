@@ -21,7 +21,7 @@ import * as natural from 'natural';
 
 module.exports = async function (req: any, res: any) {
 
-  let classifier = natural.BayesClassifier.restore(await Spam.loadClassifier());
+  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 
   let request = JSON.parse(req.payload);
 

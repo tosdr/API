@@ -20,6 +20,8 @@ let data = JSON.stringify(classifier);
 
 console.log(data);
 
+//await storage.deleteFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier");
+
 await storage.createFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier", sdk.InputFile.fromPlainText(data, "bayes_spam_classifier.json"))
 
 
