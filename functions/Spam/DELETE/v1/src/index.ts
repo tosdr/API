@@ -11,9 +11,11 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
+import * as natural from 'natural';
 import { Client } from 'pg';
 import { Bitmask } from '@tosdr/api-microservices';
 import { Phoenix } from './helpers/Phoenix';
+import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 
 const SpammableType = {
@@ -59,10 +61,13 @@ module.exports = async function (req: any, res: any) {
   let TopicComments = (await client.query("SELECT * FROM topic_comments WHERE user_id = $1::integer", [request.user])).rows;
 
   console.log("Retrieved all comments");
+  
+  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
+
 
   /* Start Transaction */
   if(!DryRun) {
-    await client.query('BEGIN');
+    await client.query('BEGIN');  
   }
 
   console.log("DryRun", DryRun);
@@ -87,6 +92,7 @@ module.exports = async function (req: any, res: any) {
   for (const row of CaseComments) {
     let query;
     if(!DryRun) {
+      classifier.addDocument(row.summary, "spam");
       query = (await Phoenix.createSpamEntry(SpammableType.case, row.id, client)).rowCount;
     }else{
       query = 1;
@@ -104,6 +110,7 @@ module.exports = async function (req: any, res: any) {
     for (const row of DocumentComments) {
       let query;
       if(!DryRun) {
+        classifier.addDocument(row.summary, "spam");
         query = (await Phoenix.createSpamEntry(SpammableType.document, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -121,6 +128,7 @@ module.exports = async function (req: any, res: any) {
     for (const row of PointComments) {
       let query;
       if(!DryRun) {
+        classifier.addDocument(row.summary, "spam");
         query = (await Phoenix.createSpamEntry(SpammableType.point, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -139,6 +147,7 @@ module.exports = async function (req: any, res: any) {
     for (const row of ServiceComments) {
       let query;
       if(!DryRun) {
+        classifier.addDocument(row.summary, "spam");
         query = (await Phoenix.createSpamEntry(SpammableType.service, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -157,6 +166,7 @@ module.exports = async function (req: any, res: any) {
     for (const row of TopicComments) {
       let query;
       if(!DryRun) {
+        classifier.addDocument(row.summary, "spam");
         query = (await Phoenix.createSpamEntry(SpammableType.topic, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -181,6 +191,8 @@ module.exports = async function (req: any, res: any) {
 
     console.log("UserHasBeenBlocked:", UserHasBeenBlocked);
     if(!DryRun) {
+      classifier.train();
+      await Spam.saveClassifier(JSON.stringify(classifier));
       await client.query("COMMIT");
     }
 
