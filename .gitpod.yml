@@ -18,17 +18,6 @@ tasks:
   - name: Nginx
     command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/local.conf
 
-
-
-  - name: Install Function GET /case/v1
-    command: cd functions/Case/GET/v1 && npm install && exit
-
-  - name: Install Function GET /service/v1
-    command: cd functions/Service/GET/v1 && npm install && exit
-
-  - name: Install Function DELETE /spam/v1
-    command: cd functions/Spam/DELETE/v1 && npm install && exit
-
 vscode:
   extensions:
     - ms-azuretools.vscode-docker

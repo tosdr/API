@@ -1,0 +1,12 @@
+version: '2.2'
+services:
+
+  spamai:
+    image: 'registry.jrbit.de/tosdr/api-microservices/spamai:latest'
+    build: .
+    environment:
+      - AMQP_URL=amqp://rabbitmq/vhost
+      - APPWRITE_HOSTNAME=
+      - APPWRITE_BUCKET_ID=
+      - APPWRITE_PROJECT_KEY=
+      - APPWRITE_API_KEY=

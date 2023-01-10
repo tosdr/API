@@ -14,6 +14,7 @@
 import { Bitmask } from '@tosdr/api-microservices';
 import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
+import * as Amqp from 'amqp-ts';
 
 import * as natural from 'natural';
 
@@ -38,20 +39,19 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
+  var connection = new Amqp.Connection(process.env.AMQP_URL);
+  var queue = connection.declareQueue('spam_train', {durable: true});
 
-  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
+  var message = new Amqp.Message(JSON.stringify({
+    "text": request.text.replace(/<\/?[^>]+(>|$)/g, ""),
+    "type": request.type
+  }));
+  queue.send(message);
 
-  classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
-
-  classifier.train();
-
-
-  let data = JSON.stringify(classifier);
-
-  let saved = await Spam.saveClassifier(data);
+  await queue.close();
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
-    "trained": saved, 
+    "trained": true, 
     "type": request.type,
     "text": request.text
     }

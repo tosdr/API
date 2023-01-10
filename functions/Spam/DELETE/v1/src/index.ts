@@ -11,6 +11,7 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
+import * as Amqp from 'amqp-ts';
 import * as natural from 'natural';
 import { Client } from 'pg';
 import { Bitmask } from '@tosdr/api-microservices';
@@ -27,6 +28,11 @@ const SpammableType = {
 };
 
 module.exports = async function (req: any, res: any) {
+
+
+  var connection = new Amqp.Connection(process.env.AMQP_URL);
+  var queue = connection.declareQueue('spam_train', {durable: true});
+
 
   const client = new Client();
   await client.connect();
@@ -61,9 +67,6 @@ module.exports = async function (req: any, res: any) {
   let TopicComments = (await client.query("SELECT * FROM topic_comments WHERE user_id = $1::integer", [request.user])).rows;
 
   console.log("Retrieved all comments");
-  
-  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
-
 
   /* Start Transaction */
   if(!DryRun) {
@@ -92,7 +95,12 @@ module.exports = async function (req: any, res: any) {
   for (const row of CaseComments) {
     let query;
     if(!DryRun) {
-      classifier.addDocument(row.summary, "spam");
+
+      var message = new Amqp.Message(JSON.stringify({
+        "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+        "type": request.type
+      }));
+      queue.send(message);
       query = (await Phoenix.createSpamEntry(SpammableType.case, row.id, client)).rowCount;
     }else{
       query = 1;
@@ -110,7 +118,11 @@ module.exports = async function (req: any, res: any) {
     for (const row of DocumentComments) {
       let query;
       if(!DryRun) {
-        classifier.addDocument(row.summary, "spam");
+        var message = new Amqp.Message(JSON.stringify({
+          "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+          "type": request.type
+        }));
+        queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.document, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -128,7 +140,11 @@ module.exports = async function (req: any, res: any) {
     for (const row of PointComments) {
       let query;
       if(!DryRun) {
-        classifier.addDocument(row.summary, "spam");
+        var message = new Amqp.Message(JSON.stringify({
+          "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+          "type": request.type
+        }));
+        queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.point, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -147,7 +163,11 @@ module.exports = async function (req: any, res: any) {
     for (const row of ServiceComments) {
       let query;
       if(!DryRun) {
-        classifier.addDocument(row.summary, "spam");
+        var message = new Amqp.Message(JSON.stringify({
+          "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+          "type": request.type
+        }));
+        queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.service, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -166,7 +186,11 @@ module.exports = async function (req: any, res: any) {
     for (const row of TopicComments) {
       let query;
       if(!DryRun) {
-        classifier.addDocument(row.summary, "spam");
+        var message = new Amqp.Message(JSON.stringify({
+          "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
+          "type": request.type
+        }));
+        queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.topic, row.id, client)).rowCount;
       }else{
         query = 1;
@@ -191,10 +215,6 @@ module.exports = async function (req: any, res: any) {
 
     console.log("UserHasBeenBlocked:", UserHasBeenBlocked);
     if(!DryRun) {
-      console.log("Training model...");
-      classifier.train();
-      console.log("Saving model...");
-      await Spam.saveClassifier(JSON.stringify(classifier));
       await client.query("COMMIT");
     }
 
