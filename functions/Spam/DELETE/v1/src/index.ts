@@ -197,7 +197,7 @@ module.exports = async function (req: any, res: any) {
     }
 
   } catch(ex) {
-    console.log("Exception", ex);
+    console.log("Exception", ex.message);
     if(!DryRun) {
       await client.query("ROLLBACK");
 
