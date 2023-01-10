@@ -22,7 +22,6 @@ async function init() {
         console.log("Received Spam Entry");
         let msgparsed = JSON.parse(message.getContent());
         classifier.addDocument(msgparsed.text, msgparsed.type);
-        message.ack();
         
         clearTimeout(trainTimer);
 
@@ -30,8 +29,11 @@ async function init() {
           console.log("Training Model...");
           classifier.train();
           await Spam.saveClassifier(JSON.stringify(classifier));
+
+          console.log("Model has been trained and saved.");
         }, 5000)
         
+        message.ack();
 
       });
 
