@@ -34,7 +34,7 @@ build_spamai:
     entrypoint:
     - ''
   script:
-  - /kaniko/executor --context "${CI_PROJECT_DIR}/parser" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
+  - /kaniko/executor --context "${CI_PROJECT_DIR}/spam_ai" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
     --destination "${CI_REGISTRY_IMAGE}/spamai:latest"
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
