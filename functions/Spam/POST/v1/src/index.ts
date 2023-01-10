@@ -41,9 +41,9 @@ module.exports = async function (req: any, res: any) {
 
   let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 
-  await classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
+  classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
 
-  await classifier.train();
+  classifier.train();
 
 
   let data = JSON.stringify(classifier);
