@@ -36,6 +36,7 @@ module.exports = async function (req: any, res: any) {
   console.log("request", request);
 
   if (request.type !== "ham" && request.type !== "spam") {
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
@@ -49,6 +50,7 @@ module.exports = async function (req: any, res: any) {
   queue.send(message);
 
   await queue.close();
+  await connection.close();
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
     "trained": true, 

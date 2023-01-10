@@ -41,9 +41,11 @@ module.exports = async function (req: any, res: any) {
 
   if (!request.user) {
     await client.end();
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user'"), 400);
   } else if (!/^\d+$/.test(request.user)) {
     await client.end();
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Parameter 'user' is NaN"), 400);
   }
 
@@ -53,9 +55,11 @@ module.exports = async function (req: any, res: any) {
 
   if(!User){
     await client.end();
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User does not exist!"), 404);
   }else if(User.admin || User.bot || User.curator){
     await client.end();
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "User is protected!"), 400);
   }
 
@@ -224,6 +228,7 @@ module.exports = async function (req: any, res: any) {
       await client.query("ROLLBACK");
     }
     await client.end();
+    await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.GENERIC_ERROR, "SERVER ERROR"));
   }
 
@@ -232,6 +237,7 @@ module.exports = async function (req: any, res: any) {
 
 
 
+  await connection.close();
   await client.end();
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
     "dryrun": DryRun,
