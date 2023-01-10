@@ -24,6 +24,7 @@ export class Spam {
 
 
     let storage = new Storage(appwriteClient);
+    await storage.deleteFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier");
     return (await (storage.createFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier", InputFile.fromPlainText(data, "bayes_spam_classifier.json")))).$id !== null; 
   }
 
