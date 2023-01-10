@@ -102,7 +102,7 @@ module.exports = async function (req: any, res: any) {
 
       var message = new Amqp.Message(JSON.stringify({
         "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-        "type": request.type
+        "type": "spa"
       }));
       queue.send(message);
       query = (await Phoenix.createSpamEntry(SpammableType.case, row.id, client)).rowCount;
@@ -124,7 +124,7 @@ module.exports = async function (req: any, res: any) {
       if(!DryRun) {
         var message = new Amqp.Message(JSON.stringify({
           "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-          "type": request.type
+          "type": "spam"
         }));
         queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.document, row.id, client)).rowCount;
@@ -146,7 +146,7 @@ module.exports = async function (req: any, res: any) {
       if(!DryRun) {
         var message = new Amqp.Message(JSON.stringify({
           "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-          "type": request.type
+          "type": "spam"
         }));
         queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.point, row.id, client)).rowCount;
@@ -169,7 +169,7 @@ module.exports = async function (req: any, res: any) {
       if(!DryRun) {
         var message = new Amqp.Message(JSON.stringify({
           "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-          "type": request.type
+          "type": "spam"
         }));
         queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.service, row.id, client)).rowCount;
@@ -192,7 +192,7 @@ module.exports = async function (req: any, res: any) {
       if(!DryRun) {
         var message = new Amqp.Message(JSON.stringify({
           "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-          "type": request.type
+          "type": "spam"
         }));
         queue.send(message);
         query = (await Phoenix.createSpamEntry(SpammableType.topic, row.id, client)).rowCount;
