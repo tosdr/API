@@ -1,4 +1,4 @@
-import { Client, Storage } from 'node-appwrite';
+import { Client, Storage, InputFile } from 'node-appwrite';
 
 
 export class Spam {
@@ -24,7 +24,7 @@ export class Spam {
 
 
     let storage = new Storage(appwriteClient);
-    return (await (storage.createFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier", data))).$id !== null; 
+    return (await (storage.createFile(process.env.APPWRITE_BUCKET_ID, "bayes_spam_classifier", InputFile.fromPlainText(data, "bayes_spam_classifier.json")))).$id !== null; 
   }
 
 }

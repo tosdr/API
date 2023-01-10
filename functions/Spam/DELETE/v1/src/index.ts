@@ -191,7 +191,9 @@ module.exports = async function (req: any, res: any) {
 
     console.log("UserHasBeenBlocked:", UserHasBeenBlocked);
     if(!DryRun) {
+      console.log("Training model...");
       classifier.train();
+      console.log("Saving model...");
       await Spam.saveClassifier(JSON.stringify(classifier));
       await client.query("COMMIT");
     }
