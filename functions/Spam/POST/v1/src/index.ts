@@ -34,7 +34,7 @@ module.exports = async function (req: any, res: any) {
 
   console.log("request", request);
 
-  if (request.type != "ham" || request.type != "spam") {
+  if (request.type !== "ham" && request.type !== "spam") {
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
