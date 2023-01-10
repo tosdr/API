@@ -21,7 +21,6 @@ import * as natural from 'natural';
 
 module.exports = async function (req: any, res: any) {
 
-  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 
   let request = JSON.parse(req.payload);
 
@@ -33,11 +32,14 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'type'"), 400);
   }
 
+  console.log("request", request);
+
   if (request.type != "ham" || request.type != "spam") {
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
 
+  let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 
   classifier.addDocument(request.text.replace(/<\/?[^>]+(>|$)/g, ""), request.type);
 
