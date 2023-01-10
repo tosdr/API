@@ -123,7 +123,7 @@ POST_spam_v1:
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Spam/GET/v1"
+    - cd "functions/Spam/POST/v1"
     - npm install
     - npm run build
     - cd "$CI_PROJECT_DIR"
