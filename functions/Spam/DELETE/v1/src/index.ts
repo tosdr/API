@@ -102,7 +102,7 @@ module.exports = async function (req: any, res: any) {
 
       var message = new Amqp.Message(JSON.stringify({
         "text": row.summary.replace(/<\/?[^>]+(>|$)/g, ""),
-        "type": "spa"
+        "type": "spam"
       }));
       queue.send(message);
       query = (await Phoenix.createSpamEntry(SpammableType.case, row.id, client)).rowCount;
