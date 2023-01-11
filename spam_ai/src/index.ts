@@ -36,7 +36,7 @@ async function init() {
           await Spam.saveClassifier(JSON.stringify(classifier));
 
           console.log("Model has been trained and saved.");
-        }, 5000)
+        }, 30000)
         
         message.ack();
 
