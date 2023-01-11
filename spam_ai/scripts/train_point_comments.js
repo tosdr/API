@@ -33,13 +33,16 @@ let result = (await client.query(sql)).rows;
 var connection = new Amqp.Connection(process.env.AMQP_URL);
 var queue = connection.declareQueue('spam_train', {durable: true});
 
-result.forEach(async (row) => {
+let count = 1;
+
+
+for (row of result){
 
     let filtered = striphtml.stripHtml(row.summary).result.replace("APPROVED", "").replace("CHANGES REQUESTED", "").replace("DECLINED", "").trim();
 
 
     if(filtered == "No comment given" || filtered == "CHANGES REQUESTED" || filtered == ""){
-        return;
+        continue;
     }
 
 
@@ -49,9 +52,11 @@ result.forEach(async (row) => {
       }));
       queue.send(message);
       
-    console.log("Sent message");
 
-});
+    console.log("Sent message", count, connection.isConnected);
+    count++;
+
+};
 
 await client.end();
 await queue.close();
