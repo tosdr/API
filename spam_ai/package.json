@@ -11,12 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "@tosdr/api-microservices": "https://gitlab.jrbit.de/api/v4/projects/120/packages/npm/@tosdr/api-microservices/-/@tosdr/api-microservices-1.1.0.tgz",
+    "amqp": "^0.2.7",
     "amqp-ts": "^1.8.0",
+    "axios": "^1.2.2",
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "natural": "^6.1.2",
     "node-appwrite": "^8.0.0",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "string-strip-html": "^8.3.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
