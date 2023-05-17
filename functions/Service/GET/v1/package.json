@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tosdr/api-microservices": "https://gitlab.jrbit.de/api/v4/projects/120/packages/npm/@tosdr/api-microservices/-/@tosdr/api-microservices-1.1.0.tgz",
+    "@tosdr/api-microservices": "https://gitlab.jrbit.de/api/v4/projects/136/packages/npm/@tosdr/api-microservices/-/@tosdr/api-microservices-1.1.0.tgz",
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "node-appwrite": "^8.0.0",
