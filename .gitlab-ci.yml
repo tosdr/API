@@ -59,7 +59,7 @@ API_Metrics:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - appwrite deploy function --functionId 63a586a196b24923e0bd
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -71,7 +71,7 @@ GET_case_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - cd "functions/Case/GET/v1"
     - npm install
     - npm run build
@@ -87,7 +87,7 @@ GET_service_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - cd "functions/Service/GET/v1"
     - npm install
     - npm run build
@@ -103,7 +103,7 @@ DELETE_spam_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - cd "functions/Spam/DELETE/v1"
     - npm install
     - npm run build
@@ -120,7 +120,7 @@ GET_spam_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - cd "functions/Spam/GET/v1"
     - npm install
     - npm run build
@@ -137,7 +137,7 @@ POST_spam_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId "$APPWRITE_PROJECT" --key "$APPWRITE_API_KEY"
     - cd "functions/Spam/POST/v1"
     - npm install
     - npm run build

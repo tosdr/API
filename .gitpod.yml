@@ -6,9 +6,9 @@ ports:
     onOpen: notify
 
 tasks:
-  - name: Install Parser and Appwrite
-    init: cd parser/src && composer install
-    command: npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+  - name: Install Dependencies
+    init: ./.gitpod/init.sh
+    command: ./dev-env.sh
 
     
   - name: PHP FPM
