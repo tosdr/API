@@ -98,6 +98,21 @@ GET_service_v1:
       changes:
         - functions/Service/GET/v1/**/*
 
+GET_service_v2:
+  stage: build_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - cd "functions/Service/GET/v1"
+    - npm install
+    - npm run build
+    - cd "$CI_PROJECT_DIR"
+    - appwrite deploy function --functionId 6492c9a9ccf500f2220c
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - functions/Service/GET/v2/**/*
+
 
 DELETE_spam_v1:
   stage: build_functions
