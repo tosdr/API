@@ -45,15 +45,7 @@ module.exports = async function (req: any, res: any) {
     
     console.log(request.id, "exists");
 
-    let serviceObj;
-
-    if(isServiceSlug){
-      console.log("Pulling using Slug");
-      serviceObj = await Phoenix.getServiceBySlug(request.id, client);
-    }else{
-      console.log("Pulling using ID");
-      serviceObj = await Phoenix.getServiceById(request.id, client);
-    }
+    let serviceObj = await Phoenix.getServiceById(request.id, client);
     
     console.log("serviceObj", serviceObj);
 
