@@ -7,6 +7,7 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
 - publish
+- test_functions
 - build_functions
 
 
@@ -54,8 +55,9 @@ npm_models:
       changes:
         - models/**/*
 
+        
 
-API_Metrics:
+Build_API_Metrics:
   stage: build_functions
   image: node:16
   script:
@@ -66,8 +68,21 @@ API_Metrics:
       changes:
         - functions/API Metrics/**/*
 
+### GET /case/v1/ ###
 
-GET_case_v1:
+
+Test_GET_case_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Case/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Case/GET/v1/**/*
+
+Build_GET_case_v1:
   stage: build_functions
   image: node:16
   script:
@@ -77,13 +92,32 @@ GET_case_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63a4fddf25de17a1d58b
+  needs:
+    - Test_GET_case_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Case/GET/v1/**/*
 
+        
 
-GET_service_v1:
+
+### END GET /case/v1/ ###
+### GET /service/v1/ ###
+
+        
+Test_GET_service_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Service/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Service/GET/v1/**/*
+        
+Build_GET_service_v1:
   stage: build_functions
   image: node:16
   script:
@@ -93,12 +127,32 @@ GET_service_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63a6cdddef3bbd180247
+  needs:
+    - Test_GET_service_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Service/GET/v1/**/*
 
-GET_service_v2:
+
+        
+### END GET /service/v1/ ###
+### GET /service/v2/ ###
+
+        
+Test_GET_service_v2:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Service/GET/v2"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Service/GET/v2/**/*
+
+        
+Build_GET_service_v2:
   stage: build_functions
   image: node:16
   script:
@@ -108,13 +162,29 @@ GET_service_v2:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 6492c9a9ccf500f2220c
+  needs:
+    - Test_GET_service_v2
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Service/GET/v2/**/*
 
+        
+### END GET /service/v2/ ###
+### DELETE /spam/v1/ ###
 
-DELETE_spam_v1:
+Test_DELETE_spam_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/DELETE/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Spam/DELETE/v1/**/*
+        
+Build_DELETE_spam_v1:
   stage: build_functions
   image: node:16
   script:
@@ -124,14 +194,29 @@ DELETE_spam_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
+  needs:
+    - Test_DELETE_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Spam/DELETE/v1/**/*
 
+### END DELETE /spam/v1/ ###
 
 
-GET_spam_v1:
+### GET /spam/v1/ ###
+Test_GET_spam_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Spam/GET/v1/**/*
+
+Build_GET_spam_v1:
   stage: build_functions
   image: node:16
   script:
@@ -141,14 +226,29 @@ GET_spam_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63bd31d263522d513abf
+  needs:
+    - Test_GET_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Spam/GET/v1/**/*
 
+        
+### END GET /spam/v1/ ###
+### POST /spam/v1/ ###
 
-
-POST_spam_v1:
+Test_POST_spam_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/POST/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Spam/POST/v1/**/*
+        
+Build_POST_spam_v1:
   stage: build_functions
   image: node:16
   script:
@@ -158,6 +258,8 @@ POST_spam_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63bd3c891af577cfa915
+  needs:
+    - Test_POST_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
