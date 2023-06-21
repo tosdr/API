@@ -113,9 +113,6 @@ Test_GET_service_v1:
     - cd "functions/Service/GET/v1"
     - npm install
     - npm run build
-  needs:
-    - Build_GET_service_v1
-
   rules:
       changes:
         - functions/Service/GET/v1/**/*
@@ -150,10 +147,11 @@ Test_GET_service_v2:
     - cd "functions/Service/GET/v2"
     - npm install
     - npm run build
-
   rules:
       changes:
         - functions/Service/GET/v2/**/*
+
+        
 Build_GET_service_v2:
   stage: build_functions
   image: node:16
@@ -182,7 +180,6 @@ Test_DELETE_spam_v1:
     - cd "functions/Spam/DELETE/v1"
     - npm install
     - npm run build
-
   rules:
       changes:
         - functions/Spam/DELETE/v1/**/*
@@ -207,6 +204,18 @@ Build_DELETE_spam_v1:
 ### END DELETE /spam/v1/ ###
 
 
+### GET /spam/v1/ ###
+Test_GET_spam_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      changes:
+        - functions/Spam/GET/v1/**/*
+
 Build_GET_spam_v1:
   stage: build_functions
   image: node:16
@@ -217,13 +226,28 @@ Build_GET_spam_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63bd31d263522d513abf
+  needs:
+    - Test_GET_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Spam/GET/v1/**/*
 
+        
+### END GET /spam/v1/ ###
+### POST /spam/v1/ ###
 
-
+Test_POST_spam_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/POST/v1"
+    - npm install
+    - npm run build
+  rules:
+      changes:
+        - functions/Spam/POST/v1/**/*
+        
 Build_POST_spam_v1:
   stage: build_functions
   image: node:16
@@ -234,6 +258,8 @@ Build_POST_spam_v1:
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 63bd3c891af577cfa915
+  needs:
+    - Test_POST_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
