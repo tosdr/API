@@ -35,17 +35,10 @@ module.exports = async function (req: any, res: any) {
   let request = JSON.parse(req.payload);
 
 
-  let cases = await Phoenix.getAllCases(client);
 
   if(request.id){
 
-
-    let isServiceSlug = !/^\d+$/.test(request.id);
-
-    console.log("request.id", request.id);
-    console.log("isServiceSlug", isServiceSlug);
-
-    if((isServiceSlug && !Phoenix.serviceExistsBySlug(request.id, client)) || (!isServiceSlug && !await Phoenix.serviceExistsById(Number(request.id), client))){
+    if(isNaN(request.id) || !await Phoenix.serviceExistsById(Number(request.id), client)){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Service does not exist!", []), 404);
     }
@@ -68,6 +61,7 @@ module.exports = async function (req: any, res: any) {
     console.log(request.id, "pulled");
 
 
+    let cases = await Phoenix.getAllCases(client);
     let documents: any = await Phoenix.getDocumentsOfService(serviceObj.id, client);
     let points: any = await Phoenix.getPointsOfService(serviceObj.id, client);
 
