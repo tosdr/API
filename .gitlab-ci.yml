@@ -79,7 +79,7 @@ Test_GET_case_v1:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Case/GET/v1/**/*
 
 Build_GET_case_v1:
@@ -114,7 +114,7 @@ Test_GET_service_v1:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Service/GET/v1/**/*
         
 Build_GET_service_v1:
@@ -148,7 +148,7 @@ Test_GET_service_v2:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Service/GET/v2/**/*
 
         
@@ -181,7 +181,7 @@ Test_DELETE_spam_v1:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Spam/DELETE/v1/**/*
         
 Build_DELETE_spam_v1:
@@ -213,7 +213,7 @@ Test_GET_spam_v1:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Spam/GET/v1/**/*
 
 Build_GET_spam_v1:
@@ -245,7 +245,7 @@ Test_POST_spam_v1:
     - npm install
     - npm run build
   rules:
-      changes:
+      - changes:
         - functions/Spam/POST/v1/**/*
         
 Build_POST_spam_v1:
