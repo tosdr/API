@@ -13,7 +13,7 @@
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "node-appwrite": "^8.0.0",
-    "api-microservices": "^1.1.2",
+    "api-microservices": "^1.1.5",
     "pg": "^8.8.0"
   },
   "devDependencies": {

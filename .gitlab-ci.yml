@@ -248,3 +248,36 @@ Build_POST_spam_v1:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - functions/Spam/POST/v1/**/*
+
+### END POST /spam/v1/ ###
+### GET /case/v2/ ###
+
+Test_GET_case_v2:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Case/GET/v2"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Case/GET/v2/**/*
+
+Build_GET_case_v2:
+  stage: build_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - cd "functions/Case/GET/v2"
+    - npm install
+    - npm run build
+    - cd "$CI_PROJECT_DIR"
+    - appwrite deploy function --functionId 64931a2451cea6ad3c18
+  needs:
+    - Test_GET_case_v2
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - functions/Case/GET/v2/**/*
+
+### GET /case/v2/ ###

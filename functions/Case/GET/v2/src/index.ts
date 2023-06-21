@@ -108,9 +108,6 @@ module.exports = async function (req: any, res: any) {
       CasesSkel.push(Case.v2.fromRow(caseObj).toObject());
     });
 
-
-
-  
   await client.end();
 
 

@@ -1,8 +1,5 @@
-import {DocumentMinimal} from "./DocumentMinimal";
-import {Points} from "./Points";
-
-export namespace Service {
-    export class v2 {
+export namespace ServiceMinimal {
+    export class v1 {
 
         constructor (
             private id: number,
@@ -14,13 +11,11 @@ export namespace Service {
             private rating: string|null,
             private urls: string[],
             private image: string,
-            private documents: DocumentMinimal.v1[],
-            private points: Points.v1[],
         ){}
 
 
-        public static fromRow(row: any, image: string, documents: DocumentMinimal.v1[], points: Points.v1[]): Service.v2 {
-            return new Service.v2(
+        public static fromRow(row: any, image: string): ServiceMinimal.v1 {
+            return new ServiceMinimal.v1(
                 row.id,
                 row.is_comprehensively_reviewed,
                 row.name,
@@ -29,23 +24,11 @@ export namespace Service {
                 row.slug,
                 row.rating,
                 row.url.split(","),
-                image,
-                documents,
-                points
+                image
             );
         }
 
         public toObject(){
-
-            let documentsObj: any[] = [];
-            let pointsObj: any[] = [];
-
-            this.documents.forEach((document) => {
-                documentsObj.push(document.toObject());
-            });
-            this.points.forEach((point) => {
-                pointsObj.push(point.toObject());
-            });
 
             return {
                 id: Number(this.id),
@@ -57,8 +40,6 @@ export namespace Service {
                 rating: this.rating,
                 urls: this.urls,
                 image: this.image,
-                documents: documentsObj,
-                points: pointsObj,
             }
         }
 
