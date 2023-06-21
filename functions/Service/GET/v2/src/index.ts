@@ -179,53 +179,18 @@ module.exports = async function (req: any, res: any) {
     let phoenixServices = await Phoenix.getAllServicesOffset(servicesPerPage, _calculatedOffset, client);
 
 
-    let serviceSkeleton: any = [];    
-
-
-    let _phoenixUrlCached = flags.getFeatureValue("phoenix_url");
-    let _apiUrlCached = flags.getFeatureValue("crisp_api_url");
-    let _shieldUrlCached = flags.getFeatureValue("shield_url");
-    let _crispUrlCached = flags.getFeatureValue("crisp_url");
+    let serviceSkeleton: any = [];
 
     phoenixServices.forEach((serviceObj) => {
       serviceSkeleton.push({
         "id": Number(serviceObj.id),
-        "is_comprehensively_reviewed": Number(serviceObj.is_comprehensively_reviewed),
+        "is_comprehensively_reviewed": Boolean(serviceObj.is_comprehensively_reviewed),
         "name": serviceObj.name,
-        "status": null,
         "urls": serviceObj.url.split(","),
-        "updated_at": {
-          'timezone': 'Europe/Berlin',
-          'pgsql': serviceObj.updated_at,
-          'unix': Math.floor(new Date(serviceObj.updated_at).getTime() / 1000)
-        },
-        "created_at": {
-          'timezone': 'Europe/Berlin',
-          'pgsql': serviceObj.created_at,
-          'unix': Math.floor(new Date(serviceObj.created_at).getTime() / 1000)
-        },
-        "slug": Number(serviceObj.slug),
-        "rating": {
-            "hex": serviceObj.rating,
-            "human": "Grade "+ serviceObj.rating,
-            "letter": serviceObj.rating
-        },
-        "links": {
-          "phoenix": {
-            "service": _phoenixUrlCached + "/services/" + serviceObj.id,
-            "documents": _phoenixUrlCached + "/services/" + serviceObj.id + "/annotate",
-            "new_comment": _phoenixUrlCached + "/services/" + serviceObj.id + "/service_comments/new",
-            "edit": _phoenixUrlCached + "/services/" + serviceObj.id + "/edit"
-          },
-          "crisp": {
-            "api": _apiUrlCached + "/service/v1/?service=" + serviceObj.id,
-            "service": _crispUrlCached + "/en/service/" + serviceObj.id,
-            "badge": {
-              "svg": _shieldUrlCached + "en_" + serviceObj.id + ".svg",
-              "png": _shieldUrlCached + "en_" + serviceObj.id + ".png",
-            }
-          }
-        }
+        "updated_at": serviceObj.updated_at,
+        "created_at": serviceObj.created_at,
+        "slug": serviceObj.slug,
+        "rating": serviceObj.is_comprehensively_reviewed ? serviceObj.rating : null,
       });
     });
 
