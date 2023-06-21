@@ -6,3 +6,4 @@ export { Timezone } from './models/Timezone';
 export { Case } from './models/Case';
 export { Classification } from './models/Classification';
 export { Bitmask } from './models/Bitmask';
+export { RESTfulAPI } from './RESTfulAPI';

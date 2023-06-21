@@ -39,22 +39,6 @@ build_spamai:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
       - spam_ai/**/*
- 
-
-npm_models:
-  stage: publish
-  image: node:16
-  script:
-    - cd models
-    - npm install
-    - npm run build
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
-    - npm publish
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - models/**/*
-
         
 
 Build_API_Metrics:

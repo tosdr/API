@@ -105,6 +105,21 @@
             "events": [],
             "schedule": "",
             "timeout": 60
+        },
+        {
+            "$id": "64931a2451cea6ad3c18",
+            "name": "GET /case/v2",
+            "runtime": "node-16.0",
+            "path": "functions/Case/GET/v2",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
         }
     ]
 }
