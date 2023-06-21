@@ -5,18 +5,18 @@ ports:
     port: 80
     onOpen: notify
 
+  - name: Function server
+    port: 3000
+    visibility: public
+
 tasks:
   - name: Install Parser and Appwrite
-    init: cd parser/src && composer install
+    init: cd parser/src && composer install && docker build . -t parser
     command: npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
 
-    
-  - name: PHP FPM
-    command: sudo mkdir /run/php; sudo /usr/sbin/php-fpm8.1 -F -R
-
-
-  - name: Nginx
-    command: sudo nginx -c ${GITPOD_REPO_ROOT}/parser/nginx/local.conf
+  - name: Function Server
+    init: cd function_server && npm install
+    command: echo "Point with API_SCRIPT to your function"
 
 vscode:
   extensions:

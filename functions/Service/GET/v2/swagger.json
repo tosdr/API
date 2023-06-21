@@ -1,0 +1,137 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "ToS;DR Service API",
+		"description": "Welcome to the ToS;DR Service API Documentation.",
+		"termsOfService": "https://tosdr.org/legal",
+		"contact": {
+			"email": "team@tosdr.org"
+		},
+		"license": {
+			"name": "CC BY-SA 3.0",
+			"url": "https://creativecommons.org/licenses/by-sa/3.0/"
+		},
+		"version": "1.0.0"
+	},
+	"externalDocs": {
+		"description": "Find out more about ToS;DR",
+		"url": "https://tosdr.org"
+	},
+	"servers": [{
+		"url": "https://api.tosdr.org"
+	}, {
+		"url": "https://api.staging.tosdr.org"
+	}],
+	"tags": [{
+		"name": "service",
+		"description": "Retrieve Infos about a service"
+	}],
+	"paths": {
+		"/service/v1/": {
+			"get": {
+				"tags": [
+					"service"
+				],
+				"summary": "Get all services in a paginated list",
+				"description": "Gets the whole service database in a pagination",
+				"operationId": "getAllServices",
+				"parameters": [{
+					"name": "page",
+					"in": "query",
+					"description": "Index of the Page you want to query",
+					"required": false,
+					"explode": true,
+					"schema": {
+						"type": "integer",
+						"default": "1"
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/v1-all-services"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Page supplied"
+					},
+					"429": {
+						"description": "Ratelimited"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"v1-all-services": {
+				"required": [
+					"error",
+					"s"
+				],
+				"type": "object",
+				"properties": {
+					"error": {
+				  	"description": "Bitmask Error. 256 = Success",
+						"type": "integer",
+						"format": "int64",
+						"example": 256
+					},
+					"message": {
+						"type": "string",
+						"example": "All services below"
+					},
+					"parameters": {
+						"type": "object",
+						"properties": {
+							"_page": {
+								"type": "object",
+				        "properties": {
+				          "total": {
+					          "description": "Total number of Services",
+				            "type": "integer",
+				            "format": "int64",
+				            "example": "6180"
+				          },
+				          "current": {
+					          "description": "The current page you are on",
+				            "type": "integer",
+				            "format": "int64",
+				            "example": "1"
+				          },
+				          "start": {
+				            "type": "integer",
+					          "description": "The first page",
+				            "format": "int64",
+				            "example": "1"
+				          },
+				          "end": {
+				            "type": "integer",
+					          "description": "Last or Total Pages",
+				            "format": "int64",
+				            "example": "62"
+				          }
+								}
+							},
+							"services": {
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "apikey",
+				"in": "header"
+			}
+		}
+	}
+}
