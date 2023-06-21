@@ -35,7 +35,6 @@ module.exports = async function (req: any, res: any) {
   let request = JSON.parse(req.payload);
 
 
-  let topics = await Phoenix.getAllTopics(client);
   let cases = await Phoenix.getAllCases(client);
 
   if(request.id){
@@ -94,7 +93,6 @@ module.exports = async function (req: any, res: any) {
     points.forEach((point: any) => {
 
       let caseObj = cases.find(o => o.id === point.case_id);
-      let topicObj = topics.find(o => o.id === caseObj.topic_id);
 
       _pointsArray.push({
         id: Number(point.id),
