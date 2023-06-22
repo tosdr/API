@@ -39,6 +39,7 @@ export namespace Service {
 
             let documentsObj: any[] = [];
             let pointsObj: any[] = [];
+            let rating = this.rating;
 
             this.documents.forEach((document) => {
                 documentsObj.push(document.toObject());
@@ -47,6 +48,11 @@ export namespace Service {
                 pointsObj.push(point.toObject());
             });
 
+
+            if(this.rating == "N/A" || !this.is_comprehensively_reviewed){
+                rating = null;
+            }
+
             return {
                 id: Number(this.id),
                 is_comprehensively_reviewed: Boolean(this.is_comprehensively_reviewed),
@@ -54,7 +60,7 @@ export namespace Service {
                 updated_at: this.updated_at,
                 created_at: this.created_at,
                 slug: this.slug,
-                rating: this.rating,
+                rating: rating,
                 urls: this.urls,
                 image: this.image,
                 documents: documentsObj,

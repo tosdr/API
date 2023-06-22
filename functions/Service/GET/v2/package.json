@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "api-microservices": "^1.1.7",
+    "api-microservices": "^1.1.8",
     "flagsmith": "^3.15.1",
     "flagsmith-nodejs": "^2.4.1",
     "node-appwrite": "^8.0.0",
