@@ -12,10 +12,10 @@
 */
 
 import { Client } from 'pg';
-import { Bitmask } from "@tosdr/api-microservices";
 import { Phoenix } from './helpers/Phoenix';
-import { RESTfulAPI } from './helpers/RESTfulAPI';
 import Flagsmith from 'flagsmith-nodejs';
+import {Case, DocumentMinimal, Service, ServiceMinimal, Bitmask, RESTfulAPI} from "api-microservices";
+import {Points} from "api-microservices/build/models/Points";
 
  
 
@@ -61,18 +61,12 @@ module.exports = async function (req: any, res: any) {
 
 
 
-    let _documentsArray: any = [];
-    let _pointsArray: any = [];
+    let _documentsArray: DocumentMinimal.v1[] = [];
+    let _pointsArray: Points.v1[] = [];
 
 
     documents.forEach((document: any) => {
-      _documentsArray.push({
-        id: Number(document.id),
-        name: document.name,
-        url: document.url,
-        created_at: document.created_at,
-        updated_at: document.updated_at
-      });
+      _documentsArray.push(DocumentMinimal.v1.fromRow(document));
     });
 
 
@@ -80,44 +74,19 @@ module.exports = async function (req: any, res: any) {
 
       let caseObj = cases.find(o => o.id === point.case_id);
 
-      _pointsArray.push({
-        id: Number(point.id),
-        title: point.title,
-        source: point.source,
-        status: point.status,
-        analysis: point.analysis,
-        created_at: point.created_at,
-        updated_at: point.updated_at,
-        case: {
-          id: Number(caseObj.id),
-          classification: caseObj.classification,
-          weight: Number(caseObj.score),
-          title: caseObj.title,
-          description: caseObj.description,
-          topic_id: Number(caseObj.topic_id)
-        },
-        quoteText: point.quoteText,
-        document_id: point.document_id,
-        quoteStart: point.quoteStart,
-        quoteEnd: point.quoteEnd
-      });
+
+
+
+      _pointsArray.push(Points.v1.fromRow(point, Case.v2.fromRow(caseObj)));
     });
 
-
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
-      "id": Number(serviceObj.id),
-      "is_comprehensively_reviewed": Boolean(serviceObj.is_comprehensively_reviewed),
-      "name": serviceObj.name,
-      "updated_at": serviceObj.updated_at,
-      "created_at": serviceObj.created_at,
-      "slug": serviceObj.slug,
-      "rating":  serviceObj.is_comprehensively_reviewed ? serviceObj.rating : null,
-      "urls": serviceObj.url.split(","),
-      "image": flags.getFeatureValue("s3_url") + "/logos/"+ serviceObj.id + ".png",
-      "documents": _documentsArray,
-      "points": _pointsArray
-    }));
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Service.v2.fromRow(
+        serviceObj,
+        flags.getFeatureValue("s3_url") + "/logos/"+ serviceObj.id + ".png",
+        _documentsArray,
+        _pointsArray
+    ).toObject()));
 
   }
 
@@ -166,16 +135,10 @@ module.exports = async function (req: any, res: any) {
     let serviceSkeleton: any = [];
 
     phoenixServices.forEach((serviceObj) => {
-      serviceSkeleton.push({
-        "id": Number(serviceObj.id),
-        "is_comprehensively_reviewed": Boolean(serviceObj.is_comprehensively_reviewed),
-        "name": serviceObj.name,
-        "urls": serviceObj.url.split(","),
-        "updated_at": serviceObj.updated_at,
-        "created_at": serviceObj.created_at,
-        "slug": serviceObj.slug,
-        "rating": serviceObj.is_comprehensively_reviewed ? serviceObj.rating : null,
-      });
+      serviceSkeleton.push(ServiceMinimal.v1.fromRow(
+          serviceObj,
+          flags.getFeatureValue("s3_url") + "/logos/"+ serviceObj.id + ".png"
+      ).toObject());
     });
 
 
