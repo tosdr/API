@@ -120,6 +120,21 @@
             "events": [],
             "schedule": "",
             "timeout": 60
+        },
+        {
+            "$id": "64ae02b048a82447e87d",
+            "name": "DB Dump",
+            "runtime": "node-16.0",
+            "path": "functions/DB Dump",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 300
         }
     ]
 }
