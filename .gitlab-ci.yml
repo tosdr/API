@@ -281,3 +281,35 @@ Build_GET_case_v2:
         - functions/Case/GET/v2/**/*
 
 ### GET /case/v2/ ###
+
+### DATA DUMP ###
+
+Test_DATA_DUMP:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/DB Dump"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/DB Dump/**/*
+
+Build_DATA_DUMP:
+  stage: build_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - cd "functions/DB Dump"
+    - npm install
+    - npm run build
+    - cd "$CI_PROJECT_DIR"
+    - appwrite deploy function --functionId 64ae02b048a82447e87d
+  needs:
+    - Test_GET_case_v2
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - functions/DB Dump/**/*
+
+### DATA DUMP ###
