@@ -306,7 +306,7 @@ Build_DATA_DUMP:
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 64ae02b048a82447e87d
   needs:
-    - Test_GET_case_v2
+    - Test_DATA_DUMP
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
