@@ -12,7 +12,7 @@ stages:
 
 
 build_parser:
-  stage: publish
+  stage: build_functions
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
@@ -27,7 +27,7 @@ build_parser:
  
 
 build_spamai:
-  stage: publish
+  stage: build_functions
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint:
