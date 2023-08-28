@@ -4,7 +4,11 @@ Welcome to the documentation of this function 👋 We strongly recommend keeping
 
 ## 🤖 Documentation
 
-Retrieves a single Document by ID
+Retrieves a list of all document IDs or specific documents by supplying the "document" parameter.
+
+<!-- If input is expected, add example -->
+
+To retrieve a single Document by ID:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -14,6 +18,12 @@ This function expects the following JSON Input:
 
 ```json
 {"document": DOCUMENT_ID_AS_INTEGER}
+```
+
+Providing no document parameter will list all document IDs in a pagination style, supported parameters for the pagination are:
+
+```json
+{"page": PAGE_NUMBER_AS_INTEGER}
 ```
 
 <!-- If input is expected, add example -->
