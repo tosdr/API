@@ -135,6 +135,20 @@
             "events": [],
             "schedule": "",
             "timeout": 300
+        }, {
+            "$id": "",
+            "name": "GET /document/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Document/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
         }
     ]
 }
