@@ -1,14 +1,14 @@
-# Document V1
+# DocumentCases V1
 
 Welcome to the documentation of this function 👋 We strongly recommend keeping this file in sync with your function's logic to make sure anyone can easily understand your function in the future. If you don't need documentation, you can remove this file.
 
 ## 🤖 Documentation
 
-Retrieves a list of all document IDs or specific documents by supplying the "document" parameter.
+Retrieves a list of all case IDs for points associated to a specific document by supplying the "document" parameter.
 
 <!-- If input is expected, add example -->
 
-To retrieve a single Document by ID:
+To retrieve case IDs:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -20,12 +20,6 @@ This function expects the following JSON Input:
 {"document": DOCUMENT_ID_AS_INTEGER}
 ```
 
-Providing no document parameter will list all document IDs in a pagination style, supported parameters for the pagination are:
-
-```json
-{"page": PAGE_NUMBER_AS_INTEGER}
-```
-
 <!-- If input is expected, add example -->
 
 *Example output:*
@@ -34,22 +28,7 @@ Providing no document parameter will list all document IDs in a pagination style
 
 ```json
 {
-    "id": 157,
-    "service_id": 123,
-    "name": "Terms of Service",
-    "url": "https://fake.com/terms-of-service",
-    "xpath": "/html/body/div[2]/div",
-    "text": "<strong>Terms of Service</strong>\n<p>You have rights and here they are.</p>",
-    "updated_at": {
-        "timezone": "Europe/Berlin",
-        "pgsql": "2021-05-06T08:15:47.671Z",
-        "unix": 1620288947
-    },
-    "created_at": {
-        "timezone": "Europe/Berlin",
-        "pgsql": "2018-01-16T15:26:09.092Z",
-        "unix": 1516116369
-    }
+    "cases": [1, 2, 3, 4] 
 }
 ```
 
