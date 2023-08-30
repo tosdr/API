@@ -32,56 +32,20 @@ module.exports = async function (req: any, res: any) {
     return res.json();
   }
 
-  let totalDocuments = await Phoenix.countAllDocuments(client);
-  let documentsPerPage = 100;
-  let currentPage = Number.parseInt(request.page ?? 1);
+  let phoenixDocuments = await Phoenix.getAllDocuments(client);
 
-  if(!Number.isInteger(currentPage)){
-    await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is not a number!", {
-      page: currentPage
-    }), 400);
-  }
-
-  /* Check if page is zero or below */
-  if(currentPage < 1){
-    currentPage = 1;
-  }
-  
-  let _calculatedPages = Math.ceil(totalDocuments / documentsPerPage);
-  /* If page is one then offset is zero */
-  let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * documentsPerPage));
-
-  console.log("totalDocuments", totalDocuments);
-  console.log("documentsPerPage", documentsPerPage);
-  console.log("currentPage", currentPage);
-  console.log("_calculatedPages", _calculatedPages);
-  console.log("_calculatedOffset", _calculatedOffset);
-
-  if(currentPage > _calculatedPages){
-    await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is out of range!", {
-      page: currentPage
-    }), 400);
-  }
-
-  let phoenixDocuments = await Phoenix.getAllDocumentsOffset(documentsPerPage, _calculatedOffset, client);
-
-  let documentSkeleton: any = [];
+  let documentIds: any = [];
 
   phoenixDocuments.forEach((document: any) => {
-    documentSkeleton.push(document.id).toObject();
+    let tuple = [];
+    tuple.push(document.id);
+    tuple.push(document.text_version)
+    documentIds.push(tuple).toObject();
   });
   
   await client.end();
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All documents below", {
-    _page: {
-      total: totalDocuments,
-      current: currentPage,
-      start: 1,
-      end: _calculatedPages
-    },
-    documents: documentSkeleton
+    documents: documentIds
   }));
 };
