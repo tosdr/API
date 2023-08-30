@@ -20,11 +20,7 @@ This function expects the following JSON Input:
 {"document": DOCUMENT_ID_AS_INTEGER}
 ```
 
-Providing no document parameter will list all document IDs in a pagination style, supported parameters for the pagination are:
-
-```json
-{"page": PAGE_NUMBER_AS_INTEGER}
-```
+Providing no document parameter will list all document IDs and their text versions
 
 <!-- If input is expected, add example -->
 
