@@ -19,7 +19,9 @@ export namespace Points {
             private quoteStart: number|null,
             private quoteEnd: number|null,
             private updated_at: string,
-            private created_at: string
+            private created_at: string,
+            private model_version: string|null,
+            private ml_score: number|null
         ){}
 
         public static fromRow(row: any, $case: Case.v2): Points.v1 {
@@ -35,7 +37,9 @@ export namespace Points {
                 row.quoteStart,
                 row.quoteEnd,
                 row.updated_at,
-                row.created_at
+                row.created_at,
+                row.model_version,
+                row.ml_score
             );
         }
 
@@ -54,6 +58,8 @@ export namespace Points {
                 quoteEnd: this.quoteEnd,
                 updated_at: this.updated_at,
                 created_at: this.created_at,
+                model_version: this.model_version,
+                ml_score: this.ml_score
             }
         }
 
