@@ -1,14 +1,14 @@
-# DocumentCases V1
+# DocbotRecords V1
 
 Welcome to the documentation of this function 👋 We strongly recommend keeping this file in sync with your function's logic to make sure anyone can easily understand your function in the future. If you don't need documentation, you can remove this file.
 
 ## 🤖 Documentation
 
-Retrieves a list of all case IDs for points associated to a specific document by supplying the "document" parameter.
+Retrieves a list of all document IDs and their text verions for a specific case and model version, as supplies in the parameters.
 
 <!-- If input is expected, add example -->
 
-To retrieve case IDs:
+To retrieve document IDs and their text versions:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -17,7 +17,10 @@ To retrieve case IDs:
 This function expects the following JSON Input:
 
 ```json
-{"document": DOCUMENT_ID_AS_INTEGER}
+{
+    "case_id": CASE_ID_AS_INTEGER,
+    "model_version": MODEL_VERSION_AS_STRING
+}
 ```
 
 <!-- If input is expected, add example -->
@@ -28,7 +31,7 @@ This function expects the following JSON Input:
 
 ```json
 {
-    "cases": [1, 2, 3, 4] 
+    "documents": [[1, "0.1"], [2, "0.2"], [3, "0.3"]] 
 }
 ```
 

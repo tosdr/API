@@ -28,8 +28,7 @@ module.exports = async function (req: any, res: any) {
     }
     let docObj = await Phoenix.getDocumentById(request.id, client);
     await client.end();
-    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject()));
-    return res.json();
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject()));
   }
 
   let phoenixDocuments = await Phoenix.getAllDocuments(client);
