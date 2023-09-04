@@ -4,11 +4,11 @@ Welcome to the documentation of this function 👋 We strongly recommend keeping
 
 ## 🤖 Documentation (TBD)
 
-Retrieves a list of all points that belong to a specific case and Docbot model version, or all points if no parameters are given.
+Retrieves a list of all points that belong to a specific case, or all points if no parameters are given.
 
 <!-- If input is expected, add example -->
 
-To retrieve points belonging to specific case and model version:
+To retrieve points belonging to specific case:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
