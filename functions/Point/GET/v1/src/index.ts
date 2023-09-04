@@ -21,12 +21,12 @@ module.exports = async function (req: any, res: any) {
 
   let request = JSON.parse(req.payload);
 
-  if(request.id && request.model_version) {
-    if (!await Phoenix.pointsExist(request.id, request.model_version, client)) {
+  if(request.id) {
+    if (!await Phoenix.pointsExist(request.id, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Points with this model version and belonging to this case do not exist", []), 404);
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Points belonging to this case do not exist", []), 404);
     }
-    let points = await Phoenix.getPointsForCase(request.id, request.model_version, client);
+    let points = await Phoenix.getPointsForCase(request.id, client);
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(points).toObject()));
   }
