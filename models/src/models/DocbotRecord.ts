@@ -11,7 +11,8 @@ export namespace DocbotRecord {
             private text_version: string,
             private char_start: number,
             private char_end: number,
-            private ml_score: number
+            private ml_score: number,
+            private docbot_version: string
         ){}
 
         public static fromRow(row: any): DocbotRecord.v1 {
@@ -24,7 +25,8 @@ export namespace DocbotRecord {
                 row.text_version,
                 row.char_start,
                 row.char_end,
-                row.ml_score
+                row.ml_score,
+                row.docbot_version
             );
         }
 
@@ -39,7 +41,8 @@ export namespace DocbotRecord {
                 text_version: this.text_version,
                 char_start: Number(this.char_start),
                 char_end: Number(this.char_end),
-                ml_score: Number(this.ml_score)
+                ml_score: Number(this.ml_score),
+                docbot_version: this.docbot_version
             }
         }
 
