@@ -4,11 +4,11 @@ Welcome to the documentation of this function 👋 We strongly recommend keeping
 
 ## 🤖 Documentation
 
-Retrieves a list of all document IDs and their text verions for a specific case and model version, as supplies in the parameters.
+Retrieves a list of all document IDs for a specific case and model version, as supplied in the parameters.
 
 <!-- If input is expected, add example -->
 
-To retrieve document IDs and their text versions:
+To retrieve document IDs:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -19,7 +19,7 @@ This function expects the following JSON Input:
 ```json
 {
     "case_id": CASE_ID_AS_INTEGER,
-    "model_version": MODEL_VERSION_AS_STRING
+    "docbot_version": DOCBOT_VERSION_AS_STRING
 }
 ```
 
@@ -31,7 +31,7 @@ This function expects the following JSON Input:
 
 ```json
 {
-    "documents": [[1, "0.1"], [2, "0.2"], [3, "0.3"]] 
+    "documents": [1, 2, 3] 
 }
 ```
 

@@ -4,11 +4,11 @@ Welcome to the documentation of this function 👋 We strongly recommend keeping
 
 ## 🤖 Documentation
 
-Retrieves a list of all document IDs and their text verions for a specific case and model version, as supplies in the parameters.
+Creates a docbot record
 
 <!-- If input is expected, add example -->
 
-To retrieve document IDs and their text versions:
+To create a docbot record:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -19,21 +19,26 @@ This function expects the following JSON Input:
 ```json
 {
     "case_id": CASE_ID_AS_INTEGER,
-    "model_version": MODEL_VERSION_AS_STRING
+    "document_id": DOCUMENT_ID_AS_INTEGER,
+    "docbot_version": DOCBOT_VERSION_AS_STRING,
+    "text_version": TEXT_VERSION_AS_STRING,
+    "char_start": CHAR_START_AS_INTEGER,
+    "char_end": CHAR_END_AS_INTEGER,
+    "ml_score": ML_SCORE_AS_INTEGER
 }
 ```
 
 <!-- If input is expected, add example -->
 
-*Example output:*
+<!-- *Example output:* -->
 
 <!-- Update with your expected output -->
 
-```json
+<!-- ```json
 {
     "documents": [[1, "0.1"], [2, "0.2"], [3, "0.3"]] 
 }
-```
+``` -->
 
 ## 📝 Environment Variables
 

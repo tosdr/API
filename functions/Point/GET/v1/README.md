@@ -12,17 +12,17 @@ To retrieve points belonging to specific case:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
-<!-- *Example input:*
+*Example input:*
 
 This function expects the following JSON Input:
 
 ```json
-{"document": DOCUMENT_ID_AS_INTEGER}
+{"id": CASE_ID_AS_INTEGER}
 ```
 
-Providing no document parameter will list all document IDs and their text versions
+Providing no id parameter will list all points
 
-<!-- If input is expected, add example -->
+<!-- If input is expected, add example
 
 *Example output:*
 

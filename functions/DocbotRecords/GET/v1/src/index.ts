@@ -20,22 +20,19 @@ module.exports = async function (req: any, res: any) {
   await client.connect();
 
   let request = JSON.parse(req.payload);
-  if(request.id && request.model_version) {
-    if (!await Phoenix.docbotRecordExists(request.id, request.model_version, client)) {
+  if(request.id && request.docbot_version) {
+    if (!await Phoenix.docbotRecordExists(request.id, request.docbot_version, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Docbot Records do not exist for this case and model version", []), 404);
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Docbot Records do not exist for this case and docbot version", []), 404);
     }
-    let docbotRecords: any = await Phoenix.getDocuments(request.id, request.model_version, client);
+    let docbotRecords: any = await Phoenix.getDocuments(request.id, request.docbot_version, client);
     let documentIds: any = [];
 
     docbotRecords.forEach((record: any) => {
-      let tuple = [];
-      tuple.push(record.id);
-      tuple.push(record.text_version)
-      documentIds.push(tuple);
+      documentIds.push(record.document_id);
     });
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All documents for case and model version below", {
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All documents for case and docbot version below", {
       documents: documentIds
     }));
   }

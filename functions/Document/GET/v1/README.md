@@ -30,22 +30,7 @@ Providing no document parameter will list all document IDs and their text versio
 
 ```json
 {
-    "id": 157,
-    "service_id": 123,
-    "name": "Terms of Service",
-    "url": "https://fake.com/terms-of-service",
-    "xpath": "/html/body/div[2]/div",
-    "text": "<strong>Terms of Service</strong>\n<p>You have rights and here they are.</p>",
-    "updated_at": {
-        "timezone": "Europe/Berlin",
-        "pgsql": "2021-05-06T08:15:47.671Z",
-        "unix": 1620288947
-    },
-    "created_at": {
-        "timezone": "Europe/Berlin",
-        "pgsql": "2018-01-16T15:26:09.092Z",
-        "unix": 1516116369
-    }
+    documents: [[1, "0.1"], [2, "0.2"], [3, "0.3"]]
 }
 ```
 
