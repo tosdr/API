@@ -1,14 +1,14 @@
-# Document V1
+# DocbotRecords V1
 
 Welcome to the documentation of this function 👋 We strongly recommend keeping this file in sync with your function's logic to make sure anyone can easily understand your function in the future. If you don't need documentation, you can remove this file.
 
 ## 🤖 Documentation
 
-Retrieves a list of all document IDs or specific documents by supplying the "document" parameter.
+Creates a docbot record
 
 <!-- If input is expected, add example -->
 
-To retrieve a single Document by ID:
+To create a docbot record:
 
 <!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
 
@@ -17,22 +17,28 @@ To retrieve a single Document by ID:
 This function expects the following JSON Input:
 
 ```json
-{"document": DOCUMENT_ID_AS_INTEGER}
+{
+    "case_id": CASE_ID_AS_INTEGER,
+    "document_id": DOCUMENT_ID_AS_INTEGER,
+    "docbot_version": DOCBOT_VERSION_AS_STRING,
+    "text_version": TEXT_VERSION_AS_STRING,
+    "char_start": CHAR_START_AS_INTEGER,
+    "char_end": CHAR_END_AS_INTEGER,
+    "ml_score": ML_SCORE_AS_INTEGER
+}
 ```
-
-Providing no document parameter will list all document IDs and their text versions
 
 <!-- If input is expected, add example -->
 
-*Example output:*
+<!-- *Example output:* -->
 
 <!-- Update with your expected output -->
 
-```json
+<!-- ```json
 {
-    documents: [[1, "0.1"], [2, "0.2"], [3, "0.3"]]
+    "documents": [[1, "0.1"], [2, "0.2"], [3, "0.3"]] 
 }
-```
+``` -->
 
 ## 📝 Environment Variables
 

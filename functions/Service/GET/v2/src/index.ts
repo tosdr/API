@@ -49,9 +49,7 @@ module.exports = async function (req: any, res: any) {
     
     console.log("serviceObj", serviceObj);
 
-
     console.log(request.id, "pulled");
-
 
     let cases = await Phoenix.getAllCases(client);
     let documents: any = await Phoenix.getDocumentsOfService(serviceObj.id, client);
@@ -59,24 +57,16 @@ module.exports = async function (req: any, res: any) {
 
     console.log("documents", documents);
 
-
-
     let _documentsArray: DocumentMinimal.v1[] = [];
     let _pointsArray: Points.v1[] = [];
-
 
     documents.forEach((document: any) => {
       _documentsArray.push(DocumentMinimal.v1.fromRow(document));
     });
 
-
     points.forEach((point: any) => {
 
       let caseObj = cases.find(o => o.id === point.case_id);
-
-
-
-
       _pointsArray.push(Points.v1.fromRow(point, Case.v2.fromRow(caseObj)));
     });
 
@@ -89,10 +79,6 @@ module.exports = async function (req: any, res: any) {
     ).toObject()));
 
   }
-
-
-
-
   	
     let totalServices = await Phoenix.countAllServices(client);
     let servicesPerPage = 100;
