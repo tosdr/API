@@ -29,7 +29,10 @@ module.exports = async function (req: any, res: any) {
     let documentIds: any = [];
 
     docbotRecords.forEach((record: any) => {
-      documentIds.push(record.document_id);
+      documentIds.push({
+        "document_id": record.document_id,
+        "text_version": record.text_version
+      });
     });
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All documents for case and docbot version below", {

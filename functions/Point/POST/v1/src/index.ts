@@ -16,6 +16,8 @@ import { Phoenix } from './helpers/Phoenix';
 import {Bitmask, Points, RESTfulAPI} from "api-microservices";
 
 module.exports = async function (req: any, res: any) {
+  // TODO verify request
+
   const client = new Client()
   await client.connect();
 
@@ -41,14 +43,19 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'docbot_version'"), 400);
   }
 
-  console.log("request", request);
+  if (!request.source) {
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'source'"), 400);
+  }
 
   const caseObj = await Phoenix.getCase(request.case_id, client);
   const caseId = caseObj?.id;
   const title = caseObj?.title;
   const topicId = caseObj?.topic_id;
 
-  const result = await Phoenix.createPoint(caseId, request.user_id, request.document_id, topicId, request.service_id, 'pending', title, request.docbot_version, client);
+  const result = await Phoenix.createPoint(
+      caseId, request.user_id, request.document_id, topicId, request.service_id, 'pending', title,
+      request.docbot_version, request.source, client
+  );
 
   // return ? not sure
 };

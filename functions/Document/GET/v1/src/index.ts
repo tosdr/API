@@ -20,26 +20,27 @@ module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = JSON.parse(req.payload);
+  let request = req.payload;
   if(request.id) {
     if (!await Phoenix.documentExists(request.id, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Document does not exist", []), 404);
+      return res.json(RESTfulAPI.response(
+          Bitmask.INVALID_PARAMETER, "The Document does not exist", []), 404
+      );
     }
     let docObj = await Phoenix.getDocumentById(request.id, client);
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject()));
+    return res.json(
+        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject())
+    );
   }
 
-  let phoenixDocuments = await Phoenix.getAllDocuments(client);
+  let phoenixDocuments = await Phoenix.getAllDocumentIDs(client);
 
   let documentIds: any = [];
 
   phoenixDocuments.forEach((document: any) => {
-    let tuple = [];
-    tuple.push(document.id);
-    tuple.push(document.text_version)
-    documentIds.push(tuple).toObject();
+    documentIds.push([document.id, document.text_version]);
   });
   
   await client.end();

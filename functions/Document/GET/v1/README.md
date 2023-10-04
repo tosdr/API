@@ -43,8 +43,6 @@ List of environment variables used by this cloud function:
 - **PGPASSWORD** - Password of the Phoenix Database
 - **PGDATABASE** - Database Name of Phoenix
 - **PGPORT** - Port of the Phoenix Database
-- **FLAGSMITH_KEY** - Environment Key of your Flagsmith Installation
-- **FLAGMSMITH_HOSTNAME** - Hostname of your Flagsmith Installation
 
 <!-- Add your custom environment variables -->
 

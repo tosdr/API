@@ -1,11 +1,15 @@
 import { Client } from 'pg';
 
 export class Phoenix {
-  static async pointsExist(caseId: number, postgresClient: Client): Promise<boolean> {
+  static async pointExists(id: number, postgresClient: Client): Promise<boolean> {
+    return (await postgresClient.query('SELECT (0) FROM points WHERE id = $1::integer', [id])).rowCount > 0;
+  }
+
+  static async casePointsExist(caseId: number, postgresClient: Client): Promise<boolean> {
     return (await postgresClient.query('SELECT (0) FROM points WHERE case_id = $1::integer', [caseId])).rowCount > 0;
   }
 
-  static async countAllPoints(postgresClient: Client): Promise<number> {
+  static async countAllCasePoints(postgresClient: Client): Promise<number> {
     return (await postgresClient.query('SELECT (0) FROM points')).rowCount;
   }
 
@@ -13,11 +17,7 @@ export class Phoenix {
     return (await postgresClient.query('SELECT * FROM points WHERE case_id = $1::integer', [caseId]))
   }
 
-  static async getAllPoints(postgresClient: Client): Promise<boolean> {
-    return (await postgresClient.query('SELECT * FROM points'))
-  }
-
-  static async getAllPointsOffset(limit: number, offset: number, postgresClient: Client): Promise<Array<any>> {
-    return (await postgresClient.query('SELECT * FROM points LIMIT $1::integer OFFSET $2::integer', [limit, offset])).rows;
+  static async getCasePointsOffset(caseId: number, limit: number, offset: number, postgresClient: Client): Promise<Array<any>> {
+    return (await postgresClient.query('SELECT * FROM points WHERE case_id = $1::integer LIMIT $2::integer OFFSET $3::integer', [caseId, limit, offset])).rows;
   }
 }
