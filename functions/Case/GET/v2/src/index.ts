@@ -54,14 +54,6 @@ module.exports = async function (req: any, res: any) {
     /* If page is one then offset is zero */
     let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * casesPerPage));
 
-    
-    console.log("totalCases", totalCases);
-    console.log("casesPerPage", casesPerPage);
-    console.log("currentPage", currentPage);
-    console.log("_calculatedPages", _calculatedPages);
-    console.log("_calculatedOffset", _calculatedOffset);
-
-
     if(currentPage > _calculatedPages){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is out of range!", {

@@ -26,7 +26,7 @@ module.exports = async function (req: any, res: any) {
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Case not found", []), 404);
     }
-    let points = await Phoenix.getPointsForCase(request.id, client);
+    let points = await Phoenix.getCasePoints(request.id, client);
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(points).toObject()));
   } else if (request.case_id) {

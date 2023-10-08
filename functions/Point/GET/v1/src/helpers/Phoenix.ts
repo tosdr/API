@@ -13,8 +13,8 @@ export class Phoenix {
     return (await postgresClient.query('SELECT (0) FROM points')).rowCount;
   }
 
-  static async getPointsForCase(caseId: number, postgresClient: Client): Promise<boolean> {
-    return (await postgresClient.query('SELECT * FROM points WHERE case_id = $1::integer', [caseId]))
+  static async getCasePoints(caseId: number, postgresClient: Client): Promise<Array<any>> {
+    return (await postgresClient.query('SELECT * FROM points WHERE case_id = $1::integer', [caseId])).rows
   }
 
   static async getCasePointsOffset(caseId: number, limit: number, offset: number, postgresClient: Client): Promise<Array<any>> {
