@@ -1,6 +1,3 @@
-import { Classification } from "./Classification";
-import { Links } from "./Links";
-import { Timezone } from "./Timezone";
 import {Case} from "./Case";
 
 export namespace Points {
