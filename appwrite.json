@@ -135,6 +135,22 @@
             "events": [],
             "schedule": "",
             "timeout": 300
+        },
+        {
+            "$id": "654901b409d4955a45e2",
+            "name": "AppDB",
+            "runtime": "node-16.0",
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "path": "functions/AppDB",
+            "entrypoint": "build/index.js"
         }
     ]
 }

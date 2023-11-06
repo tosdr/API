@@ -313,3 +313,36 @@ Build_DATA_DUMP:
         - functions/DB Dump/**/*
 
 ### DATA DUMP ###
+
+
+### AppDB ###
+
+Test_AppDB:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/AppDB"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/AppDB/**/*
+
+Build_AppDB:
+  stage: build_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - cd "functions/AppDB"
+    - npm install
+    - npm run build
+    - cd "$CI_PROJECT_DIR"
+    - appwrite deploy function --functionId 654901b409d4955a45e2
+  needs:
+    - Test_AppDB
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - functions/AppDB/**/*
+
+### AppDB ###
