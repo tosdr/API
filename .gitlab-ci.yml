@@ -317,32 +317,65 @@ Build_DATA_DUMP:
 
 ### AppDB ###
 
-Test_AppDB:
+Test_AppDB_Exporter:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/AppDB"
+    - cd "functions/AppDB/Exporter"
     - npm install
     - npm run build
   rules:
       - changes:
-        - functions/AppDB/**/*
+        - functions/AppDB/Exporter/**/*
 
-Build_AppDB:
+Build_AppDB_Exporter:
   stage: build_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/AppDB"
+    - cd "functions/AppDB/Exporter"
     - npm install
     - npm run build
     - cd "$CI_PROJECT_DIR"
     - appwrite deploy function --functionId 654901b409d4955a45e2
   needs:
-    - Test_AppDB
+    - Test_AppDB_Exporter
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - functions/AppDB/**/*
+        - functions/AppDB/Exporter/**/*
 
 ### AppDB ###
+
+
+### GET /appdb/version/v1/ ###
+
+Test_GET_appdb_version_v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/AppDB/Version/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/AppDB/Version/GET/v1/**/*
+
+Build_GET_appdb_version_v1:
+  stage: build_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - cd "functions/AppDB/Version/GET/v1"
+    - npm install
+    - npm run build
+    - cd "$CI_PROJECT_DIR"
+    - appwrite deploy function --functionId 65492d5d01cedf27535a
+  needs:
+    - Test_GET_appdb_version_v1
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - functions/AppDB/Version/GET/v1/**/*
+
+### GET /appdb/version/v1/ ###

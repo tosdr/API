@@ -122,6 +122,21 @@
             "timeout": 60
         },
         {
+            "$id": "65492d5d01cedf27535a",
+            "name": "GET /appdb/version/v1",
+            "runtime": "node-16.0",
+            "path": "functions/AppDB/Version/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
+        },
+        {
             "$id": "64ae02b048a82447e87d",
             "name": "DB Dump",
             "runtime": "node-16.0",
@@ -138,7 +153,7 @@
         },
         {
             "$id": "654901b409d4955a45e2",
-            "name": "AppDB",
+            "name": "AppDB Exporter",
             "runtime": "node-16.0",
             "execute": [],
             "events": [],
@@ -149,7 +164,7 @@
                 "node_modules",
                 ".npm"
             ],
-            "path": "functions/AppDB",
+            "path": "functions/AppDB/Exporter",
             "entrypoint": "build/index.js"
         }
     ]
