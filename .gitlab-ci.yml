@@ -11,6 +11,10 @@ stages:
 - build_functions
 
 
+variables:
+  APPWRITE_HOSTNAME: https://appconsole.jrbit.de/v1
+
+
 build_parser:
   stage: build_functions
   image:
