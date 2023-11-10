@@ -79,6 +79,8 @@ Build_GET_case_v1:
   needs:
     - Test_GET_case_v1
   rules:
+    - changes:
+      - functions/Case/GET/v1/**/*
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         
 
@@ -107,7 +109,9 @@ Build_GET_service_v1:
   needs:
     - Test_GET_service_v1
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/Service/GET/v1/**/*
 
 
         
@@ -136,7 +140,9 @@ Build_GET_service_v2:
   needs:
     - Test_GET_service_v2
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/Service/GET/v2/**/*
 
         
 ### END GET /service/v2/ ###
@@ -162,7 +168,9 @@ Build_DELETE_spam_v1:
   needs:
     - Test_DELETE_spam_v1
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/Spam/DELETE/v1/**/*
 
 ### END DELETE /spam/v1/ ###
 
@@ -214,7 +222,9 @@ Build_POST_spam_v1:
   needs:
     - Test_POST_spam_v1
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/Spam/POST/v1/**/*
 
 ### END POST /spam/v1/ ###
 ### GET /case/v2/ ###
@@ -239,7 +249,9 @@ Build_GET_case_v2:
   needs:
     - Test_GET_case_v2
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/Case/GET/v2/**/*
 
 ### GET /case/v2/ ###
 
@@ -265,7 +277,9 @@ Build_DATA_DUMP:
   needs:
     - Test_DATA_DUMP
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/DB Dump/**/*
 
 ### DATA DUMP ###
 
@@ -292,7 +306,9 @@ Build_AppDB_Exporter:
   needs:
     - Test_AppDB_Exporter
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/AppDB/Exporter/**/*
 
 ### AppDB ###
 
@@ -319,6 +335,8 @@ Build_GET_appdb_version_v1:
   needs:
     - Test_GET_appdb_version_v1
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - changes:
+        - functions/AppDB/Version/GET/v1/**/*
 
 ### GET /appdb/version/v1/ ###
