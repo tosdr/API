@@ -11,7 +11,7 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
-import { Bitmask } from '@tosdr/api-microservices';
+import { Bitmask } from 'api-microservices';
 import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 import * as Amqp from 'amqp-ts';
@@ -20,32 +20,39 @@ import * as natural from 'natural';
 
 
 
-module.exports = async function (req: any, res: any) {
 
 
-  let request = JSON.parse(req.payload);
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
 
-  if (!request.text) {
+export default async ({ req, res, log, error }: Context) => {
+
+
+
+  if (!req.query && !('text' in req.query)) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'text'"), 400);
   }
 
-  if (!request.type) {
+  if (!req.query && !('type' in req.query)) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'type'"), 400);
   }
 
-  console.log("request", request);
 
-  if (request.type !== "ham" && request.type !== "spam") {
+  if (req.query.type !== "ham" && req.query.type !== "spam") {
     await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Invalid Parameter 'type' is not spam or ham"), 400);
   }
 
   var connection = new Amqp.Connection(process.env.AMQP_URL);
-  var queue = connection.declareQueue('spam_train', {durable: true});
+  var queue = connection.declareQueue('spam_train', { durable: true });
 
   var message = new Amqp.Message(JSON.stringify({
-    "text": request.text.replace(/<\/?[^>]+(>|$)/g, ""),
-    "type": request.type
+    "text": req.query.text.replace(/<\/?[^>]+(>|$)/g, ""),
+    "type": req.query.type
   }));
   queue.send(message);
 
@@ -53,10 +60,10 @@ module.exports = async function (req: any, res: any) {
   await connection.close();
 
   return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
-    "trained": true, 
-    "type": request.type,
-    "text": request.text
-    }
+    "trained": true,
+    "type": req.query.type,
+    "text": req.query.text
+  }
   ));
 
 

@@ -20,7 +20,14 @@ import Flagsmith from 'flagsmith-nodejs';
 
  
 
-module.exports = async function (req: any, res: any) {
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
   const client = new Client()
   await client.connect();
@@ -33,21 +40,17 @@ module.exports = async function (req: any, res: any) {
 
 
 
-
-  let request = JSON.parse(req.payload);
-
-
-  if(request.case){
+  if(req.query && 'case' in req.query){
 
 
-    if(!await Phoenix.caseExists(request.case, client)){
+    if(!await Phoenix.caseExists(req.query.case, client)){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
     }
     
 
 
-    let caseObj = await Phoenix.getCase(request.case, client);
+    let caseObj = await Phoenix.getCase(req.query.case, client);
   
     await client.end();
 
@@ -85,10 +88,7 @@ module.exports = async function (req: any, res: any) {
       );
 
 
-    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", caseModel.toObject()));
-
-    return res.json();
-
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", caseModel.toObject()));
   }
 
 
@@ -97,7 +97,7 @@ module.exports = async function (req: any, res: any) {
   	
     let totalCases = await Phoenix.countAllCases(client);
     let casesPerPage = 100;
-    let currentPage = Number.parseInt(request.page ?? 1);
+    let currentPage = Number.parseInt('page' in req.query ? req.query.page : 1);
 
     if(!/^\d+$/.test(currentPage.toString())){
       await client.end();

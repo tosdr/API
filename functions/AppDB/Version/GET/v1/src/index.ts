@@ -17,7 +17,17 @@ import { ListObjectsCommand, S3Client, GetObjectCommand } from '@aws-sdk/client-
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 
-module.exports = async function (req: any, res: any) {
+
+
+
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
 
   const s3 = new S3Client({

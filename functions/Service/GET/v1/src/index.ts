@@ -1,25 +1,17 @@
-/*
-  'req' variable has:
-    'headers' - object with request headers
-    'payload' - request body data as a string
-    'variables' - object with function variables
-
-  'res' variable has:
-    'send(text, status)' - function to return text response. Status code defaults to 200
-    'json(obj, status)' - function to return JSON response. Status code defaults to 200
-
-  If an error is thrown, a response with code 500 will be returned.
-*/
-
 import { Client } from 'pg';
 import { Bitmask } from "@tosdr/api-microservices";
 import { Phoenix } from './helpers/Phoenix';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 import Flagsmith from 'flagsmith-nodejs';
 
- 
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
 
-module.exports = async function (req: any, res: any) {
+export default async ({ req, res, log, error }: Context) => {
 
   const client = new Client();
   await client.connect();
@@ -29,48 +21,39 @@ module.exports = async function (req: any, res: any) {
     apiUrl: process.env.FLAGSMITH_HOSTNAME,
    });
    const flags = await flagsmith.getEnvironmentFlags();
+  
 
 
 
-  let request = JSON.parse(req.payload);
+  if(req.query && 'service' in req.query){
 
 
-  if(request.service){
+    let isServiceSlug = !/^\d+$/.test(req.query.service);
 
+    log("req.query.service " + req.query.service);
+    log("isServiceSlug" + isServiceSlug);
 
-    let isServiceSlug = !/^\d+$/.test(request.service);
-
-    console.log("request.service", request.service);
-    console.log("isServiceSlug", isServiceSlug);
-
-    if((isServiceSlug && !Phoenix.serviceExistsBySlug(request.service, client)) || (!isServiceSlug && !await Phoenix.serviceExistsById(Number(request.service), client))){
+    if((isServiceSlug && !Phoenix.serviceExistsBySlug(req.query.service, client)) || (!isServiceSlug && !await Phoenix.serviceExistsById(Number(req.query.service), client))){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Service does not exist!", []), 404);
     }
     
-    console.log(request.service, "exists");
+    log(req.query.service + "exists");
 
     let serviceObj;
 
     if(isServiceSlug){
-      console.log("Pulling using Slug");
-      serviceObj = await Phoenix.getServiceBySlug(request.service, client);
+      log("Pulling using Slug");
+      serviceObj = await Phoenix.getServiceBySlug(req.query.service, client);
     }else{
-      console.log("Pulling using ID");
-      serviceObj = await Phoenix.getServiceById(request.service, client);
+      log("Pulling using ID");
+      serviceObj = await Phoenix.getServiceById(req.query.service, client);
     }
     
-    console.log("serviceObj", serviceObj);
-
-
-    console.log(request.service, "pulled");
 
 
     let documents: any = await Phoenix.getDocumentsOfService(serviceObj.id, client);
     let points: any = await Phoenix.getPointsOfService(serviceObj.id, client);
-
-    console.log("documents", documents);
-
 
 
     let _documentsArray: any = [];
@@ -133,7 +116,7 @@ module.exports = async function (req: any, res: any) {
   	
     let totalServices = await Phoenix.countAllServices(client);
     let servicesPerPage = 100;
-    let currentPage = Number.parseInt(request.page ?? 1);
+    let currentPage = Number.parseInt('page' in req.query ? req.query.page : 1);
 
     if(!Number.isInteger(currentPage)){
       await client.end();
@@ -151,12 +134,6 @@ module.exports = async function (req: any, res: any) {
     /* If page is one then offset is zero */
     let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * servicesPerPage));
 
-    
-    console.log("totalServices", totalServices);
-    console.log("servicesPerPage", servicesPerPage);
-    console.log("currentPage", currentPage);
-    console.log("_calculatedPages", _calculatedPages);
-    console.log("_calculatedOffset", _calculatedOffset);
 
 
     if(currentPage > _calculatedPages){

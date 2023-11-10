@@ -14,7 +14,7 @@
 import * as Amqp from 'amqp-ts';
 import * as natural from 'natural';
 import { Client } from 'pg';
-import { Bitmask } from '@tosdr/api-microservices';
+import { Bitmask } from 'api-microservices';
 import { Phoenix } from './helpers/Phoenix';
 import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
@@ -27,7 +27,17 @@ const SpammableType = {
   document: "DocumentComment"
 };
 
-module.exports = async function (req: any, res: any) {
+
+
+
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
 
   var connection = new Amqp.Connection(process.env.AMQP_URL);
@@ -36,20 +46,19 @@ module.exports = async function (req: any, res: any) {
 
   const client = new Client();
   await client.connect();
-  let request = JSON.parse(req.payload);
-  let DryRun = typeof request.dryrun !== 'undefined';
+  let DryRun = 'dryrun' in req.query;
 
-  if (!request.user) {
+  if (!req.query && !('user' in req.query)) {
     await client.end();
     await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user'"), 400);
-  } else if (!/^\d+$/.test(request.user)) {
+  } else if (!/^\d+$/.test(req.query.user)) {
     await client.end();
     await connection.close();
     return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Parameter 'user' is NaN"), 400);
   }
 
-  let User = (await client.query("SELECT * FROM users WHERE id = $1::integer", [request.user])).rows[0];
+  let User = (await client.query("SELECT * FROM users WHERE id = $1::integer", [req.query.user])).rows[0];
 
   console.log("User:", User);
 
@@ -64,11 +73,11 @@ module.exports = async function (req: any, res: any) {
   }
 
 
-  let CaseComments = (await client.query("SELECT * FROM case_comments WHERE user_id = $1::integer", [request.user])).rows;
-  let DocumentComments = (await client.query("SELECT * FROM document_comments WHERE user_id = $1::integer", [request.user])).rows;
-  let PointComments = (await client.query("SELECT * FROM point_comments WHERE user_id = $1::integer", [request.user])).rows;
-  let ServiceComments = (await client.query("SELECT * FROM service_comments WHERE user_id = $1::integer", [request.user])).rows;
-  let TopicComments = (await client.query("SELECT * FROM topic_comments WHERE user_id = $1::integer", [request.user])).rows;
+  let CaseComments = (await client.query("SELECT * FROM case_comments WHERE user_id = $1::integer", [req.query.user])).rows;
+  let DocumentComments = (await client.query("SELECT * FROM document_comments WHERE user_id = $1::integer", [req.query.user])).rows;
+  let PointComments = (await client.query("SELECT * FROM point_comments WHERE user_id = $1::integer", [req.query.user])).rows;
+  let ServiceComments = (await client.query("SELECT * FROM service_comments WHERE user_id = $1::integer", [req.query.user])).rows;
+  let TopicComments = (await client.query("SELECT * FROM topic_comments WHERE user_id = $1::integer", [req.query.user])).rows;
 
   console.log("Retrieved all comments");
 
@@ -212,7 +221,7 @@ module.exports = async function (req: any, res: any) {
 
 
    if(!DryRun) {
-     UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [request.user])).rowCount > 0;
+     UserHasBeenBlocked = (await client.query("UPDATE users SET deactivated = true WHERE id = $1::integer", [req.query.user])).rowCount > 0;
    }else{
      UserHasBeenBlocked = true;
    }

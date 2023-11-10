@@ -1,0 +1,15 @@
+version: '2.2'
+services:
+
+  parser:
+    build: .
+    ports:
+      - 3000:80
+    volumes:
+      - ./docker/entrypoint.sh:/opt/entrypoint.d/entrypoint.sh
+      - ./nginx/docker.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/app
+    environment:
+      - APPWRITE_HOSTNAME=https://appconsole.jrbit.de/v1
+      - APPWRITE_PROJECT=63a43bd7d5cb200f754a
+      - APPWRITE_API_KEY

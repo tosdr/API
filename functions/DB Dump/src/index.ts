@@ -17,9 +17,15 @@ import * as fs from 'fs';
 import NextcloudClient from 'nextcloud-link';
 import JSZip from 'jszip';
 
- 
 
-module.exports = async function (req: any, res: any) {
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
   const client = new Client();
   await client.connect();

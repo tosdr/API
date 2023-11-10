@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fd6b6deb28a3e765778dc66e3723330",
+    "content-hash": "3bef87fc59cd2c30a6419a971762ce5d",
     "packages": [
         {
             "name": "appwrite/appwrite",
-            "version": "7.1.0",
+            "version": "10.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/appwrite/sdk-for-php.git",
-                "reference": "bfed397bf60ebff7bbd9c259d8c6e7e810c81929"
+                "reference": "461eedf4efd502dc905c3055f36f0e3583f67390"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/appwrite/sdk-for-php/zipball/bfed397bf60ebff7bbd9c259d8c6e7e810c81929",
-                "reference": "bfed397bf60ebff7bbd9c259d8c6e7e810c81929",
+                "url": "https://api.github.com/repos/appwrite/sdk-for-php/zipball/461eedf4efd502dc905c3055f36f0e3583f67390",
+                "reference": "461eedf4efd502dc905c3055f36f0e3583f67390",
                 "shasum": ""
             },
             "require": {
@@ -42,10 +42,10 @@
             "support": {
                 "email": "team@appwrite.io",
                 "issues": "https://github.com/appwrite/sdk-for-php/issues",
-                "source": "https://github.com/appwrite/sdk-for-php/tree/7.1.0",
+                "source": "https://github.com/appwrite/sdk-for-php/tree/10.0.0",
                 "url": "https://appwrite.io/support"
             },
-            "time": "2022-09-22T04:27:53+00:00"
+            "time": "2023-09-07T23:28:31+00:00"
         }
     ],
     "packages-dev": [],
@@ -56,5 +56,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

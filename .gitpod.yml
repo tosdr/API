@@ -12,7 +12,7 @@ ports:
 tasks:
   - name: Install Parser and Appwrite
     init: cd parser/src && composer install && docker build . -t parser
-    command: npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    command: npm i -g appwrite-cli && appwrite client --endpoint https://appconsole.jrbit.de/v1 --projectId $APPWRITE_PROJECT
 
   - name: Function Server
     init: cd function_server && npm install

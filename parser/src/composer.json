@@ -6,6 +6,6 @@
         }
     },
     "require": {
-        "appwrite/appwrite": "^7.1"
+        "appwrite/appwrite": "^10.0"
     }
 }

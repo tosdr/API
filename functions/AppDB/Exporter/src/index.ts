@@ -19,7 +19,15 @@ import * as fs from 'fs';
 import JSZip from 'jszip';
 
 
-module.exports = async function (req: any, res: any) {
+
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
   const client = new Client()
   await client.connect();
@@ -63,6 +71,8 @@ module.exports = async function (req: any, res: any) {
 
       return res.json(RESTfulAPI.response(256, "OK"));
     });
+
+    return res.empty();
 
 
 };

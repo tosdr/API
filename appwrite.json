@@ -1,5 +1,5 @@
 {
-    "projectId": "63adc899bd4fcb3d75b8",
+    "projectId": "63a43bd7d5cb200f754a",
     "projectName": "",
     "functions": [
         {
@@ -9,13 +9,13 @@
             "path": "functions/Case/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 15
+            "timeout": 15,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "63a586a196b24923e0bd",
@@ -29,7 +29,8 @@
             "execute": [],
             "events": [],
             "schedule": "* * * * *",
-            "timeout": 15
+            "timeout": 15,
+            "commands": "composer install"
         },
         {
             "$id": "63a6cdddef3bbd180247",
@@ -38,13 +39,13 @@
             "path": "functions/Service/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 15
+            "timeout": 15,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "63ada74449c5b6abe2d6",
@@ -53,13 +54,13 @@
             "path": "functions/Spam/DELETE/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "63bd31d263522d513abf",
@@ -68,13 +69,13 @@
             "path": "functions/Spam/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "63bd3c891af577cfa915",
@@ -83,13 +84,13 @@
             "path": "functions/Spam/POST/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "6492c9a9ccf500f2220c",
@@ -98,13 +99,13 @@
             "path": "functions/Service/GET/v2",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "64931a2451cea6ad3c18",
@@ -113,13 +114,13 @@
             "path": "functions/Case/GET/v2",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "65492d5d01cedf27535a",
@@ -128,13 +129,13 @@
             "path": "functions/AppDB/Version/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
-                "node_modules",
-                "src"
+                "node_modules"
             ],
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 60
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "64ae02b048a82447e87d",
@@ -149,7 +150,8 @@
             "execute": [],
             "events": [],
             "schedule": "",
-            "timeout": 300
+            "timeout": 300,
+            "commands": "npm install && npm run build"
         },
         {
             "$id": "654901b409d4955a45e2",
@@ -165,7 +167,8 @@
                 ".npm"
             ],
             "path": "functions/AppDB/Exporter",
-            "entrypoint": "build/index.js"
+            "entrypoint": "build/index.js",
+            "commands": "npm install && npm run build"
         }
     ]
 }

@@ -19,7 +19,7 @@ build_parser:
     - ''
   script:
   - /kaniko/executor --context "${CI_PROJECT_DIR}/parser" --dockerfile "${CI_PROJECT_DIR}/parser/Dockerfile"
-    --destination "${CI_REGISTRY_IMAGE}/parser:latest"
+    --destination "${CI_REGISTRY_IMAGE}/parser/v2:latest"
   rules:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
@@ -41,16 +41,16 @@ build_spamai:
       - spam_ai/**/*
         
 
-Build_API_Metrics:
-  stage: build_functions
-  image: node:16
-  script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63a586a196b24923e0bd
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/API Metrics/**/*
+#Build_API_Metrics:
+#  stage: build_functions
+#  image: node:16
+#  script:
+#    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+#    - appwrite deploy function --functionId 63a586a196b24923e0bd
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#      changes:
+#        - functions/API Metrics/**/*
 
 ### GET /case/v1/ ###
 
@@ -70,19 +70,12 @@ Build_GET_case_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Case/GET/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63a4fddf25de17a1d58b
   needs:
     - Test_GET_case_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Case/GET/v1/**/*
-
         
 
 
@@ -105,18 +98,12 @@ Build_GET_service_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Service/GET/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63a6cdddef3bbd180247
   needs:
     - Test_GET_service_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Service/GET/v1/**/*
 
 
         
@@ -140,18 +127,12 @@ Build_GET_service_v2:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Service/GET/v2"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 6492c9a9ccf500f2220c
   needs:
     - Test_GET_service_v2
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Service/GET/v2/**/*
 
         
 ### END GET /service/v2/ ###
@@ -172,50 +153,38 @@ Build_DELETE_spam_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Spam/DELETE/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
   needs:
     - Test_DELETE_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Spam/DELETE/v1/**/*
 
 ### END DELETE /spam/v1/ ###
 
 
 ### GET /spam/v1/ ###
-Test_GET_spam_v1:
-  stage: test_functions
-  image: node:16
-  script:
-    - cd "functions/Spam/GET/v1"
-    - npm install
-    - npm run build
-  rules:
-      - changes:
-        - functions/Spam/GET/v1/**/*
+#Test_GET_spam_v1:
+#  stage: test_functions
+#  image: node:16
+#  script:
+#    - cd "functions/Spam/GET/v1"
+#    - npm install
+#    - npm run build
+#  rules:
+#      - changes:
+#        - functions/Spam/GET/v1/**/*
 
-Build_GET_spam_v1:
-  stage: build_functions
-  image: node:16
-  script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Spam/GET/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
-    - appwrite deploy function --functionId 63bd31d263522d513abf
-  needs:
-    - Test_GET_spam_v1
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Spam/GET/v1/**/*
+#Build_GET_spam_v1:
+#  stage: build_functions
+#  image: node:16
+#  script:
+#    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+#    - appwrite deploy function --functionId 63bd31d263522d513abf
+#  needs:
+#    - Test_GET_spam_v1
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
         
 ### END GET /spam/v1/ ###
@@ -236,18 +205,12 @@ Build_POST_spam_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Spam/POST/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63bd3c891af577cfa915
   needs:
     - Test_POST_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Spam/POST/v1/**/*
 
 ### END POST /spam/v1/ ###
 ### GET /case/v2/ ###
@@ -267,18 +230,12 @@ Build_GET_case_v2:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/Case/GET/v2"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 64931a2451cea6ad3c18
   needs:
     - Test_GET_case_v2
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/Case/GET/v2/**/*
 
 ### GET /case/v2/ ###
 
@@ -299,18 +256,12 @@ Build_DATA_DUMP:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/DB Dump"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 64ae02b048a82447e87d
   needs:
     - Test_DATA_DUMP
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/DB Dump/**/*
 
 ### DATA DUMP ###
 
@@ -332,18 +283,12 @@ Build_AppDB_Exporter:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/AppDB/Exporter"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 654901b409d4955a45e2
   needs:
     - Test_AppDB_Exporter
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/AppDB/Exporter/**/*
 
 ### AppDB ###
 
@@ -365,17 +310,11 @@ Build_GET_appdb_version_v1:
   stage: build_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint https://appwrite.jrbit.de/v1 --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - cd "functions/AppDB/Version/GET/v1"
-    - npm install
-    - npm run build
-    - cd "$CI_PROJECT_DIR"
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 65492d5d01cedf27535a
   needs:
     - Test_GET_appdb_version_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - functions/AppDB/Version/GET/v1/**/*
 
 ### GET /appdb/version/v1/ ###

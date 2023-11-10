@@ -13,51 +13,41 @@
 
 import { Client } from 'pg';
 import { Phoenix } from './helpers/Phoenix';
-import Flagsmith from 'flagsmith-nodejs';
 import {Case, DocumentMinimal, Service, ServiceMinimal, Bitmask, RESTfulAPI} from "api-microservices";
 import {Points} from "api-microservices/build/models/Points";
 
  
 
-module.exports = async function (req: any, res: any) {
+
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
   const client = new Client();
   await client.connect();
-  
-  const flagsmith = new Flagsmith({
-    environmentKey: process.env.FLAGSMITH_KEY,
-    apiUrl: process.env.FLAGSMITH_HOSTNAME,
-   });
-   const flags = await flagsmith.getEnvironmentFlags();
 
 
 
-  let request = JSON.parse(req.payload);
+  if(req.query && 'id' in req.query){
 
-
-
-  if(request.id){
-
-    if(isNaN(request.id) || !await Phoenix.serviceExistsById(Number(request.id), client)){
+    if(isNaN(req.query.id) || !await Phoenix.serviceExistsById(Number(req.query.id), client)){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Service does not exist!", []), 404);
     }
     
-    console.log(request.id, "exists");
 
-    let serviceObj = await Phoenix.getServiceById(request.id, client);
+    let serviceObj = await Phoenix.getServiceById(req.query.id, client);
     
-    console.log("serviceObj", serviceObj);
-
-
-    console.log(request.id, "pulled");
 
 
     let cases = await Phoenix.getAllCases(client);
     let documents: any = await Phoenix.getDocumentsOfService(serviceObj.id, client);
     let points: any = await Phoenix.getPointsOfService(serviceObj.id, client);
-
-    console.log("documents", documents);
 
 
 
@@ -83,7 +73,7 @@ module.exports = async function (req: any, res: any) {
     await client.end();
     return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Service.v2.fromRow(
         serviceObj,
-        flags.getFeatureValue("s3_url") + "/logos/"+ serviceObj.id + ".png",
+        "https://s3.tosdr.org/logos/"+ serviceObj.id + ".png",
         _documentsArray,
         _pointsArray
     ).toObject()));
@@ -96,7 +86,7 @@ module.exports = async function (req: any, res: any) {
   	
     let totalServices = await Phoenix.countAllServices(client);
     let servicesPerPage = 100;
-    let currentPage = Number.parseInt(request.page ?? 1);
+    let currentPage = Number.parseInt('page' in req.query ? req.query.page : 1);
 
     if(!Number.isInteger(currentPage)){
       await client.end();
@@ -137,7 +127,7 @@ module.exports = async function (req: any, res: any) {
     phoenixServices.forEach((serviceObj) => {
       serviceSkeleton.push(ServiceMinimal.v1.fromRow(
           serviceObj,
-          flags.getFeatureValue("s3_url") + "/logos/"+ serviceObj.id + ".png"
+          "https://s3.tosdr.org/logos/"+ serviceObj.id + ".png"
       ).toObject());
     });
 

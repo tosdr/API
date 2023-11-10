@@ -19,7 +19,15 @@ import * as natural from 'natural';
 
 
 
-module.exports = async function (req: any, res: any) {
+
+type Context = {
+  req: any;
+  res: any;
+  log: (msg: any) => void;
+  error: (msg: any) => void;
+};
+
+export default async ({ req, res, log, error }: Context) => {
 
   let classifier = natural.BayesClassifier.restore(JSON.parse(await Spam.loadClassifier()));
 

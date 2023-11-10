@@ -13,7 +13,8 @@
     "@aws-sdk/client-s3": "^3.441.0",
     "api-microservices": "^1.1.10",
     "jszip": "^3.10.1",
-    "node-appwrite": "^8.0.0"
+    "node-appwrite": "^8.0.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
