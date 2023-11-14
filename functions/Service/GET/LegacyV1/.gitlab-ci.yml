@@ -35,3 +35,4 @@ Production GET /v1/service/all.json:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:
         - functions/Service/GET/LegacyV1/**/*
+        when: manual

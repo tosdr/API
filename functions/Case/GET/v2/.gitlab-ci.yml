@@ -34,5 +34,7 @@ Production GET /case/v2:
   environment: production/get_case_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/Case/GET/v2/**/*
       when: manual
         

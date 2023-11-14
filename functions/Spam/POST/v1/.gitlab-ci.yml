@@ -34,5 +34,7 @@ Production POST /spam/v1:
   environment: production/post_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/Spam/POST/v1/**/*
       when: manual
         

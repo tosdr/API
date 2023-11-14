@@ -34,4 +34,6 @@ Production GET /service/v2:
   environment: production/get_service_v1
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        changes:
+        - functions/Service/GET/v2/**/*
         when: manual

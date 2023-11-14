@@ -34,5 +34,7 @@ Production DELETE /spam/v1:
   environment: production/delete_spam_v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/Spam/DELETE/v1/**/*
       when: manual
         
