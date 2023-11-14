@@ -15,9 +15,11 @@ Staging DELETE /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
-  environment: staging/delete_spam_v1
+  environment: 
+    name: staging/delete_spam_v1
+    url: $API_HOSTNAME/spam/v1
   needs:
     - Test DELETE /spam/v1
   rules:
@@ -29,9 +31,11 @@ Production DELETE /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
-  environment: production/delete_spam_v1
+  environment: 
+    name: production/delete_spam_v1
+    url: $API_HOSTNAME/spam/v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:

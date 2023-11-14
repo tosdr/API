@@ -14,9 +14,11 @@ Staging GET /service/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63a6cdddef3bbd180247
-  environment: staging/get_service_v1
+  environment: 
+    name: staging/get_service_v1
+    url: $API_HOSTNAME/service/v1
   needs:
     - Test GET /service/v1
   rules:
@@ -29,9 +31,11 @@ Production GET /service/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63a6cdddef3bbd180247
-  environment: production/get_service_v1
+  environment: 
+    name: production/get_service_v1
+    url: $API_HOSTNAME/service/v1
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:

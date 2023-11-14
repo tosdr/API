@@ -10,11 +10,6 @@ stages:
 - test_functions
 - deploy_functions
 
-
-variables:
-  APPWRITE_HOSTNAME_PROD: https://appconsole.jrbit.de/v1
-  APPWRITE_HOSTNAME_STAGING: https://appconsole-staging.jrbit.de/v1
-
 include: 
    - "/functions/Service/GET/LegacyV1/.gitlab-ci.yml"
    - "/functions/Service/GET/v1/.gitlab-ci.yml"
