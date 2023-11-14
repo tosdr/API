@@ -11,7 +11,7 @@
   If an error is thrown, a response with code 500 will be returned.
 */
 
-import { Bitmask } from '@tosdr/api-microservices';
+import { Bitmask } from 'api-microservices';
 import { Spam } from './helpers/Spam';
 import { RESTfulAPI } from './helpers/RESTfulAPI';
 
