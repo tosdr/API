@@ -28,7 +28,7 @@ export default async ({ req, res, log, error }: Context) => {
     let urlArray = service.url.trim().split(",");
 
     urlArray.forEach((url: any) => {
-      urls["tosdr/review/" + url] = {
+      urls["tosdr/review/" + url.trim()] = {
           "id": service.id,
           "documents": [],
           "logo": "https://s3.tosdr.org/logos/" + service.id + ".png",

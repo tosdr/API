@@ -1,0 +1,37 @@
+
+Test GET /v1/service/all.json:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/AppDB/Version/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Service/GET/LegacyV1/**/*
+
+Staging GET /v1/service/all.json:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6549a0b4a0d4a0d4a0d4
+  environment: staging/get_v1_service_all_json
+  needs:
+    - Test GET /v1/service/all.json
+  rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        changes:
+        - functions/Service/GET/LegacyV1/**/*
+
+Production GET /v1/service/all.json:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6549a0b4a0d4a0d4a0d4
+  environment: production/get_v1_service_all_json
+  rules:
+      - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+        changes:
+        - functions/Service/GET/LegacyV1/**/*

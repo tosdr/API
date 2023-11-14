@@ -1,0 +1,38 @@
+
+
+Test GET /appdb/version/v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/AppDB/Version/GET/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/AppDB/Version/GET/v1/**/*
+
+Staging GET /appdb/version/v1:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 65492d5d01cedf27535a
+  environment: staging/appdb_exporter
+  needs:
+    - Test GET /appdb/version/v1
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/AppDB/Version/GET/v1/**/*
+
+Production GET /appdb/version/v1:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 65492d5d01cedf27535a
+  environment: production/appdb_exporter
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+        

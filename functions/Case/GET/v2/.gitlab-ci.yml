@@ -1,0 +1,38 @@
+
+
+Test GET /case/v2:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Case/GET/v2"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Case/GET/v2/**/*
+
+Staging GET /case/v2:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 64931a2451cea6ad3c18
+  environment: staging/get_case_v1
+  needs:
+    - Test GET /case/v2
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/Case/GET/v2/**/*
+
+Production GET /case/v2:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 64931a2451cea6ad3c18
+  environment: production/get_case_v1
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+        

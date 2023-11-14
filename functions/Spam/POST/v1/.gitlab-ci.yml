@@ -1,0 +1,38 @@
+
+
+Test POST /spam/v1:
+  stage: test_functions
+  image: node:16
+  script:
+    - cd "functions/Spam/POST/v1"
+    - npm install
+    - npm run build
+  rules:
+      - changes:
+        - functions/Spam/POST/v1/**/*
+
+Staging POST /spam/v1:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_STAGING --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 63bd3c891af577cfa915
+  environment: staging/post_spam_v1
+  needs:
+    - Test POST /spam/v1
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+      - functions/Spam/POST/v1/**/*
+
+Production POST /spam/v1:
+  stage: deploy_functions
+  image: node:16
+  script:
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME_PROD --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 63bd3c891af577cfa915
+  environment: production/post_spam_v1
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+        
