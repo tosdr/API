@@ -169,6 +169,21 @@
             "path": "functions/AppDB/Exporter",
             "entrypoint": "build/index.js",
             "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "6549a0b4a0d4a0d4a0d4",
+            "name": "GET /v1/service/all.json",
+            "runtime": "node-16.0",
+            "path": "functions/Service/GET/LegacyV1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         }
     ]
 }

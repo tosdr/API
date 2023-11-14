@@ -1,22 +1,22 @@
 
 ports:
-  - name: Parser Endpoint
-    description: Translates HTTP to Functions
-    port: 80
-    onOpen: notify
 
-  - name: Function server
-    port: 3000
+  - port: 8080
+    onOpen: open-preview
     visibility: public
+  - port: 443
+    onOpen: ignore
+    visibility: public
+  - port: 3001
+    onOpen: ignore
+    visibility: public
+
 
 tasks:
   - name: Install Parser and Appwrite
     init: cd parser/src && composer install && docker build . -t parser
-    command: npm i -g appwrite-cli && appwrite client --endpoint https://appconsole.jrbit.de/v1 --projectId $APPWRITE_PROJECT
+    command: npm i -g appwrite-cli && appwrite client --endpoint https://appconsole-staging.jrbit.de/v1 --projectId 63a43bd7d5cb200f754a
 
-  - name: Function Server
-    init: cd function_server && npm install
-    command: echo "Point with API_SCRIPT to your function"
 
 vscode:
   extensions:

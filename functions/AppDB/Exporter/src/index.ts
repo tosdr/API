@@ -34,7 +34,30 @@ export default async ({ req, res, log, error }: Context) => {
 
   const tarballStream = fs.createWriteStream("/tmp/export.zip");
 
-  let services = (await client.query('SELECT id, name, rating, url FROM services WHERE is_comprehensively_reviewed = true')).rows;
+  let services = (await client.query('SELECT id, name, rating, url FROM services')).rows;
+
+
+
+
+  let reviewedServices = services.filter((service: any) => service.is_comprehensively_reviewed = true);
+  let unreviewedServices = services.filter((service: any) => service.is_comprehensively_reviewed = false);
+
+
+  // Remove everything but urls in unreivewed services
+
+  unreviewedServices = unreviewedServices.map((service: any) => {
+    return service.url.trim().split(",")
+  });
+
+
+
+  console.log(unreviewedServices);
+
+
+
+
+
+
 
   const s3 = new S3Client({
     credentials: {
