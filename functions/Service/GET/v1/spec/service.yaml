@@ -4,24 +4,31 @@
       - service
     summary: Get all services in a paginated list
     description: Gets the whole service database in a pagination
-    operationId: getAllServices
+    deprecated: true
     parameters:
       - name: page
         in: query
-        description: Index of the Page you want to query
+        description: Index of the Page you want to query, only applicable if "service" is not set.
         required: false
-        explode: true
         schema:
           type: integer
           default: "1"
+      - name: service
+        in: query
+        description: ID of a service to return
+        required: false
+        schema:
+          type: integer
     responses:
       "200":
-        description: Successful operation
+        description: Success
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/all-services-v1"
+              oneOf:
+                - $ref: "#/components/schemas/all-services-v1"
+                - $ref: "#/components/schemas/single-service-v1"
       "400":
         $ref: "./errors/400.yaml"
       "429":
-        $ref: "./errors/429.yaml"
+        $ref: "../../../../../spec/errors/429.yaml"

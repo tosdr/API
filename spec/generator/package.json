@@ -6,7 +6,7 @@
     "author": "Evgeny Chuvelev",
     "license": "MIT",
     "scripts": {
-        "merge": "swagger-merger -i ../root.yaml -o ../../swagger.yaml"
+        "merge": "swagger-merger --debug -i ../root.yaml -o ../../swagger.yaml"
     },
     "dependencies": {
         "swagger-merger": "^1.5.4"

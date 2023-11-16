@@ -20,18 +20,19 @@ tags:
     description: Retrieve Infos about a service
 
 
+paths:
+  $ref#service: '../functions/Service/GET/v1/spec/service.yaml'
+
 
 components:
   schemas:
-      $ref: './components/service/all-v1.yaml'
+      $ref#all-services-v1: './components/service/all-services-v1.yaml'
+      $ref#single-service-v1: './components/service/single-service-v1.yaml'
 
   securitySchemes:
     api_key:
       type: apiKey
       name: apikey
       in: header
-
-paths:
-  $ref: '../functions/Service/GET/v1/spec/service.yaml'
 
 

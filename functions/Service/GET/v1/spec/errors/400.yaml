@@ -19,3 +19,8 @@ content:
       - error
       - message
       - parameters
+    example:
+      error: 65536
+      message: "The Page Parameter is out of range!"
+      parameters:
+        page: -1

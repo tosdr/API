@@ -8,4 +8,5 @@ content:
           type: string
       required:
       - error_msg
-
+    example:
+      error_msg: "You are doing this too much!"
