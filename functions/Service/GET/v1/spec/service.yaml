@@ -1,0 +1,27 @@
+/service/v1/:
+  get:
+    tags:
+      - service
+    summary: Get all services in a paginated list
+    description: Gets the whole service database in a pagination
+    operationId: getAllServices
+    parameters:
+      - name: page
+        in: query
+        description: Index of the Page you want to query
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: "1"
+    responses:
+      "200":
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/all-services-v1"
+      "400":
+        $ref: "./errors/400.yaml"
+      "429":
+        $ref: "./errors/429.yaml"

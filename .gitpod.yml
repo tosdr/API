@@ -10,6 +10,8 @@ tasks:
     init: cd parser/src && composer install && docker build . -t parser
     command: npm i -g appwrite-cli && appwrite client --endpoint https://appconsole-staging.jrbit.de/v1 --projectId 63a43bd7d5cb200f754a
 
+  - name: Swagger UI
+    command: docker run --rm -p 80:8080 -e SWAGGER_JSON=/app/swagger.yaml -v $GITPOD_REPO_ROOT:/app swaggerapi/swagger-ui
 
 vscode:
   extensions:

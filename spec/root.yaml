@@ -1,0 +1,37 @@
+openapi: 3.0.3
+info:
+  title: ToS;DR Service API
+  description: Welcome to the ToS;DR Service API Documentation.
+  termsOfService: https://tosdr.org/legal
+  contact:
+    email: team@tosdr.org
+  license:
+    name: CC BY-SA 3.0
+    url: https://creativecommons.org/licenses/by-sa/3.0/
+  version: 1.0.0
+externalDocs:
+  description: Find out more about ToS;DR
+  url: https://tosdr.org
+servers:
+  - url: https://api.tosdr.org
+  - url: https://api.staging.tosdr.org
+tags:
+  - name: service
+    description: Retrieve Infos about a service
+
+
+
+components:
+  schemas:
+      $ref: './components/service/all-v1.yaml'
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: apikey
+      in: header
+
+paths:
+  $ref: '../functions/Service/GET/v1/spec/service.yaml'
+
+

@@ -1,0 +1,11 @@
+description: Rate Limit Exceeded
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error_msg:
+          type: string
+      required:
+      - error_msg
+

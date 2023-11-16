@@ -1,0 +1,143 @@
+all-services-v1:
+  required:
+    - error
+    - message
+    - parameters
+  type: object
+  properties:
+    error:
+      type: number
+    message:
+      type: string
+    parameters:
+      type: object
+      properties:
+        _page:
+          type: object
+          properties:
+            total:
+              type: number
+            current:
+              type: number
+            start:
+              type: number
+            end:
+              type: number
+          required:
+            - total
+            - current
+            - start
+            - end
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              is_comprehensively_reviewed:
+                type: number
+              name:
+                type: string
+              status: {}
+              urls:
+                type: array
+                items:
+                  type: string
+              updated_at:
+                type: object
+                properties:
+                  timezone:
+                    type: string
+                  pgsql:
+                    type: string
+                  unix:
+                    type: number
+                required:
+                  - timezone
+                  - pgsql
+                  - unix
+              created_at:
+                type: object
+                properties:
+                  timezone:
+                    type: string
+                  pgsql:
+                    type: string
+                  unix:
+                    type: number
+                required:
+                  - timezone
+                  - pgsql
+                  - unix
+              slug: {}
+              rating:
+                type: object
+                properties:
+                  hex:
+                    type: string
+                  human:
+                    type: string
+                  letter:
+                    type: string
+                required:
+                  - hex
+                  - human
+                  - letter
+              links:
+                type: object
+                properties:
+                  phoenix:
+                    type: object
+                    properties:
+                      service:
+                        type: string
+                      documents:
+                        type: string
+                      new_comment:
+                        type: string
+                      edit:
+                        type: string
+                    required:
+                      - service
+                      - documents
+                      - new_comment
+                      - edit
+                  crisp:
+                    type: object
+                    properties:
+                      api:
+                        type: string
+                      service:
+                        type: string
+                      badge:
+                        type: object
+                        properties:
+                          svg:
+                            type: string
+                          png:
+                            type: string
+                        required:
+                          - svg
+                          - png
+                    required:
+                      - api
+                      - service
+                      - badge
+                required:
+                  - phoenix
+                  - crisp
+            required:
+              - id
+              - is_comprehensively_reviewed
+              - name
+              - status
+              - urls
+              - updated_at
+              - created_at
+              - slug
+              - rating
+              - links
+      required:
+        - _page
+        - services
