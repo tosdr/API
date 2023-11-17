@@ -16,18 +16,21 @@ servers:
   - url: https://api.tosdr.org
   - url: https://api.staging.tosdr.org
 tags:
-  - name: service
-    description: Retrieve Infos about a service
+  - name: Service
+    description: Retrieve Infos about a specific service
 
 
 paths:
-  $ref#service: '../functions/Service/GET/v1/spec/service.yaml'
+  $ref#servicev1: '../functions/Service/GET/v1/spec/service.yaml'
+  $ref#servicev2: '../functions/Service/GET/v2/spec/service.yaml'
 
 
 components:
   schemas:
       $ref#all-services-v1: './components/service/all-services-v1.yaml'
       $ref#single-service-v1: './components/service/single-service-v1.yaml'
+      $ref#all-services-v2: './components/service/all-services-v2.yaml'
+      $ref#single-service-v2: './components/service/single-service-v2.yaml'
 
   securitySchemes:
     api_key:

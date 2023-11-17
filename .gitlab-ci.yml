@@ -50,3 +50,23 @@ build_spamai:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
       - spam_ai/**/*
+
+
+pages:
+  stage: deploy
+  before_script:
+    - npm install swagger-ui-dist@5.10.0
+    - cd spec/generator
+    - npm install
+    - npm run merge
+  script:
+    - cd $CI_PROJECT_DIR
+    - mkdir public
+    - cp -rp node_modules/swagger-ui-dist/* public
+    - cp -rp swagger.yaml public/swagger.yaml
+    - sed -i "s#https://petstore\.swagger\.io/v2/swagger\.json#swagger.yaml#g" public/index.html
+  artifacts:
+    paths:
+      - public
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

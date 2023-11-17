@@ -1,0 +1,125 @@
+single-service-v2:
+  type: object
+  properties:
+    error:
+      type: number
+    message:
+      type: string
+    parameters:
+      type: object
+      properties:
+        id:
+          type: number
+        is_comprehensively_reviewed:
+          type: boolean
+        name:
+          type: string
+        updated_at:
+          type: string
+        created_at:
+          type: string
+        slug:
+          type: string
+        rating:
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+        image:
+          type: string
+        documents:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              name:
+                type: string
+              url:
+                type: string
+              updated_at:
+                type: string
+              created_at:
+                type: string
+            required:
+            - id
+            - name
+            - url
+            - updated_at
+            - created_at
+        points:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              title:
+                type: string
+              source:
+                type: string
+              status:
+                type: string
+              analysis:
+                type: string
+              case:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  weight:
+                    type: number
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  updated_at:
+                    type: string
+                  created_at:
+                    type: string
+                  topic_id:
+                    type: number
+                  classification:
+                    type: string
+                required:
+                - id
+                - weight
+                - title
+                - description
+                - updated_at
+                - created_at
+                - topic_id
+                - classification
+              document_id:
+                type: number
+              updated_at:
+                type: string
+              created_at:
+                type: string
+            required:
+            - id
+            - title
+            - source
+            - status
+            - analysis
+            - case
+            - updated_at
+            - created_at
+      required:
+      - id
+      - is_comprehensively_reviewed
+      - name
+      - updated_at
+      - created_at
+      - slug
+      - rating
+      - urls
+      - image
+      - documents
+      - points
+  required:
+  - error
+  - message
+  - parameters
