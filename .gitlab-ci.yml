@@ -55,6 +55,7 @@ build_spamai:
 
 pages:
   stage: swagger
+  image: node:lts
   before_script:
     - npm install swagger-ui-dist@5.10.0
     - cd spec/generator
