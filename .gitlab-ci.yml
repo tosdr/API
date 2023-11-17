@@ -9,6 +9,7 @@ stages:
 - publish
 - test_functions
 - deploy_functions
+- swagger
 
 include: 
    - "/functions/Service/GET/LegacyV1/.gitlab-ci.yml"
@@ -53,7 +54,7 @@ build_spamai:
 
 
 pages:
-  stage: deploy
+  stage: swagger
   before_script:
     - npm install swagger-ui-dist@5.10.0
     - cd spec/generator
