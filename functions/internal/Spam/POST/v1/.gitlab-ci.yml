@@ -1,44 +1,44 @@
 
 
-Test GET /case/v1:
+Test POST /spam/v1:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/Case/GET/v1"
+    - cd "functions/internal/Spam/POST/v1"
     - npm install
     - npm run build
   rules:
       - changes:
-        - functions/Case/GET/v1/**/*
+        - functions/internal/Spam/POST/v1/**/*
 
-Staging GET /case/v1:
+Staging POST /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63a4fddf25de17a1d58b
+    - appwrite deploy function --functionId 63bd3c891af577cfa915
   environment: 
-    name: staging/get_case_v1
+    name: staging/post_spam_v1
     url: $API_HOSTNAME/case/v1
   needs:
-    - Test GET /case/v1
+    - Test POST /spam/v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-      - functions/Case/GET/v1/**/*
+      - functions/internal/Spam/POST/v1/**/*
 
-Production GET /case/v1:
+Production POST /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63a4fddf25de17a1d58b
+    - appwrite deploy function --functionId 63bd3c891af577cfa915
   environment: 
-    name: production/get_case_v1
+    name: production/post_spam_v1
     url: $API_HOSTNAME/case/v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-      - functions/Case/GET/v1/**/*
+      - functions/internal/Spam/POST/v1/**/*
       when: manual
         

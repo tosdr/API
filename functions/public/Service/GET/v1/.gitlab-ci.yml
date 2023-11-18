@@ -3,12 +3,12 @@ Test GET /service/v1:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/Service/GET/v1"
+    - cd "functions/public/Service/GET/v1"
     - npm install
     - npm run build
   rules:
       - changes:
-        - functions/Service/GET/v1/**/*
+        - functions/public/Service/GET/v1/**/*
         
 Staging GET /service/v1:
   stage: deploy_functions
@@ -24,7 +24,7 @@ Staging GET /service/v1:
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:
-        - functions/Service/GET/v1/**/*
+        - functions/public/Service/GET/v1/**/*
 
         
 Production GET /service/v1:
@@ -39,5 +39,5 @@ Production GET /service/v1:
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:
-        - functions/Service/GET/v1/**/*
+        - functions/public/Service/GET/v1/**/*
         when: manual

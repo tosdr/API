@@ -12,16 +12,16 @@ stages:
 - swagger
 
 include: 
-   - "/functions/Service/GET/LegacyV1/.gitlab-ci.yml"
-   - "/functions/Service/GET/v1/.gitlab-ci.yml"
-   - "/functions/Service/GET/v2/.gitlab-ci.yml"
-   - "/functions/Case/GET/v1/.gitlab-ci.yml"
-   - "/functions/Case/GET/v2/.gitlab-ci.yml"
-   - "/functions/Spam/DELETE/v1/.gitlab-ci.yml"
-   - "/functions/Spam/GET/v1/.gitlab-ci.yml"
-   - "/functions/Spam/POST/v1/.gitlab-ci.yml"
-   - "/functions/AppDB/Exporter/.gitlab-ci.yml"
-   - "/functions/AppDB/Version/GET/v1/.gitlab-ci.yml"
+   - "/functions/public/Service/GET/LegacyV1/.gitlab-ci.yml"
+   - "/functions/public/Service/GET/v1/.gitlab-ci.yml"
+   - "/functions/public/Service/GET/v2/.gitlab-ci.yml"
+   - "/functions/public/Case/GET/v1/.gitlab-ci.yml"
+   - "/functions/public/Case/GET/v2/.gitlab-ci.yml"
+   - "/functions/internal/Spam/DELETE/v1/.gitlab-ci.yml"
+   - "/functions/internal/Spam/GET/v1/.gitlab-ci.yml"
+   - "/functions/internal/Spam/POST/v1/.gitlab-ci.yml"
+   - "/functions/internal/AppDB/Exporter/.gitlab-ci.yml"
+   - "/functions/internal/AppDB/Version/GET/v1/.gitlab-ci.yml"
 
 build_parser:
   stage: deploy_functions

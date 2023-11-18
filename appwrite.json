@@ -6,7 +6,7 @@
             "$id": "63a4fddf25de17a1d58b",
             "name": "GET /case/v1",
             "runtime": "node-16.0",
-            "path": "functions/Case/GET/v1",
+            "path": "functions/public/Case/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -21,7 +21,7 @@
             "$id": "63a586a196b24923e0bd",
             "name": "API Metrics",
             "runtime": "php-8.0",
-            "path": "functions/API Metrics",
+            "path": "functions/internal/API Metrics",
             "entrypoint": "src/index.php",
             "ignore": [
                 "vendor"
@@ -36,7 +36,7 @@
             "$id": "63a6cdddef3bbd180247",
             "name": "GET /service/v1",
             "runtime": "node-16.0",
-            "path": "functions/Service/GET/v1",
+            "path": "functions/public/Service/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -51,7 +51,7 @@
             "$id": "63ada74449c5b6abe2d6",
             "name": "DELETE /spam/v1",
             "runtime": "node-16.0",
-            "path": "functions/Spam/DELETE/v1",
+            "path": "functions/public/Spam/DELETE/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -66,7 +66,7 @@
             "$id": "63bd31d263522d513abf",
             "name": "GET /spam/v1",
             "runtime": "node-16.0",
-            "path": "functions/Spam/GET/v1",
+            "path": "functions/internal/Spam/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -81,7 +81,7 @@
             "$id": "63bd3c891af577cfa915",
             "name": "POST /spam/v1",
             "runtime": "node-16.0",
-            "path": "functions/Spam/POST/v1",
+            "path": "functions/internal/Spam/POST/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -96,7 +96,7 @@
             "$id": "6492c9a9ccf500f2220c",
             "name": "GET /service/v2",
             "runtime": "node-16.0",
-            "path": "functions/Service/GET/v2",
+            "path": "functions/public/Service/GET/v2",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -111,7 +111,7 @@
             "$id": "64931a2451cea6ad3c18",
             "name": "GET /case/v2",
             "runtime": "node-16.0",
-            "path": "functions/Case/GET/v2",
+            "path": "functions/public/Case/GET/v2",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -126,7 +126,7 @@
             "$id": "65492d5d01cedf27535a",
             "name": "GET /appdb/version/v1",
             "runtime": "node-16.0",
-            "path": "functions/AppDB/Version/GET/v1",
+            "path": "functions/internal/AppDB/Version/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"
@@ -141,7 +141,7 @@
             "$id": "64ae02b048a82447e87d",
             "name": "DB Dump",
             "runtime": "node-16.0",
-            "path": "functions/DB Dump",
+            "path": "functions/internal/DB Dump",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules",
@@ -166,7 +166,7 @@
                 "node_modules",
                 ".npm"
             ],
-            "path": "functions/AppDB/Exporter",
+            "path": "functions/internal/AppDB/Exporter",
             "entrypoint": "build/index.js",
             "commands": "npm install && npm run build"
         },
@@ -174,7 +174,7 @@
             "$id": "6549a0b4a0d4a0d4a0d4",
             "name": "GET /v1/service/all.json",
             "runtime": "node-16.0",
-            "path": "functions/Service/GET/LegacyV1",
+            "path": "functions/public/Service/GET/LegacyV1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"

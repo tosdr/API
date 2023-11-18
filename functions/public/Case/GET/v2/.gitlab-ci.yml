@@ -1,44 +1,44 @@
 
 
-Test DELETE /spam/v1:
+Test GET /case/v2:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/Spam/DELETE/v1"
+    - cd "functions/public/Case/GET/v2"
     - npm install
     - npm run build
   rules:
       - changes:
-        - functions/Spam/DELETE/v1/**/*
+        - functions/public/Case/GET/v2/**/*
 
-Staging DELETE /spam/v1:
+Staging GET /case/v2:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63ada74449c5b6abe2d6
+    - appwrite deploy function --functionId 64931a2451cea6ad3c18
   environment: 
-    name: staging/delete_spam_v1
-    url: $API_HOSTNAME/spam/v1
+    name: staging/get_case_v1
+    url: $API_HOSTNAME/case/v1
   needs:
-    - Test DELETE /spam/v1
+    - Test GET /case/v2
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-      - functions/Spam/DELETE/v1/**/*
+      - functions/public/Case/GET/v2/**/*
 
-Production DELETE /spam/v1:
+Production GET /case/v2:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63ada74449c5b6abe2d6
+    - appwrite deploy function --functionId 64931a2451cea6ad3c18
   environment: 
-    name: production/delete_spam_v1
-    url: $API_HOSTNAME/spam/v1
+    name: production/get_case_v1
+    url: $API_HOSTNAME/case/v1
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-      - functions/Spam/DELETE/v1/**/*
+      - functions/public/Case/GET/v2/**/*
       when: manual
         

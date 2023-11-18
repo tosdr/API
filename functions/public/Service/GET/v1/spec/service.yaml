@@ -1,9 +1,10 @@
-/service/v2/:
+/service/v1/:
   get:
     tags:
       - Service
     summary: Get all services in a paginated list
     description: Gets the whole service database in a pagination
+    deprecated: true
     parameters:
       - name: page
         in: query
@@ -12,7 +13,7 @@
         schema:
           type: integer
           default: "1"
-      - name: id
+      - name: service
         in: query
         description: ID of a service to return
         required: false
@@ -25,11 +26,11 @@
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/all-services-v2"
-                - $ref: "#/components/schemas/single-service-v2"
+                - $ref: "#/components/schemas/all-services-v1"
+                - $ref: "#/components/schemas/single-service-v1"
       "400":
         $ref: "./errors/400.yaml"
       "404":
         $ref: "./errors/404.yaml"
       "429":
-        $ref: "../../../../../spec/errors/429.yaml"
+        $ref: "../../../../../../spec/errors/429.yaml"
