@@ -3,7 +3,7 @@ Test GET /v1/service/all.json:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/AppDB/Version/GET/v1"
+    - cd "functions/public/Service/GET/LegacyV1"
     - npm install
     - npm run build
   rules:

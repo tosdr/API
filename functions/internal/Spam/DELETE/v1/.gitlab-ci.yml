@@ -15,7 +15,7 @@ Staging DELETE /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli &^& appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
     - appwrite deploy function --functionId 63ada74449c5b6abe2d6
   environment: 
     name: staging/delete_spam_v1
