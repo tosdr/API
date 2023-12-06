@@ -20,7 +20,8 @@ module.exports = async function (req: any, res: any) {
 
   const client = new Client()
   await client.connect();
-  let request = req.payload;
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if(request.id){
     if(!await Phoenix.caseExists(request.id, client)){

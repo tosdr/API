@@ -10,7 +10,7 @@ export class Phoenix {
   }
   
   static async getAllDocumentIDs(postgresClient: Client): Promise<Array<any>> {
-    return (await postgresClient.query('SELECT id, text_version FROM documents')).rows;
+    return (await postgresClient.query('SELECT id, text_version FROM documents WHERE status IS DISTINCT FROM \'deleted\'')).rows;
   }
 
   static async getAllDocumentsOffset(limit: number, offset: number, postgresClient: Client): Promise<Array<any>> {

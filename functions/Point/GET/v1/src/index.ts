@@ -12,23 +12,36 @@
 */
 
 import { Client } from 'pg';
-import {Bitmask, Points, RESTfulAPI} from "api-microservices";
+import {Bitmask, Points, Case, RESTfulAPI} from "api-microservices";
 import { Phoenix } from './helpers/Phoenix';
 
 module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = req.payload;
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if(request.id) {
     if (!await Phoenix.pointExists(request.id, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Case not found", []), 404);
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Point not found", []), 404);
     }
-    let points = await Phoenix.getCasePoints(request.id, client);
+    let point = await Phoenix.getPoint(request.id, client);
+    // await client.end();
+
+    if(!await Phoenix.caseExists(point.case_id, client)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
+    }
+    let caseResponse = await Phoenix.getCase(point.case_id, client);
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(points).toObject()));
+    let caseObj = Case.v2.fromRow(caseResponse)
+
+    return res.json(
+        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(point, caseObj).toObject()),
+        200
+    );
   } else if (request.case_id) {
     if (!await Phoenix.casePointsExist(request.case_id, client)) {
       await client.end();
@@ -38,7 +51,7 @@ module.exports = async function (req: any, res: any) {
       );
     }
 
-    let totalPoints = await Phoenix.countAllCasePoints(client);
+    let totalPoints = await Phoenix.countAllCasePoints(request.case_id, client);
     let pointsPerPage = 100;
     let currentPage = Number.parseInt(request.page ?? 1);
 
@@ -72,11 +85,19 @@ module.exports = async function (req: any, res: any) {
     }
 
     let phoenixPoints: any = await Phoenix.getCasePointsOffset(request.case_id, pointsPerPage, _calculatedOffset, client);
-
     let pointsSkeleton: any = [];
 
+    // Get the associated Case object
+    if(!await Phoenix.caseExists(request.case_id, client)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
+    }
+    let caseResponse = await Phoenix.getCase(request.case_id, client);
+    await client.end();
+    let caseObj = Case.v2.fromRow(caseResponse)
+
     phoenixPoints.forEach((pointObj: any) => {
-      pointsSkeleton.push(Points.v1.fromRow(pointObj).toObject());
+      pointsSkeleton.push(Points.v1.fromRow(pointObj, caseObj).toObject());
     });
 
     await client.end();

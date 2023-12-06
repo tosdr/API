@@ -20,7 +20,9 @@ module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = req.payload;
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
+
   if(request.id) {
     if (!await Phoenix.documentExists(request.id, client)) {
       await client.end();
@@ -31,7 +33,8 @@ module.exports = async function (req: any, res: any) {
     let docObj = await Phoenix.getDocumentById(request.id, client);
     await client.end();
     return res.json(
-        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject())
+        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject()),
+        200
     );
   }
 

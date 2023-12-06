@@ -16,12 +16,11 @@ import { Phoenix } from './helpers/Phoenix';
 import {Bitmask, RESTfulAPI} from "api-microservices";
 
 module.exports = async function (req: any, res: any) {
-  // TODO verify request
-
   const client = new Client()
   await client.connect();
 
-  let request = req.payload;
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if (!request.case_id) {
     await client.end();
@@ -60,12 +59,11 @@ module.exports = async function (req: any, res: any) {
   }
 
   const caseObj = await Phoenix.getCase(request.case_id, client);
-  const caseId = caseObj?.id;
+  const caseId = parseInt(caseObj?.id);
   const title = caseObj?.title;
-  const topicId = caseObj?.topic_id;
 
   const result = await Phoenix.createPoint(
-      caseId, request.user_id, request.document_id, topicId, request.service_id, 'pending', title,
+      caseId, request.user_id, request.document_id, request.service_id, 'pending', title,
       request.source, request.analysis, request.quote_text, request.quote_start, request.quote_end,
       request.docbot_version, request.ml_score, client
   );

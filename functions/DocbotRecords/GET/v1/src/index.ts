@@ -19,24 +19,33 @@ module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = JSON.parse(req.payload);
-  if(request.id && request.docbot_version) {
-    if (!await Phoenix.docbotRecordExists(request.id, request.docbot_version, client)) {
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
+
+  if(request.case_id && request.docbot_version) {
+    if (!await Phoenix.docbotRecordExists(request.case_id, request.docbot_version, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Docbot Records do not exist for this case and docbot version", []), 404);
+      return res.json(
+          RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Docbot Records do not exist for this case and docbot version", []),
+          404
+      );
     }
-    let docbotRecords: any = await Phoenix.getDocuments(request.id, request.docbot_version, client);
+    let docbotRecords: any = await Phoenix.getDocuments(request.case_id, request.docbot_version, client);
     let documentIds: any = [];
 
     docbotRecords.forEach((record: any) => {
-      documentIds.push({
-        "document_id": record.document_id,
-        "text_version": record.text_version
-      });
+      documentIds.push([record.document_id, record.text_version]);
     });
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All documents for case and docbot version below", {
-      documents: documentIds
-    }));
+    return res.json(
+        RESTfulAPI.response(
+            Bitmask.REQUEST_SUCCESS,
+            "All documents for case and docbot version below",
+            {documents: documentIds}),
+        200
+    );
+  } else {
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Must specify case_id and docbot_version", []), 400);
   }
 };
