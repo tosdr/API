@@ -12,75 +12,109 @@
 */
 
 import { Client } from 'pg';
-import {Bitmask, Points, RESTfulAPI} from "api-microservices";
+import {Bitmask, Points, Case, RESTfulAPI} from "api-microservices";
 import { Phoenix } from './helpers/Phoenix';
 
 module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = JSON.parse(req.payload);
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if(request.id) {
-    if (!await Phoenix.pointsExist(request.id, client)) {
+    if (!await Phoenix.pointExists(request.id, client)) {
       await client.end();
-      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Points belonging to this case do not exist", []), 404);
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Point not found", []), 404);
     }
-    let points = await Phoenix.getPointsForCase(request.id, client);
+    let point = await Phoenix.getPoint(request.id, client);
+    // await client.end();
+
+    if(!await Phoenix.caseExists(point.case_id, client)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
+    }
+    let caseResponse = await Phoenix.getCase(point.case_id, client);
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(points).toObject()));
-  }
+    let caseObj = Case.v2.fromRow(caseResponse)
 
-  let totalPoints = await Phoenix.countAllPoints(client);
-  let pointsPerPage = 100;
-  let currentPage = Number.parseInt(request.page ?? 1);
+    return res.json(
+        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Points.v1.fromRow(point, caseObj).toObject()),
+        200
+    );
+  } else if (request.case_id) {
+    if (!await Phoenix.casePointsExist(request.case_id, client)) {
+      await client.end();
+      return res.json(
+          RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Points belonging to this case do not exist", []),
+          404
+      );
+    }
 
-  if(!Number.isInteger(currentPage)){
+    let totalPoints = await Phoenix.countAllCasePoints(request.case_id, client);
+    let pointsPerPage = 100;
+    let currentPage = Number.parseInt(request.page ?? 1);
+
+    if(!Number.isInteger(currentPage)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is not a number!", {
+        page: currentPage
+      }), 400);
+    }
+
+    /* Check if page is zero or below */
+    if(currentPage < 1){
+      currentPage = 1;
+    }
+
+    let _calculatedPages = Math.ceil(totalPoints / pointsPerPage);
+    /* If page is one then offset is zero */
+    let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * pointsPerPage));
+
+    console.log("totalPoints", totalPoints);
+    console.log("servicesPerPage", pointsPerPage);
+    console.log("currentPage", currentPage);
+    console.log("_calculatedPages", _calculatedPages);
+    console.log("_calculatedOffset", _calculatedOffset);
+
+    if(currentPage > _calculatedPages){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is out of range!", {
+        page: currentPage
+      }), 400);
+    }
+
+    let phoenixPoints: any = await Phoenix.getCasePointsOffset(request.case_id, pointsPerPage, _calculatedOffset, client);
+    let pointsSkeleton: any = [];
+
+    // Get the associated Case object
+    if(!await Phoenix.caseExists(request.case_id, client)){
+      await client.end();
+      return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
+    }
+    let caseResponse = await Phoenix.getCase(request.case_id, client);
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is not a number!", {
-      page: currentPage
-    }), 400);
-  }
+    let caseObj = Case.v2.fromRow(caseResponse)
 
-  /* Check if page is zero or below */
-  if(currentPage < 1){
-    currentPage = 1;
-  }
-  
-  let _calculatedPages = Math.ceil(totalPoints / pointsPerPage);
-  /* If page is one then offset is zero */
-  let _calculatedOffset = (currentPage === 1 ? 0 : ((currentPage - 1) * pointsPerPage));
+    phoenixPoints.forEach((pointObj: any) => {
+      pointsSkeleton.push(Points.v1.fromRow(pointObj, caseObj).toObject());
+    });
 
-  console.log("totalPoints", totalPoints);
-  console.log("servicesPerPage", pointsPerPage);
-  console.log("currentPage", currentPage);
-  console.log("_calculatedPages", _calculatedPages);
-  console.log("_calculatedOffset", _calculatedOffset);
-
-  if(currentPage > _calculatedPages){
     await client.end();
-    return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Page Parameter is out of range!", {
-      page: currentPage
-    }), 400);
+
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "Case points below", {
+      _page: {
+        total: totalPoints,
+        current: currentPage,
+        start: 1,
+        end: _calculatedPages
+      },
+      points: pointsSkeleton
+    }));
+  } else {
+    return res.json(
+        RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Getting all points not supported. Pass a point ID or case ID", []),
+        400
+    );
   }
-
-  let phoenixPoints: any = await Phoenix.getAllPointsOffset(pointsPerPage, _calculatedOffset, client);
-
-  let pointsSkeleton: any = [];
-
-  phoenixPoints.forEach((pointObj: any) => {
-    pointsSkeleton.push(Points.v1.fromRow(pointObj).toObject());
-  });
-  
-  await client.end();
-
-  return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "All points below", {
-    _page: {
-      total: totalPoints,
-      current: currentPage,
-      start: 1,
-      end: _calculatedPages
-    },
-    points: pointsSkeleton
-  }));
 };

@@ -19,7 +19,8 @@ module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = JSON.parse(req.payload);
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if (!request.case_id) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'case_id'"), 400);
@@ -37,19 +38,12 @@ module.exports = async function (req: any, res: any) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'text_version'"), 400);
   }
 
-  if (!request.char_start) {
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'char_start'"), 400);
-  }
+  // char_start and char_end are technically optional
 
-  if (!request.char_end) {
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'char_end'"), 400);
-  }
-
-  if (!request.ml_score) {
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'ml_score'"), 400);
-  }
-
-  console.log("request", request);
-
-  await Phoenix.createDocbotRecord(request.case_id, request.document_id, request.docbot_version, request.text_version, request.char_start, request.char_end, request.ml_score, client);
+  await Phoenix.createDocbotRecord(
+      request.case_id, request.document_id, request.docbot_version, request.text_version, request.char_start,
+      request.char_end, request.ml_score, client
+  );
+  await client.end();
+  res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "DocbotRecord created"), 201)
 };

@@ -1,57 +1,29 @@
-# Point V1
+# Point GET V1
 
-Welcome to the documentation of this function 👋 We strongly recommend keeping this file in sync with your function's logic to make sure anyone can easily understand your function in the future. If you don't need documentation, you can remove this file.
+Can retrieve a single Point by `id`, or a list of all Points for a given `case_id`
 
-## 🤖 Documentation (TBD)
-
-Retrieves a list of all points that belong to a specific case, or all points if no parameters are given.
-
-<!-- If input is expected, add example -->
-
-To retrieve points belonging to specific case:
-
-<!-- Update with your description, for example 'Create Stripe payment and return payment URL' -->
+To retrieve a single Point:
 
 *Example input:*
 
-This function expects the following JSON Input:
-
 ```json
-{"id": CASE_ID_AS_INTEGER}
+{"id": POINT_ID_AS_INTEGER}
 ```
 
-Providing no id parameter will list all points
+*Example output:*
+```json
+{"response":{"error":256,"message":"OK","parameters":{"id":17769,"title":"The court of law governing the terms is in location X","source":"https://www.1800mattress.com/terms-of-use.html","status":"approved","analysis":"Generated through the annotate view","case":{"id":163,"weight":0,"title":"The court of law governing the terms is in location X","description":"The Terms are governed by the applicable laws of a jurisdiction (specified in the title of each point by replacing the \"X\").","updated_at":"2021-02-25T09:38:43.370Z","created_at":"2018-01-16T12:26:09.179Z","topic_id":44,"classification":"neutral"},"document_id":1310,"updated_at":"2023-07-03T09:23:27.263Z","created_at":"2021-03-26T16:56:18.992Z"}},"stdout":"","stderr":""}
+```
 
-<!-- If input is expected, add example
+To retrieve all points for a particular case:
+
+*Example input:*
+
+```json
+{"case_id": CASE_ID_AS_INTEGER}
+```
 
 *Example output:*
-
-<!-- Update with your expected output -->
-
-## 📝 Environment Variables
-
-List of environment variables used by this cloud function:
-
-- **PGUSER** - Postgres User of the Phoenix Database
-- **PGHOST** - Hostname of the Phoenix Database
-- **PGPASSWORD** - Password of the Phoenix Database
-- **PGDATABASE** - Database Name of Phoenix
-- **PGPORT** - Port of the Phoenix Database
-- **FLAGSMITH_KEY** - Environment Key of your Flagsmith Installation
-- **FLAGMSMITH_HOSTNAME** - Hostname of your Flagsmith Installation
-
-<!-- Add your custom environment variables -->
-
-## 🚀 Deployment
-
-There are two ways of deploying the Appwrite function, both having the same results, but each using a different process. We highly recommend using CLI deployment to achieve the best experience.
-
-### Using CLI
-
-Make sure you have [Appwrite CLI](https://appwrite.io/docs/command-line#installation) installed, and you have successfully logged into your Appwrite server. To make sure Appwrite CLI is ready, you can use the command `appwrite client --debug` and it should respond with green text `✓ Success`.
-
-Make sure you are in the same folder as your `appwrite.json` file and run `appwrite deploy function` to deploy your function. You will be prompted to select which functions you want to deploy.
-
-### Manual using tar.gz
-
-Manual deployment has no requirements and uses Appwrite Console to deploy the tag. First, enter the folder of your function. Then, create a tarball of the whole folder and gzip it. After creating `.tar.gz` file, visit Appwrite Console, click on the `Deploy Tag` button and switch to the `Manual` tab. There, set the `entrypoint` to `src/index.js`, and upload the file we just generated.
+```json
+{"response":{"error":256,"message":"Case points below","parameters":{"_page":{"total":26864,"current":1,"start":1,"end":269},"points":[{"id":5297,"title":"sign away moral rights","source":"https://www.nexon.com/main/en/legal/tou","status":"declined","analysis":"Generated through the annotate view","case":{"id":118,"weight":50,"title":"You waive your moral rights","description":"Moral rights are rights to creators of literary, dramatic, musical and artistic works, as well as directors of films.\r\n\r\n\"The moral rights include the right of attribution, the right to have a work published anonymously or pseudonymously, and the right to the integrity of the work. The preserving of the integrity of the work allows the author to object to alteration, distortion, or mutilation of the work that is \"prejudicial to the author's honor or reputation\". Anything else that may detract from the artist's relationship with the work even after it leaves the artist's possession or ownership may bring these moral rights into play. Moral rights are distinct from any economic rights tied to copyrights. Even if an artist has assigned his or her copyright rights to a work to a third party, he or she still maintains the moral rights to the work.\" -Wikipedia\r\n\r\nIn general, any terms that use the exact words \"moral rights\" as rights that are waived will fall under this Case.","updated_at":"2021-05-24T05:17:03.838Z","created_at":"2018-01-16T12:26:08.131Z","topic_id":27,"classification":"blocker"},"document_id":869,"updated_at":"2021-02-06T01:16:11.053Z","created_at":"2019-01-01T22:42:32.332Z"},...]}}
+```

@@ -13,42 +13,61 @@
 
 import { Client } from 'pg';
 import { Phoenix } from './helpers/Phoenix';
-import {Bitmask, Points, RESTfulAPI} from "api-microservices";
+import {Bitmask, RESTfulAPI} from "api-microservices";
 
 module.exports = async function (req: any, res: any) {
   const client = new Client()
   await client.connect();
 
-  let request = JSON.parse(req.payload);
+  // The request will already be parsed if handled by server.js
+  let request = typeof req.payload === 'string' ? JSON.parse(req.payload) : req.payload;
 
   if (!request.case_id) {
+    await client.end();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'case_id'"), 400);
   }
 
   if (!request.user_id) {
+    await client.end();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'user_id'"), 400);
   }
 
   if (!request.document_id) {
+    await client.end();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'document_id'"), 400);
   }
 
   if (!request.service_id) {
+    await client.end();
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'service_id'"), 400);
   }
 
-  if (!request.docbot_version) {
-    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'docbot_version'"), 400);
+  // It seems standard to give the doc source URL
+  if (!request.source) {
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'source'"), 400);
   }
 
-  console.log("request", request);
+  // For now this API only exists for docbot, so ensure docbot-specific fields are passed
+  if (!request.docbot_version) {
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'docbot_version'"), 400);
+  }
+  if (!request.ml_score) {
+    await client.end();
+    return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'ml_score'"), 400);
+  }
 
   const caseObj = await Phoenix.getCase(request.case_id, client);
-  const caseId = caseObj?.id;
+  const caseId = parseInt(caseObj?.id);
   const title = caseObj?.title;
-  const topicId = caseObj?.topic_id;
 
-  const result = await Phoenix.createPoint(caseId, request.user_id, request.document_id, topicId, request.service_id, 'pending', title, request.docbot_version, client);
+  const result = await Phoenix.createPoint(
+      caseId, request.user_id, request.document_id, request.service_id, 'pending', title,
+      request.source, request.analysis, request.quote_text, request.quote_start, request.quote_end,
+      request.docbot_version, request.ml_score, client
+  );
 
-  // return ? not sure
+  await client.end();
+  res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "Point created"), 201)
 };

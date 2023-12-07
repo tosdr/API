@@ -149,6 +149,62 @@
             "events": [],
             "schedule": "",
             "timeout": 60
+        }, {
+            "$id": "",
+            "name": "GET /point/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Point/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
+        }, {
+            "$id": "",
+            "name": "POST /point/v1",
+            "runtime": "node-16.0",
+            "path": "functions/Point/POST/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
+        }, {
+            "$id": "",
+            "name": "GET /docbotrecord/v1",
+            "runtime": "node-16.0",
+            "path": "functions/DocbotRecords/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
+        }, {
+            "$id": "",
+            "name": "POST /docbotrecord/v1",
+            "runtime": "node-16.0",
+            "path": "functions/DocbotRecords/POST/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules",
+                "src"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60
         }
     ]
 }

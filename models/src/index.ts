@@ -4,6 +4,8 @@ export { CrispLinks } from './models/links/Crisp';
 export { Service } from './models/Service';
 export { Timezone } from './models/Timezone';
 export { Case } from './models/Case';
+export { Points } from './models/Points';
+export { Document } from './models/Document';
 export { DocumentMinimal } from './models/DocumentMinimal';
 export { ServiceMinimal } from './models/ServiceMinimal';
 export { Classification } from './models/Classification';
