@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "node-appwrite": "^8.0.0",
-    "api-microservices": "^1.1.5",
+    "api-microservices": "^1.1.10",
     "pg": "^8.8.0"
   },
   "devDependencies": {

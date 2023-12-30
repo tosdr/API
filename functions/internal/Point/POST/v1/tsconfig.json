@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "ES6",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "skipLibCheck": true,
+      "preserveConstEnums": true,
+      "esModuleInterop": true,
+      "outDir": "build/",
+      "rootDir": "src/",
+      "sourceMap": false
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
+    ]
+  }

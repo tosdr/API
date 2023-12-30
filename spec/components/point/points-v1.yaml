@@ -1,0 +1,88 @@
+points-v2:
+  type: object
+  properties:
+    error:
+      type: number
+    message:
+      type: string
+    parameters:
+      type: object
+      properties:
+        _page:
+          type: object
+          properties:
+            total:
+              type: number
+            current:
+              type: number
+            start:
+              type: number
+            end:
+              type: number
+          required:
+            - total
+            - current
+            - start
+            - end
+        points:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              title:
+                type: string
+              source:
+                type: string
+              status:
+                type: string
+              analysis:
+                type: string
+              case:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  weight:
+                    type: number
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  updated_at:
+                    type: string
+                  created_at:
+                    type: string
+                  topic:
+                    type: number
+                  classification:
+                    type: string
+              quoteText:
+                type: string
+              document_id:
+                type: number
+              quoteStart:
+                type: number
+              quoteEnd:
+                type: number
+              updated_at:
+                type: string
+              created_at:
+                type: string
+            required:
+              - id
+              - title
+              - source
+              - status
+              - analysis
+              - case
+              - updated_at
+              - created_at
+      required:
+        - _page
+        - points
+  required:
+    - error
+    - message
+    - parameters

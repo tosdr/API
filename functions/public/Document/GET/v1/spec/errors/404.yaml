@@ -1,0 +1,16 @@
+description: Service not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: number
+        message:
+          type: string
+      required:
+      - error
+      - message
+    example:
+      error: 65536
+      message: "The service does not exist!"

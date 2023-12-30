@@ -14,9 +14,6 @@
 import { Client } from 'pg';
 import { Bitmask, Case, RESTfulAPI } from "api-microservices";
 import { Phoenix } from './helpers/Phoenix';
-import Flagsmith from 'flagsmith-nodejs';
-
-
 
 type Context = {
   req: any;
@@ -30,38 +27,18 @@ export default async ({ req, res, log, error }: Context) => {
   const client = new Client()
   await client.connect();
 
-  const flagsmith = new Flagsmith({
-    environmentKey: process.env.FLAGSMITH_KEY,
-    apiUrl: process.env.FLAGSMITH_HOSTNAME,
-  });
-  const flags = await flagsmith.getEnvironmentFlags();
-
-
-
   if (req.query && 'id' in req.query) {
-
 
     if (!await Phoenix.caseExists(req.query.id, client)) {
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Case does not exist!", []), 404);
     }
 
-
-
     let caseObj = await Phoenix.getCase(req.query.id, client);
 
     await client.end();
-
-
-
-    res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Case.v2.fromRow(caseObj).toObject()));
-
-    return res.json();
-
+    return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Case.v2.fromRow(caseObj).toObject()));
   }
-
-
-
 
 
   let totalCases = await Phoenix.countAllCases(client);
@@ -100,12 +77,7 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   let phoenixCases = await Phoenix.getAllCasesOffset(casesPerPage, _calculatedOffset, client);
-
-
   let CasesSkel: any = [];
-
-
-
 
 
   phoenixCases.forEach((caseObj) => {

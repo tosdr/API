@@ -184,6 +184,81 @@
             "schedule": "",
             "timeout": 60,
             "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "",
+            "name": "GET /document/v1",
+            "runtime": "node-16.0",
+            "path": "functions/public/Document/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "",
+            "name": "GET /point/v1",
+            "runtime": "node-16.0",
+            "path": "functions/internal/Point/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "",
+            "name": "POST /point/v1",
+            "runtime": "node-16.0",
+            "path": "functions/internal/Point/POST/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "",
+            "name": "GET /docbotrecord/v1",
+            "runtime": "node-16.0",
+            "path": "functions/internal/DocbotRecords/GET/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
+        },
+        {
+            "$id": "",
+            "name": "POST /docbotrecord/v1",
+            "runtime": "node-16.0",
+            "path": "functions/internal/DocbotRecords/POST/v1",
+            "entrypoint": "build/index.js",
+            "ignore": [
+                "node_modules"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 60,
+            "commands": "npm install && npm run build"
         }
     ]
 }
