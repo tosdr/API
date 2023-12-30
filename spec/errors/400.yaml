@@ -1,0 +1,16 @@
+description: Client error
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: number
+        message:
+          type: string
+      required:
+        - error
+        - message
+    example:
+      error: 65536
+      message: "Missing case ID"

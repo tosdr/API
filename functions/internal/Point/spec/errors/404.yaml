@@ -1,0 +1,25 @@
+description: Point not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: number
+        message:
+          type: string
+        parameters:
+          type: object
+          properties:
+            page:
+              type: number
+          required:
+          - page
+      required:
+      - error
+      - message
+      - parameters
+    example:
+      error: 65536
+      message: "The point does not exist!"
+      parameters: []

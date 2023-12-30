@@ -1,0 +1,24 @@
+description: Docbot Records do not exist for this case and docbot version
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: number
+        message:
+          type: string
+        parameters:
+          type: object
+          properties:
+            page:
+              type: number
+          required:
+          - page
+      required:
+      - error
+      - message
+      - parameters
+    example:
+      error: 65536
+      message: "Docbot Records do not exist for this case and docbot version"
