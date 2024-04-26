@@ -12,7 +12,7 @@
 */
 
 import { Client } from 'pg';
-import {Bitmask, Document, RESTfulAPI} from "api-microservices";
+import {Bitmask, RESTfulAPI} from "api-microservices";
 import { Phoenix } from './helpers/Phoenix';
 
 type Context = {
@@ -37,7 +37,16 @@ export default async ({ req, res, log, error }: Context) => {
     let docObj = await Phoenix.getDocumentById(req.query.id, client);
     await client.end();
     return res.json(
-        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", Document.v1.fromRow(docObj).toObject()),
+        RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "OK", {
+          "id": Number(docObj.id),
+          "name": docObj.name,
+          "url": docObj.url,
+          "text": docObj.text,
+          "updated_at": docObj.updated_at,
+          "created_at": docObj.created_at,
+          "text_version": docObj.text_version,
+          "service_id": docObj.service_id
+        }),
         200
     );
   }

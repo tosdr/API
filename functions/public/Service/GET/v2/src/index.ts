@@ -35,7 +35,7 @@ export default async ({ req, res, log, error }: Context) => {
 
   if(req.query && 'id' in req.query){
 
-    if(isNaN(req.query.id) || !await Phoenix.serviceExistsById(Number(req.query.id), client)){
+    if(!await Phoenix.serviceExistsById(Number(req.query.id), client)){
       await client.end();
       return res.json(RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "The Service does not exist!", []), 404);
     }

@@ -23,9 +23,6 @@ type Context = {
 };
 
 export default async ({ req, res, log, error }: Context) => {
-  const client = new Client()
-  await client.connect();
-
   if (!req.query || !('case_id' in req.query)) {
     return res.json(RESTfulAPI.response(Bitmask.MISSING_PARAMETER, "Missing Parameter 'case_id'"), 400);
   }
@@ -44,10 +41,12 @@ export default async ({ req, res, log, error }: Context) => {
 
   // char_start and char_end are technically optional
 
+  const client = new Client()
+  await client.connect();
   await Phoenix.createDocbotRecord(
       req.query.case_id, req.query.document_id, req.query.docbot_version, req.query.text_version, req.query.char_start,
       req.query.char_end, req.query.ml_score, client
   );
   await client.end();
-  res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "DocbotRecord created"), 201)
+  return res.json(RESTfulAPI.response(Bitmask.REQUEST_SUCCESS, "DocbotRecord created"), 201)
 };

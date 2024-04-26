@@ -24,7 +24,8 @@ paths:
   $ref#servicev1: '../functions/public/Service/GET/v1/spec/service.yaml'
   $ref#servicev2: '../functions/public/Service/GET/v2/spec/service.yaml'
   $ref#documentv1: '../functions/public/Document/GET/v1/spec/document.yaml'
-  $ref#pointv1: '../functions/internal/Point/spec/point.yaml'
+  $ref#pointv1: '../functions/public/Point/spec/point.yaml'
+  $ref#internalpointv1: '../functions/internal/Point/spec/point.yaml'
   $ref#docbotrecordv1: '../functions/internal/DocbotRecords/spec/docbotrecord.yaml'
 
 components:

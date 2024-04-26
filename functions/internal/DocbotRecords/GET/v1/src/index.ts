@@ -27,9 +27,7 @@ export default async ({ req, res, log, error }: Context) => {
   await client.connect();
 
   if(req.query && 'docbot_version' in req.query && 'case_id' in req.query) {
-    if (isNaN(req.query.case_id) ||
-        isNaN(req.query.docbot_version) ||
-        !await Phoenix.docbotRecordExists(req.query.case_id, req.query.docbot_version, client)) {
+    if (!await Phoenix.docbotRecordExists(req.query.case_id, req.query.docbot_version, client)) {
       await client.end();
       return res.json(
           RESTfulAPI.response(Bitmask.INVALID_PARAMETER, "Docbot Records do not exist for this case and docbot version"),
@@ -44,7 +42,7 @@ export default async ({ req, res, log, error }: Context) => {
     });
     await client.end();
     return res.json(
-        RESTfulAPI.response(
+        RESTfulAPI.response( 
             Bitmask.REQUEST_SUCCESS,
             "All documents for case and docbot version below",
             {documents: documentIds}),

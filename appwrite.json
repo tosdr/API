@@ -204,7 +204,7 @@
             "$id": "",
             "name": "GET /point/v1",
             "runtime": "node-16.0",
-            "path": "functions/internal/Point/GET/v1",
+            "path": "functions/public/Point/GET/v1",
             "entrypoint": "build/index.js",
             "ignore": [
                 "node_modules"

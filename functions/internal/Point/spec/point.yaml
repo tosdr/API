@@ -1,36 +1,4 @@
 /point/v1/:
-  get:
-    tags:
-      - Point
-    summary: GET for single points or for a list of a case's points
-    description: Either get a single Point, or get a list of all Points given a case ID
-    parameters:
-      - name: id
-        in: query
-        description: Point ID
-        required: false
-        schema:
-          type: integer
-      - name: case_id
-        in: query
-        required: false
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Success
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: "#/components/schemas/points-v1"
-                - $ref: "#/components/schemas/single-point-v1"
-      "400":
-        $ref: "./errors/400.yaml"
-      "404":
-        $ref: "./errors/404.yaml"
-      "429":
-        $ref: "../../../../../../spec/errors/429.yaml"
   post:
     tags:
       - Point
