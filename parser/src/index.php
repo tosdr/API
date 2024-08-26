@@ -12,12 +12,9 @@ const SERVER_ERROR_JSON = [
 try {
     require __DIR__ . "/vendor/autoload.php";
 
-
-    $body = match ($_SERVER["REQUEST_METHOD"]) {
-        "POST" => $_POST,
-        default => file_get_contents("php://input")
-    };
-
+    // $_POST only handles form data (application/x-www-form-urlencoded or multipart/form-data)
+    // but for application/json data we'll read from php://input
+    $body = file_get_contents("php://input");
 
     $client = new Client();
 
