@@ -23,7 +23,10 @@ tags:
 paths:
   $ref#servicev1: '../functions/public/Service/GET/v1/spec/service.yaml'
   $ref#servicev2: '../functions/public/Service/GET/v2/spec/service.yaml'
-
+  $ref#documentv1: '../functions/public/Document/GET/v1/spec/document.yaml'
+  $ref#pointv1: '../functions/public/Point/spec/point.yaml'
+  $ref#internalpointv1: '../functions/internal/Point/spec/point.yaml'
+  $ref#docbotrecordv1: '../functions/internal/DocbotRecords/spec/docbotrecord.yaml'
 
 components:
   schemas:
@@ -31,6 +34,9 @@ components:
       $ref#single-service-v1: './components/service/single-service-v1.yaml'
       $ref#all-services-v2: './components/service/all-services-v2.yaml'
       $ref#single-service-v2: './components/service/single-service-v2.yaml'
+      $ref#document-v1: './components/document/document-v1.yaml'
+      $ref#points-v1: './components/point/points-v1.yaml'
+      $ref#single-point-v1: './components/point/single-point-v1.yaml'
 
   securitySchemes:
     api_key:

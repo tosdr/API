@@ -1,0 +1,76 @@
+/point/v1/:
+  post:
+    tags:
+      - Point
+    summary: Create a new Point
+    description: Create a new Point
+    parameters:
+      - name: case_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: user_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: document_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: service_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: source
+        in: query
+        description: Doc source URL
+        required: true
+        schema:
+          type: string
+      - name: docbot_version
+        in: query
+        description: Model version used to create the point (this API only exists for docbot at least for now)
+        required: true
+        schema:
+          type: string
+      - name: ml_score
+        in: query
+        description: 0.0-1.0 score from the docbot (required because this API is only for docbot, for now)
+        required: true
+        schema:
+          type: number
+      - name: analysis
+        in: query
+        description: What entity/service created the point; for docbot will just be "Docbot"
+        required: false
+        schema:
+          type: string
+      - name: quote_text
+        in: query
+        description: Text from the source doc that provides evidence
+        required: false
+        schema:
+          type: string
+      - name: quote_start
+        in: query
+        description: Char position of the source doc for quote_text
+        required: false
+        schema:
+          type: integer
+      - name: quote_end
+        in: query
+        description: End char position of the source doc for quote_text
+        required: false
+        schema:
+          type: integer
+    responses:
+      "201":
+        description: Point successfully created
+      "400":
+        $ref: "../../../../../spec/errors/400.yaml"
+      "429":
+        $ref: "../../../../../spec/errors/429.yaml"
