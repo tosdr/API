@@ -82,11 +82,11 @@ export default async ({ req, res, log, error }: Context) => {
         analysis: point.analysis,
         created_at: point.created_at,
         updated_at: point.updated_at,
-        quoteText: point.quoteText,
+        quote_text: point.quote_text,
         case_id: Number(point.case_id),
         document_id: point.document_id,
-        quoteStart: point.quoteStart,
-        quoteEnd: point.quoteEnd
+        quote_start: point.quote_start,
+        quote_end: point.quote_end
       });
     });
 

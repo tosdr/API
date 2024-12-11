@@ -37,13 +37,13 @@ single-point-v1:
               type: number
             classification:
               type: string
-        quoteText:
+        quote_text:
           type: string
         document_id:
           type: number
-        quoteStart:
+        quote_start:
           type: number
-        quoteEnd:
+        quote_end:
           type: number
         updated_at:
           type: string
