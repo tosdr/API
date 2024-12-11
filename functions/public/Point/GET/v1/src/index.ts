@@ -12,7 +12,8 @@
 */
 
 import { Client } from 'pg';
-import {Bitmask, Points, Case, RESTfulAPI} from "api-microservices";
+import {Bitmask, Case, RESTfulAPI} from "api-microservices";
+import {Points} from "./Points";
 import { Phoenix } from './helpers/Phoenix';
 
 type Context = {

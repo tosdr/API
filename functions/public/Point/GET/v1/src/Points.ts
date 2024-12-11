@@ -1,4 +1,4 @@
-import {Case} from "./Case";
+import {Case} from "api-microservices";
 
 export namespace Points {
 

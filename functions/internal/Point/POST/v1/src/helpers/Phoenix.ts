@@ -5,7 +5,7 @@ export class Phoenix {
 
   static async createPoint(
       caseId: number, userId: number, documentId: number, serviceId: number, status: string,
-      title: string, source: string, analysis: string, quoteText: string, quoteStart: number, quoteEnd: number,
+      title: string, source: string, analysis: string, quote_text: string, quote_start: number, quote_end: number,
       docbotVersion: string, mlScore: number, postgresClient: Client
   ): Promise<any> {
     return (await postgresClient.query(
@@ -13,7 +13,7 @@ export class Phoenix {
         "quote_text, quote_start, quote_end, docbot_version, ml_score, created_at, updated_at) " +
         "VALUES ($1::integer, $2::integer, $3::integer, $4::integer, $5::text, $6::text, $7::text, " +
         "$8::text, $9::text, $10::integer, $11::integer, $12::text, $13::numeric, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
-        [caseId, userId, documentId, serviceId, status, title, source, analysis, quoteText, quoteStart, quoteEnd, docbotVersion, mlScore]
+        [caseId, userId, documentId, serviceId, status, title, source, analysis, quote_text, quote_start, quote_end, docbotVersion, mlScore]
     ));
   }
 
