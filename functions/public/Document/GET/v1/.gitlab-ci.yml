@@ -1,42 +1,43 @@
  
-Test GET /service/v2:
+Test GET /document/v1:
   stage: test_functions
   image: node:16
   script:
-    - cd "functions/public/Service/GET/v2"
+    - cd "functions/public/Document/GET/v1"
     - npm install
     - npm run build
   rules:
       - changes:
-        - functions/public/Service/GET/v2/**/*
+        - functions/public/Document/GET/v1/**/*
         
-Staging GET /service/v2:
+Staging GET /document/v1:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_STAGING --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 6759bb36003c46f666b1
+    - appwrite deploy function --functionId 6765dc9c00277714ca0f
   environment: 
-    name: staging/get_service_v2
-    url: $API_HOSTNAME/service/v2
+    name: staging/get_document_v1
+    url: $API_HOSTNAME/document/v1
   needs:
-    - Test GET /service/v2
+    - Test GET /document/v1
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:
-        - functions/public/Service/GET/v2/**/*
+        - functions/public/Document/GET/v1/**/*
 
-Production GET /service/v2:
+        
+Production GET /document/v1:
   stage: deploy_functions
   image: node:16
   script:
     - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_PROD --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 6767c51f00123606e51c
+    - appwrite deploy function --functionId 6767c843002f8ba36f93
   environment: 
-    name: production/get_service_v2
-    url: $API_HOSTNAME/service/v2
+    name: production/get_document_v1
+    url: $API_HOSTNAME/document/v1
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
         changes:
-        - functions/public/Service/GET/v2/**/*
+        - functions/public/Document/GET/v1/**/*
         when: manual

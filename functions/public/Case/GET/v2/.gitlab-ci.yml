@@ -15,8 +15,8 @@ Staging GET /case/v2:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 64931a2451cea6ad3c18
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_STAGING --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6759c3a20007b0c52461
   environment: 
     name: staging/get_case_v1
     url: $API_HOSTNAME/case/v1
@@ -31,8 +31,8 @@ Production GET /case/v2:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 64931a2451cea6ad3c18
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_PROD --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6767c6130014d3cdc9b6
   environment: 
     name: production/get_case_v1
     url: $API_HOSTNAME/case/v1

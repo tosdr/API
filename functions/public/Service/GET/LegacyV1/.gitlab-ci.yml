@@ -14,8 +14,8 @@ Staging GET /v1/service/all.json:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 6549a0b4a0d4a0d4a0d4
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_STAGING --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6765d93e0024ddee13ef
   environment: 
     name: staging/get_v1_service_all_json
     url: $API_HOSTNAME/v1/service/all.json
@@ -30,8 +30,8 @@ Production GET /v1/service/all.json:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 6549a0b4a0d4a0d4a0d4
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_PROD --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6767c7a30007aec8a80f
   environment: 
     name: production/get_v1_service_all_json
     url: $API_HOSTNAME/v1/service/all.json
