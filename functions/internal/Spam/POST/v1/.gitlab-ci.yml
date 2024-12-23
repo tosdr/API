@@ -15,8 +15,8 @@ Staging POST /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63bd3c891af577cfa915
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_STAGING --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6769386d00295a0defad
   environment: 
     name: staging/post_spam_v1
     url: $API_HOSTNAME/case/v1
@@ -31,8 +31,8 @@ Production POST /spam/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 63bd3c891af577cfa915
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_PROD --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 67693a730025fb437687
   environment: 
     name: production/post_spam_v1
     url: $API_HOSTNAME/case/v1

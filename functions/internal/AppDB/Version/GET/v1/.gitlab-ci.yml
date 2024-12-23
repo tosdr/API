@@ -15,8 +15,8 @@ Staging GET /appdb/version/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 65492d5d01cedf27535a
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_STAGING --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6765d6e400085b1db020
   environment: 
     name: staging/get_appdb_version_v1
     url: $API_HOSTNAME/appdb/version/v1
@@ -31,8 +31,8 @@ Production GET /appdb/version/v1:
   stage: deploy_functions
   image: node:16
   script:
-    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT --key $APPWRITE_API_KEY
-    - appwrite deploy function --functionId 65492d5d01cedf27535a
+    - npm i -g appwrite-cli && appwrite client --endpoint $APPWRITE_HOSTNAME --projectId $APPWRITE_PROJECT_PROD --key $APPWRITE_API_KEY
+    - appwrite deploy function --functionId 6767c73d00199e7aa8da
   environment: 
     name: production/get_appdb_version_v1
     url: $API_HOSTNAME/appdb/version/v1

@@ -9,19 +9,22 @@ stages:
 - publish
 - test_functions
 - deploy_functions
-- swagger
 
 include: 
    - "/functions/public/Service/GET/LegacyV1/.gitlab-ci.yml"
-   - "/functions/public/Service/GET/v1/.gitlab-ci.yml"
+  #  - "/functions/public/Service/GET/v1/.gitlab-ci.yml"
    - "/functions/public/Service/GET/v2/.gitlab-ci.yml"
-   - "/functions/public/Case/GET/v1/.gitlab-ci.yml"
+  #  - "/functions/public/Case/GET/v1/.gitlab-ci.yml"
    - "/functions/public/Case/GET/v2/.gitlab-ci.yml"
    - "/functions/internal/Spam/DELETE/v1/.gitlab-ci.yml"
-   - "/functions/internal/Spam/GET/v1/.gitlab-ci.yml"
    - "/functions/internal/Spam/POST/v1/.gitlab-ci.yml"
-   - "/functions/internal/AppDB/Exporter/.gitlab-ci.yml"
+  #  - "/functions/internal/AppDB/Exporter/.gitlab-ci.yml"
    - "/functions/internal/AppDB/Version/GET/v1/.gitlab-ci.yml"
+   - "/functions/public/Document/GET/v1/.gitlab-ci.yml"
+   - "/functions/public/Point/GET/v1/.gitlab-ci.yml"
+   - "/functions/internal/Point/POST/v1/.gitlab-ci.yml"
+   - "/functions/internal/DocbotRecord/GET/v1/.gitlab-ci.yml"
+   - "/functions/internal/DocbotRecord/POST/v1/.gitlab-ci.yml"
 
 build_parser:
   stage: deploy_functions
@@ -51,24 +54,3 @@ build_spamai:
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     changes:
       - spam_ai/**/*
-
-
-pages:
-  stage: swagger
-  image: node:lts
-  before_script:
-    - npm install swagger-ui-dist@5.10.0
-    - cd spec/generator
-    - npm install
-    - npm run merge
-  script:
-    - cd $CI_PROJECT_DIR
-    - mkdir public
-    - cp -rp node_modules/swagger-ui-dist/* public
-    - cp -rp swagger.yaml public/swagger.yaml
-    - sed -i "s#https://petstore\.swagger\.io\/v2\/swagger.json#\.\/swagger.yaml#g" public/swagger-initializer.js
-  artifacts:
-    paths:
-      - public
-  rules:
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
